@@ -1,0 +1,183 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    /*max-width: 280px !important;*/
+    /*width: 100%;*/
+}
+.padding-5{
+    padding: 5px;
+}
+
+.margin-5{
+    margin: 5px;
+}
+
+.no-padding {
+    padding: 0;
+}
+.no-margin {
+    margin: 0;
+}
+
+.hide {
+    display:none ;
+}
+
+
+
+
+
+/*some customizations*/
+
+.select2-container {
+    width: 100%;
+    max-width: 280px;
+}
+
+.pre-scrollable {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+
+.form-group {
+    margin-top: 5px ;
+    margin-bottom: 5px ;
+}
+
+.form-group-xs .form-control {
+    height: 25px;
+    padding: 5px 5px;
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 3px;
+    margin-bottom: 5px;
+}
+
+.form-group-xs select.form-control {
+    height: 25px;
+    line-height: 30px;
+}
+.form-group-xs textarea.form-control,
+.form-group-xs select[multiple].form-control {
+    height: auto;
+}
+.form-group-xs .form-control-static {
+    height: 25px;
+    min-height: 25px;
+    padding: 6px 6px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.input-group-xs>.form-control,
+.input-group-xs>.input-group-addon,
+.input-group-xs>.input-group-btn>.btn {
+    height: 25px;
+    padding: 2px 2px;
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 3px;
+}
+
+.control-label{
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 12px;
+}
+
+.well-xs {
+    padding-top: 5px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+.form-horizontal .control-label {
+    padding-top: 5px;
+}
+
+input[type="date"], input[type="time"], input[type="datetime-local"], input[type="month"] {
+line-height: 15px;
+}
+
+.sidebar {
+    margin: 1em;
+    min-height: 30em;
+    float: left;
+}
+
+/*Selectize theme for ui.select customizing*/
+.selectize-input {
+    min-height: 20px;
+    max-height: 250px;
+    padding: 3px 6px;
+}
+.selectize-control {
+    width: 260px;
+}
+
+
+.text-uppercase {
+    text-transform:uppercase;
+}
+
+
+
+/*Pagination*/
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    color: #FFF;
+    background-color: #337AB7;
+}
+
+
+#loading-bar-spinner .spinner-icon {
+  width: 26px;
+  height: 26px;
+
+  border:  solid 4px transparent;
+  border-top-color:  #29d;
+  border-left-color: #29d;
+  border-radius: 50%;
+
+}
+
+/*Angular Animate */
+/* The starting CSS styles for the enter animation */
+.ng-enter {
+    transition:0.5s ease all;
+    opacity:0;
+}
+/* The finishing CSS styles for the enter animation */
+.ng-enter.ng-enter-active {
+    opacity:1;
+}
+/* now the element will fade out before it is removed from the DOM */
+.ng-leave {
+    transition:0.5s ease all;
+    opacity:1;
+}
+.ng-leave.ng-leave-active {
+    opacity:0;
+}
+
+
