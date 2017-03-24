@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Sentinel;
 
 class ManagerMiddleware
 {
@@ -15,6 +16,16 @@ class ManagerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if (Sentinel::check() && (Sentinel::inRole('super') || Sentinel::inRole('admin') || Sentinel::inRole('manager')))
+
+            return $next($request);
+
+        else {
+
+
+            Session::flash('flash_message', 'You do not have permission to access !');
+
+            return redirect()->route('login');
+        }
     }
 }

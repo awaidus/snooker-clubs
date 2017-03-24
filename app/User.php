@@ -2,12 +2,11 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
 use Cartalyst\Sentinel\Users\EloquentUser as SentinelUser;
+use Sentinel;
 
-class User extends SentinelUser {
+class User extends SentinelUser
+{
 
     protected $fillable = [
         'email',
@@ -19,5 +18,27 @@ class User extends SentinelUser {
     ];
 
     protected $loginNames = ['username'];
+
+    public function isSuperAdmin()
+    {
+        return ((Sentinel::check() && (Sentinel::inRole('super'))));
+    }
+
+    public function isAdmin()
+    {
+        return ((Sentinel::check() && (Sentinel::inRole('admin'))));
+    }
+
+    public function isSuperAdminOrAdmin()
+    {
+        return ((Sentinel::check() && (Sentinel::inRole('super') || Sentinel::inRole('admin'))));
+    }
+
+    public function isManager()
+    {
+        return ((Sentinel::check() && (Sentinel::inRole('manager'))));
+    }
+
+
 
 }

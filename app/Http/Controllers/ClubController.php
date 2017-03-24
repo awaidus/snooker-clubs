@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Bill;
 use App\Club;
 use App\Player;
+use App\User;
 use Illuminate\Http\Request;
 use Session;
 
@@ -22,8 +23,9 @@ class ClubController extends Controller
     public function show($id = null)
     {
         $club = (!is_null($id) && $id != -1) ? Club::find($id) : new Club();
+        $users = User::all()->pluck('first_name', 'id');
 
-        return view('club.show', compact('club'));
+        return view('club.show', compact('club', 'users'));
     }
 
     public function store(Request $request)

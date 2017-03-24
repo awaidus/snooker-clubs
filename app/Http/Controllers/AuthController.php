@@ -31,23 +31,5 @@ class AuthController extends Controller
 
     }
 
-    public function showRegistration()
-    {
-        return view('auth.register');
-    }
 
-    public function storeUser(Request $request)
-    {
-        $this->validate($request, [
-            'email' => 'required',
-            'password' => 'required',
-        ]);
-
-        Sentinel::registerAndActivate($request->all());
-
-        Session::flash('flash_message', 'User registered successfully !');
-
-        return redirect()->route('home');
-
-    }
 }

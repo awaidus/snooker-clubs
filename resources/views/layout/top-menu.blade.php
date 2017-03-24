@@ -13,8 +13,9 @@
         <div id="navbar" class="navbar-collapse collapse">
 
             <ul class="nav navbar-nav">
-                <li><a href="{{route('showPlayers')}}">Clients/Players</a></li>
+                <li><a href="{{route('showPlayers')}}">Clients/ Players</a></li>
                 <li><a href="{{route('showBills')}}">Bills Summery</a></li>
+                <li><a href="{{route('showUsers')}}">Users List</a></li>
             </ul>
             <div class="navbar-form navbar-right">
 
@@ -24,19 +25,20 @@
                     <button type="submit" class="btn btn-warning"><i class="fa fa-sign-out" aria-hidden="true"></i>
                         Logout, {{ Sentinel::getUser()->first_name }}
                     </button>
+                    @if(Sentinel::inRole('super') || Sentinel::inRole('admin'))
 
+                        <a href="{{route('showRegistration')}}" class="btn btn-default">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i> Add User
+                        </a>
+                    @endif
                     {!! Form::close() !!}
+
+
 
                 @else
                     <a href="{{route('login')}}" class="btn btn-info">
                         <i class="fa fa-sign-in" aria-hidden="true"></i> Login
                     </a>
-                    @if(Sentinel::check() && (Sentinel::inRole('super') || Sentinel::inRole('admin')))
-
-                        <a href="{{route('showRegistration')}}" class="btn btn-default">
-                            <i class="fa fa-id-card" aria-hidden="true"></i> Register
-                        </a>
-                    @endif
 
                 @endif
 

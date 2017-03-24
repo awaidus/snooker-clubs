@@ -41,7 +41,7 @@ class Game extends Model
         return $this->belongsTo(Player::class);
     }
 
-    public function scopeActivated($query)
+    public function scopeActivate($query)
     {
         $query->where('completed', '=', 0);
     }

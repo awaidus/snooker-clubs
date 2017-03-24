@@ -51,6 +51,13 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user-secret"></i></span>
+                {{ Form::select('manager_id', $roles, null, ['class' => "form-control"]) }}
+            </div>
+        </div>
+
 
         <button type="submit" class="btn btn-success btn-block">Register</button>
 

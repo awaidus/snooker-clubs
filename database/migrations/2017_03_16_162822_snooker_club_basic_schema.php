@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class SnookerClubBasicSchema extends Migration
 {
@@ -16,7 +16,7 @@ class SnookerClubBasicSchema extends Migration
         Schema::create('clubs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('club_name');
-            $table->integer('manager_id');
+            $table->integer('manager_id')->nullable();
             $table->string('club_address')->nullable();
             $table->integer('no_of_tables');
             $table->timestamps();
@@ -35,7 +35,7 @@ class SnookerClubBasicSchema extends Migration
             $table->integer('game_table_id');
             $table->integer('game_type_id');
             $table->integer('player_id');
-            $table->integer('user_id');
+            $table->integer('user_id')->nullable();
             $table->string('no_of_players');
             $table->boolean('completed')->default(false);
             $table->dateTime('started_at')->nullable();

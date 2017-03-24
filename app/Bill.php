@@ -13,6 +13,7 @@ class Bill extends Model
 
     public function game()
     {
+
         return $this->belongsTo('App\Game');
     }
 

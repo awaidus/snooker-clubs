@@ -15,6 +15,7 @@ class Club extends Model
 
     public function games()
     {
-        return $this->hasManyThrough('App\Game', 'App\GameTable');
+        return $this->hasManyThrough(Game::class, GameTable::class);
     }
+
 }

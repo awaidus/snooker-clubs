@@ -19,8 +19,6 @@ class AdminMiddleware
     {
         if (Sentinel::check() && (Sentinel::inRole('super') || Sentinel::inRole('admin')))
 
-
-
             return $next($request);
 
         else {
