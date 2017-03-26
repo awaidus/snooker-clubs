@@ -9,7 +9,7 @@ class Game extends Model
 {
     public $timestamps = true;
 
-    protected $fillable = ['game_table_id', 'game_type_id', 'player_id', 'completed', 'no_of_players',
+    protected $fillable = ['game_table_id', 'game_type_id', 'player_id', 'completed', 'no_of_players', 'user_id',
         'started_at', 'ended_at'];
 
     //protected $dates = ['started_at', 'ended_at', 'created_at', 'updated_at',];

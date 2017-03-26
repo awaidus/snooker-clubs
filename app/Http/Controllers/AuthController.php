@@ -15,11 +15,12 @@ class AuthController extends Controller
 
     public function postLogin(Request $request)
     {
-        Sentinel::forceAuthenticate($request->all());
+        if (Sentinel::authenticate($request->all())) {
 
-        //Session::flash('flash_message', 'User logged in!');
+            return redirect()->route('home');
+        }
 
-        return redirect()->route('home')->withSuccess('Login successfully.');;
+        return redirect()->route('login')->with(['error' => 'Username or password is incorrect.']);;
 
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Sentinel;
+use Session;
 
 class ManagerMiddleware
 {
@@ -20,12 +21,14 @@ class ManagerMiddleware
 
             return $next($request);
 
+        elseif (Sentinel::check()) {
+
+            return redirect()->back()->with(['Error' => 'You do not have permission to access !']);
+        }
+
         else {
 
-
-            Session::flash('flash_message', 'You do not have permission to access !');
-
-            return redirect()->route('login');
+            return redirect()->route('login')->with(['Error' => 'Not logged in !']);;
         }
     }
 }

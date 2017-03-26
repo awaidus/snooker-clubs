@@ -4,7 +4,7 @@
 
     <div class="col-md-6 col-lg-offset-3">
 
-        <h1>Register a user</h1>
+        <h1>User Information</h1>
 
         <div class="row">
             @if($errors->any())
@@ -19,52 +19,53 @@
             @endif
         </div>
 
-        {!! Form::open(['route' => 'storeUser']) !!}
+        <div class="form-horizontal">
 
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                {{ Form::text('username', null, ['class' => "form-control", 'placeholder' => 'Username', 'required']) }}
+            {!! Form::model($user, ['route' => 'storeUser']) !!}
+
+            <div class="form-group">
+                {{ Form::label('username', 'Username', ['class'=> 'col-sm-2 control-label']) }}
+                <div class="col-sm-10">
+                    {{ Form::text('username', null, ['class' => "form-control"]) }}
+                </div>
             </div>
-        </div>
 
-
-        <div class="form-group">
-
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                {{ Form::text('first_name', null, ['class' => "form-control", 'placeholder' => 'Name', 'required']) }}
+            <div class="form-group">
+                {{ Form::label('password', 'Password', ['class'=> 'col-sm-2 control-label']) }}
+                <div class="col-sm-10">
+                    {{ Form::input('password', 'password', null, ['class' => "form-control"]) }}
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                {{ Form::email('email', null, ['class' => "form-control", 'placeholder' => 'someone@domain.com']) }}
+            <div class="form-group">
+                {{ Form::label('first_name', 'Name', ['class'=> 'col-sm-2 control-label']) }}
+                <div class="col-sm-10">
+                    {{ Form::text('first_name', null, ['class' => "form-control"]) }}
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                {{ Form::input('password', 'password', null, ['class' => "form-control", 'placeholder' => 'Password', 'required']) }}
+            <div class="form-group">
+                {{ Form::label('role_id', 'Role', ['class'=> 'col-sm-2 control-label']) }}
+                <div class="col-sm-10">
+                    {{ Form::select('role_id', $roles, null, ['class' => "form-control"]) }}
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-user-secret"></i></span>
-                {{ Form::select('manager_id', $roles, null, ['class' => "form-control"]) }}
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-9">
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+
             </div>
+
+            {!! Form::close() !!}
+
         </div>
-
-
-        <button type="submit" class="btn btn-success btn-block">Register</button>
 
     </div>
 
 
-    {!! Form::close() !!}
+
 
 @endsection
 

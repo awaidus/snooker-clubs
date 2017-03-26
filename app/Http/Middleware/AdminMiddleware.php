@@ -11,8 +11,8 @@ class AdminMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -21,12 +21,14 @@ class AdminMiddleware
 
             return $next($request);
 
+        elseif (Sentinel::check()) {
+
+            return redirect()->back()->with(['error' => 'You do not have permission to access !']);
+        }
+
         else {
 
-
-            Session::flash('flash_message', 'You do not have permission to access !');
-
-            return redirect()->route('login');
+            return redirect()->route('login')->with(['error' => 'Not logged in !']);;
         }
 
 

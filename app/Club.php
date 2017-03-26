@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Club extends Model
 {
-    protected $fillable = ['club_name','club_address', 'no_of_tables'];
+    protected $fillable = ['club_name', 'club_address', 'no_of_tables', 'manager_id'];
 
     public function tables()
     {
-        return $this->hasMany('App\GameTable');
+        return $this->hasMany(GameTable::class);
     }
 
     public function games()

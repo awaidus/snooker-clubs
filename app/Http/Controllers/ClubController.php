@@ -13,8 +13,10 @@ class ClubController extends Controller
 {
     public function index()
     {
-        $clubs = Club::all();
+        $clubs = Club::with('tables.bills')->get();
+
         $bills = Bill::all();
+
         $players = Player::with('bills')->get();
 
         return view('club.index', compact('clubs', 'bills', 'players'));
@@ -30,12 +32,22 @@ class ClubController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->id) {
+
+        } else {
+
+
+        }
+
         $this->validate($request, [
-            'club_name' => 'required|unique:clubs',
+            'club_name' => 'required|unique:clubs,club_name,' . $request->id,
             'no_of_tables' => 'required',
         ]);
 
+
         $data = $request->all();
+
+        //dd($data);
 
         Club::updateOrCreate(['id' => $data['id']], $data);
 

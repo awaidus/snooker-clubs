@@ -8,9 +8,10 @@
 
         @include('error._list')
 
-        {!! Form::model($club, ['route' => 'storeBill']) !!}
+        {!! Form::model($club, ['route' => 'storeClub']) !!}
 
-        {{Form::hidden('id')}}
+        {{Form::hidden('id', $club->id)}}
+
 
         <div class="form-horizontal">
             <div class="form-group">

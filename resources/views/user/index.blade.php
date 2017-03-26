@@ -4,7 +4,6 @@
 </br>
 
 <div>
-    @include('alert._success')
 
     <h1>User List </h1>
 
@@ -35,7 +34,7 @@
                 </td>
                 <td>{{$user->last_login}}</td>
                 <td>
-                    <a href="{{ route('showRegistration', ['id'=> $user->id, 'club_id' => Session::get('club_id')] ) }}"
+                    <a href="{{ route('showRegistration', ['user_id'=> $user->id, 'club_id' => Session::get('club_id')] ) }}"
                        class="btn btn-default"><i class="fa fa-edit" aria-hidden="true"></i> Open
                     </a>
                 </td>

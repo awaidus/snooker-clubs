@@ -24,6 +24,9 @@
 
 <div class="container">
 
+    @include('alert._error');
+    @include('alert._success');
+
     @yield('content')
 
 </div>

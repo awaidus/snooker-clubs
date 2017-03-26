@@ -20,6 +20,10 @@ class GameTable extends Model
         return $this->hasMany('App\Game');
     }
 
+    public function bills()
+    {
+        return $this->hasManyThrough(Bill::class, Game::class);
+    }
 
-   
+
 }

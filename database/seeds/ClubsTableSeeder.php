@@ -13,6 +13,7 @@ class ClubsTableSeeder extends Seeder
     {
         $club = new \App\Club([
             'club_name' => 'D-04',
+            'manager_id' => 1,
             'club_address' => 'Peshwar Morr, Isd',
             'no_of_tables' => '11',
         ]);
@@ -20,6 +21,7 @@ class ClubsTableSeeder extends Seeder
 
         $club = new \App\Club([
             'club_name' => 'D-05',
+            'manager_id' => 1,
             'club_address' => 'Chandni Chow, Rwp',
             'no_of_tables' => '12',
         ]);
@@ -27,6 +29,7 @@ class ClubsTableSeeder extends Seeder
 
         $club = new \App\Club([
             'club_name' => 'D-06',
+            'manager_id' => 1,
             'club_address' => 'Lahore 1233',
             'no_of_tables' => '20',
         ]);
@@ -35,6 +38,7 @@ class ClubsTableSeeder extends Seeder
 
         $club = new \App\Club([
             'club_name' => 'D-10',
+            'manager_id' => 1,
             'club_address' => 'Lahore ABCED',
             'no_of_tables' => '08',
         ]);

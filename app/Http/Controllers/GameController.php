@@ -8,6 +8,7 @@ use App\GameTable;
 use App\GameType;
 use App\Player;
 use Illuminate\Http\Request;
+use Sentinel;
 use Session;
 
 class GameController extends Controller
@@ -16,7 +17,12 @@ class GameController extends Controller
     {
         Session::put('club_id', $club_id);
 
-        $club = Club::with('games.table')->find($club_id);
+        $club = Club::with(['tables.games' => function ($query) {
+            $query->whereCompleted(false);
+
+        }, 'tables.games.bill'])->find($club_id);
+
+        //$club = Club::with('tables')->find($club_id);
 
         return view('game.index', compact('club'));
 
@@ -24,10 +30,11 @@ class GameController extends Controller
 
     public function show($club_id, $id = null)
     {
-        $game = (!is_null($id) && $id != -1) ? Game::with('table', 'player', 'bill')->find($id) : new Game();
+//        dd( request()->get('table_id') );
+
+        $game = (!is_null($id) || $id != -1) ? Game::with('table', 'player', 'bill')->find($id) : new Game();
 
 //        $game = Game::with('table', 'player')->find($id) ;
-
 
         $game_types = GameType::all()->pluck('game_type', 'id');
         $players = Player::all()->pluck('player_name', 'id');
@@ -48,6 +55,7 @@ class GameController extends Controller
         $data = $request->all();
 
         $data['completed'] = $request->has('completed');
+        $data['user_id'] = Sentinel::getUser()->id;
 
 //        dd($data);
 
