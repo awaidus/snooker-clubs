@@ -31,6 +31,11 @@ class Game extends Model
         return $this->hasOne(Bill::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasManyThrough(Transaction::class, Bill::class);
+    }
+
     public function game_type()
     {
         return $this->belongsTo(GameType::class, 'game_type_id');

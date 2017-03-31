@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Bill;
 use App\Club;
 use App\Player;
 use App\User;
@@ -15,11 +14,9 @@ class ClubController extends Controller
     {
         $clubs = Club::with('tables.bills')->get();
 
-        $bills = Bill::all();
-
         $players = Player::with('bills')->get();
 
-        return view('club.index', compact('clubs', 'bills', 'players'));
+        return view('club.index', compact('clubs', 'players'));
     }
 
     public function show($id = null)
@@ -32,12 +29,6 @@ class ClubController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->id) {
-
-        } else {
-
-
-        }
 
         $this->validate($request, [
             'club_name' => 'required|unique:clubs,club_name,' . $request->id,
@@ -51,9 +42,8 @@ class ClubController extends Controller
 
         Club::updateOrCreate(['id' => $data['id']], $data);
 
-        Session::flash('flash_message', 'Club saved successfully !');
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with(['success' => 'Club saved successfully !']);
     }
 
 }

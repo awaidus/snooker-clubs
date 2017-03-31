@@ -10,12 +10,29 @@ class Player extends Model
 
     public function games()
     {
-        return $this->hasMany('App\Game');
+        return $this->hasMany(Game::class);
     }
 
     public function bills()
     {
-        return $this->hasManyThrough('App\Bill', 'App\Game');
+        return $this->hasManyThrough(Bill::class, Game::class);
     }
+
+    public function sumBills()
+    {
+        return $this->hasManyThrough(Bill::class, Game::class)
+            ->selectRaw('sum(paid) as total_paid, SUM(bill) - - sum(discount) - SUM(paid) AS total_balance, player_id')
+            ->groupBy('player_id');
+    }
+
+    public function getSumBillsAttribute()
+    {
+        if (!array_key_exists('sumBills', $this->relations)) $this->load('sumBills');
+
+        return $relation = $this->getRelation('sumBills');
+
+        return ($relation) ? $relation->total_bills : 0;
+    }
+
 
 }

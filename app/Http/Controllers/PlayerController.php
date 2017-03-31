@@ -11,14 +11,16 @@ class PlayerController extends Controller
     public function index()
     {
 
-        $players = Player::all();
+        $players = Player::with('sumBills')->get();
 
         return view('player.index', compact('players'));
 
     }
 
-    public function show($id = null)
+    public function show(Request $request, $id = null)
     {
+//        dd ($request->all());
+
         $player = (!is_null($id) && $id != -1) ? Player::find($id) : new Player();
 
         return view('player.show', compact('player'));
@@ -37,9 +39,7 @@ class PlayerController extends Controller
 
         Player::updateOrCreate(['id' => $data['id']], $data);
 
-        Session::flash('flash_message', 'Player saved successfully ');
-
-        return redirect()->route('showPlayers');
+        return redirect()->back()->with(['success' => "Player <strong> $request->player_name </strong> saved successfully !"]);
 
     }
 }

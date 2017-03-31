@@ -13,8 +13,6 @@
 
         <h4>Game Type: <strong>{{ $game->game_type->game_type }}</strong></h4>
 
-        @include('error._list')
-
 
         {!! Form::model($bill, ['route' => 'storeBill']) !!}
 

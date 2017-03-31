@@ -25,5 +25,23 @@ class GameTable extends Model
         return $this->hasManyThrough(Bill::class, Game::class);
     }
 
+    public function sumBills()
+    {
+        return $this->hasManyThrough(Bill::class, Game::class)
+            ->selectRaw('sum(bill) - sum(discount) as total_bills, sum(paid) as total_paid, game_table_id, bill_date')
+            ->groupBy('game_table_id')
+            ->groupBy('bill_date');
+    }
+
+    public function getSumBillsAttribute()
+    {
+        if (!array_key_exists('sumBills', $this->relations)) $this->load('sumBills');
+
+        return $relation = $this->getRelation('sumBills');
+
+        return ($relation) ? $relation->total_bills : 0;
+    }
+
+
 
 }

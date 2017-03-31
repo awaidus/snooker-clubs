@@ -4,9 +4,6 @@
     <div>
         <h2>Dashboard</h2>
 
-        @include('alert._error')
-        @include('alert._success')
-
         @if(Sentinel::inRole('super') || Sentinel::inRole('admin'))
             <div class="row">
                 <div class="col-sm-3">
@@ -15,7 +12,6 @@
                     </a>
                 </div>
             </div>
-
             @endif
 
 
@@ -87,7 +83,6 @@
                 {{--</div>--}}
                 {{--</div>--}}
                 {{--</div>--}}
-
 
 
                 <div class="col-md-4">

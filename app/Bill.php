@@ -9,14 +9,26 @@ class Bill extends Model
 {
     protected $fillable = ['game_id', 'bill', 'discount', 'paid', 'bill_date', 'full_paid'];
 
-    protected $dates = ['bill_date'];
+    //protected $dates = ['bill_date'];
+
+    protected $appends = ['payable', 'balance'];
+
 
     public function game()
     {
 
-        return $this->belongsTo('App\Game');
+        return $this->belongsTo(Game::class);
     }
 
+    public function getPayableAttribute()
+    {
+        return $this->attributes['payable'] = $this->attributes['bill'] - $this->attributes['discount'];
+    }
+
+    public function getBalanceAttribute()
+    {
+        return $this->attributes['balance'] = $this->attributes['payable'] - $this->attributes['paid'];
+    }
 
     public function getBillDateAttribute($value)
     {

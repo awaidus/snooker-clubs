@@ -34,6 +34,7 @@ Route::group(['middleware' => 'manager'], function () {
     Route::post('bill/store', 'BillController@store')->name('storeBill');
 
 
+
     Route::get('player/index', 'PlayerController@index')->name('showPlayers');
     Route::get('player/{id?}', 'PlayerController@show')->name('showPlayer');
     Route::post('player/store', 'PlayerController@store')->name('storePlayer');
@@ -57,16 +58,29 @@ Route::get('/test', function () {
 //    return $g = \App\Game::with('bill')->get();
 ////    return $g = Sentinel::getRoleRepository()->get();
 
+    return $g = \App\Bill::get();
+    return $g = \App\Player::with('sumBills')->get();
+
+    return $g = \App\GameTable::with('sumBills')->get();
+
+    return $g->filter(function ($value, $key) {
+        if (!is_null($value->bill_date))
+            return $value->bill_date->isToday();
+    })->sum('paid');
+
+    return $g->where('bill_date', \Carbon\Carbon::today())->sum('paid');
+
     $g = \App\GameTable::with('bills')->get();
 
     $g->first()->bills->sum('bill');
 
-    $bill = $g->each(function ($item, $key) {
+    return $bill = $g->each(function ($item, $key) {
 
+        echo 'Table  ' . $item->table_no . '<br>';
         echo 'Sum Bill  ' . $item->bills->sum('bill') . '<br>';
-
         echo '<hr>';
     });
+    return;
 
     $clubs = \App\Club::with('tables.bills')->get();
 

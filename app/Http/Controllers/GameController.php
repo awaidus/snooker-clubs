@@ -20,9 +20,7 @@ class GameController extends Controller
         $club = Club::with(['tables.games' => function ($query) {
             $query->whereCompleted(false);
 
-        }, 'tables.games.bill'])->find($club_id);
-
-        //$club = Club::with('tables')->find($club_id);
+        }, 'tables.sumBills'])->find($club_id);
 
         return view('game.index', compact('club'));
 
@@ -59,12 +57,10 @@ class GameController extends Controller
 
 //        dd($data);
 
-        Game::updateOrCreate(['id' => $data['id']], $data);
+        $game = Game::updateOrCreate(['id' => $data['id']], $data);
 
-
-        Session::flash('flash_message', 'Saved successfully !');
-
-        return redirect()->route('showGames', ['club_id' => $data['club_id']]);
+        return redirect()->route('showGame', ['club_id' => $data['club_id'], 'id' => $game->id])
+            ->with(['success' => 'Game saved successfully !']);
 
     }
 
