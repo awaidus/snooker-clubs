@@ -18,28 +18,38 @@ class GameController extends Controller
         Session::put('club_id', $club_id);
 
         $club = Club::with(['tables.games' => function ($query) {
-            $query->whereCompleted(false);
+            $query->active();
 
-        }, 'tables.sumBills'])->find($club_id);
+        }, 'players.transactions'])->find($club_id);
+
+
+//
+//        $res = $bills->transactions->map(function($transaction, $key){
+//             return $transaction;
+//        });
+//
+//
+//        return $res->all();
+
 
         return view('game.index', compact('club'));
 
     }
 
-    public function show($club_id, $id = null)
+    public function show($table_id, $id = null)
     {
-//        dd( request()->get('table_id') );
+        $game = (!is_null($id) || $id != -1) ? Game::with('table', 'player')->find($id) : new Game();
 
-        $game = (!is_null($id) || $id != -1) ? Game::with('table', 'player', 'bill')->find($id) : new Game();
+        $table = GameTable::with(['games' => function ($query) {
+            $query->active();
+        }])->where('club_id', session('club_id'))->find($table_id);
 
-//        $game = Game::with('table', 'player')->find($id) ;
 
         $game_types = GameType::all()->pluck('game_type', 'id');
         $players = Player::all()->pluck('player_name', 'id');
-        $game_table = GameTable::where('club_id', $club_id)->pluck('table_no', 'id');
+        $game_table = GameTable::where('club_id', session('club_id'))->pluck('table_no', 'id');
 
-
-        return view('game.show', compact('game', 'game_types', 'game_table', 'players', 'club_id'));
+        return view('game.show', compact('game', 'game_types', 'game_table', 'players', 'table_id', 'table'));
     }
 
     public function store(Request $request)
@@ -48,6 +58,8 @@ class GameController extends Controller
             'game_table_id' => 'required',
             'game_type_id' => 'required',
             'player_id' => 'required',
+            'bill' => 'required|integer|min:10',
+            'started_at' => 'required',
         ]);
 
         $data = $request->all();
@@ -59,7 +71,7 @@ class GameController extends Controller
 
         $game = Game::updateOrCreate(['id' => $data['id']], $data);
 
-        return redirect()->route('showGame', ['club_id' => $data['club_id'], 'id' => $game->id])
+        return redirect()->route('showGame', ['table_id' => $data['table_id'], 'id' => $game->id])
             ->with(['success' => 'Game saved successfully !']);
 
     }

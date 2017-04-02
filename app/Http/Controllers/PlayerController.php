@@ -11,19 +11,30 @@ class PlayerController extends Controller
     public function index()
     {
 
-        $players = Player::with('sumBills')->get();
+        $players = Player::with('transactions')->get();
 
         return view('player.index', compact('players'));
 
     }
 
-    public function show(Request $request, $id = null)
+    public function show($id = null)
     {
-//        dd ($request->all());
-
-        $player = (!is_null($id) && $id != -1) ? Player::find($id) : new Player();
+        $player = (!is_null($id) && $id != -1)
+            ? Player::with(['transactions' => function ($item) {
+                return $item->orderBy('receive_date', 'desc');
+            }])->find($id)
+            : new Player();
 
         return view('player.show', compact('player'));
+    }
+
+    public function showPlayerTransaction($id)
+    {
+        $player = Player::with(['transactions' => function ($item) {
+            return $item->orderBy('receive_date', 'desc');
+        }])->find($id);
+
+        return view('player.showPlayerTransaction', compact('player'));
     }
 
     public function store(Request $request)

@@ -18,6 +18,11 @@ class Player extends Model
         return $this->hasManyThrough(Bill::class, Game::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     public function sumBills()
     {
         return $this->hasManyThrough(Bill::class, Game::class)

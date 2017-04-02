@@ -2,10 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Bill;
 use App\Events\GameCreated;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Transaction;
 
 class SetBill
 {
@@ -28,10 +26,16 @@ class SetBill
     public function handle(GameCreated $event)
     {
 
-        $bill = new Bill();
+//        $bill = new Bill();
+//
+//        $bill->game_id = $event->game->id;
+//
+//        $bill->save();
 
-        $bill->game_id = $event->game->id;
-
-        $bill->save();
+        $transaction = new Transaction();
+        $transaction->game_id = $event->game->id;
+        $transaction->player_id = $event->game->player_id;
+        $transaction->amount = -($event->game->bill - $event->game->discount);
+        $transaction->save();
     }
 }

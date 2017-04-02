@@ -9,11 +9,11 @@ use Session;
 
 class GameTableController extends Controller
 {
-    public function show($club_id, $id = null)
+    public function show($id = null)
     {
         $table = (!is_null($id) && $id != -1) ? GameTable::find($id) : new GameTable();
 
-        $club = Club::find($club_id);
+        $club = Club::find(session('club_id'));
 
         return view('game-table.show', compact('table', 'club'));
     }
@@ -21,7 +21,7 @@ class GameTableController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'table_no' => 'required|unique:game_tables',
+            'table_no' => 'required',
         ]);
 
         $data = $request->all();

@@ -13,31 +13,12 @@ class BillController extends Controller
 {
     public function index()
     {
-
         $clubs = Club::with('tables.sumBills')->get();
-        /*foreach ($clubs->tables as $table) {
-            foreach ($table->sum_bills as $bill) {
-                var_dump($bill);
-            }
-        }
-        return;*/
-        //$tables = GameTable::with('sumBills')->get();
 
         $bills = Bill::get()->groupBy(function ($item) {
             if (!is_null($item->bill_date))
                 return $item->bill_date->format('d-M-y');
         });
-
-//        $bills = $bills->groupBy(function ($item) {
-//            if (!is_null($item->bill_date))
-//                return $item->bill_date->format('d-M-y');
-//        })->each(function ($item, $key) {
-//            $item->each(function ($bill, $key) {
-//                echo 'Bill Date ' . $bill->bill_date . '</br>';
-//                echo 'Sum ' . $bill->where('bill_date', $bill->bill_date)->sum('paid'). '</br>';
-//                echo '<hr>';
-//            });
-//        });
 
         return view('bill.index', compact('bills', 'clubs'));
     }

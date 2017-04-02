@@ -70,19 +70,6 @@
                 </div>
 
 
-                {{--<div class="col-md-3">--}}
-                {{--<div class="panel panel-default">--}}
-                {{--<div class="panel-heading">Total Bills</div>--}}
-                {{--<div class="list-group">--}}
-                {{--<li class="list-group-item">Total Bill Amount--}}
-                {{--<span class="badge">{{ $bills->sum('bill') }}</span></li>--}}
-                {{--<li class="list-group-item">Total Payment Received--}}
-                {{--<span class="badge">{{ $bills->sum('paid') }}</span></li>--}}
-                {{--<li class="list-group-item list-group-item-danger">Total Balance Amount--}}
-                {{--<span class="badge">{{ $bills->where('full_paid', false)->sum('paid') }}</span></li>--}}
-                {{--</div>--}}
-                {{--</div>--}}
-                {{--</div>--}}
 
 
                 <div class="col-md-4">

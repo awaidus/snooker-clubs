@@ -18,4 +18,9 @@ class Club extends Model
         return $this->hasManyThrough(Game::class, GameTable::class);
     }
 
+    public function players()
+    {
+        return $this->hasMany(Player::class);
+    }
+
 }

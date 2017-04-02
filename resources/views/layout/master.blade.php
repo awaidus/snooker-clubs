@@ -7,12 +7,13 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}">
 </head>
 
+
+<link rel="stylesheet" href={{asset('css/app.css')}}>
 {{--    <link rel="stylesheet" href={{asset('css/bootstrap-theme.min.css')}}>--}}
-<link rel="stylesheet" href={{asset('bower_components/bootstrap/dist/css/bootstrap.min.css')}}>
+{{--<link rel="stylesheet" href={{asset('bower_components/bootstrap/dist/css/bootstrap.min.css')}}>--}}
 <link rel="stylesheet" href={{asset('bower_components/font-awesome/css/font-awesome.min.css')}}>
-<link rel="stylesheet"
-      href={{asset('bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}>
 <link rel="stylesheet" href={{asset('bower_components/flatpickr/dist/flatpickr.css')}}>
+
 
 <link rel="stylesheet" href={{asset('css/style.css')}}>
 
@@ -24,18 +25,14 @@
 
 @include('layout.top-menu');
 
-<div class="container">
+<div class="container" id="app">
 
-    <div id="app"></div>
-    @if(session('success'))
-        @include('alert._success')
-    @endif
-    @if(session('error'))
-        @include('alert._error')
-    @endif
 
+    @include('alert._success')
+    @include('alert._error')
 
     @yield('content')
+
 
 </div>
 
@@ -43,18 +40,13 @@
 <script src={{asset('bower_components/jquery/dist/jquery.min.js')}}></script>
 <script src={{asset('bower_components/moment/min/moment.min.js')}}></script>
 <script src={{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}></script>
-<script src={{asset('bower_components/angular/angular.min.js')}}></script>
-<script src={{asset('bower_components/angular-animate/angular-animate.min.js')}}></script>
-<script src={{asset('bower_components/vue/dist/vue.js')}}></script>
-{{--<script src={{asset('bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}></script>--}}
 <script src={{asset('bower_components/flatpickr/dist/flatpickr.js')}}></script>
 
 
+<script src={{asset('js/app.js')}}></script>
+
 <script src={{asset('js/site.js')}}></script>
 
-{{--<script src={{asset('angularApp/app.js')}}></script>--}}
-{{--<script src={{asset('angularApp/controllers/orderCtrl.js')}}></script>--}}
-{{--<script src={{asset('angularApp/controllers/todoCtrl.js')}}></script>--}}
 
 @yield('script')
 

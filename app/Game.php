@@ -10,11 +10,12 @@ class Game extends Model
     public $timestamps = true;
 
     protected $fillable = ['game_table_id', 'game_type_id', 'player_id', 'completed', 'no_of_players', 'user_id',
-        'started_at', 'ended_at'];
+        'bill', 'discount', 'started_at', 'ended_at'];
 
     //protected $dates = ['started_at', 'ended_at', 'created_at', 'updated_at',];
 
-    protected $events = ['created' => Events\GameCreated::class];
+    protected $events = ['created' => Events\GameCreated::class,
+        'updated' => Events\GameUpdated::class];
 
 //    protected $casts = [
 //        'completed' => 'boolean',
@@ -46,9 +47,14 @@ class Game extends Model
         return $this->belongsTo(Player::class);
     }
 
-    public function scopeActivate($query)
+    public function scopeActive($query)
     {
-        $query->where('completed', '=', 0);
+        $query->where('ended_at', '=', null);
+    }
+
+    public function scopeCompleted($query)
+    {
+        $query->where('ended_at', '!=', null);
     }
 
 
@@ -94,10 +100,4 @@ class Game extends Model
         $this->attributes['completed'] = (bool) $completed;
     }
 
-//    public function setCompletedAttribute($value)
-//    {
-//        if ( ! isset($value) )
-//            $this->attributes['completed'] = 0;
-
-//    }
 }

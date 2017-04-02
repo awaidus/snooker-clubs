@@ -4,51 +4,24 @@
 
 
     <div class="col-md-6 col-lg-offset-3">
-        <h1>Player Information </h1>
-        <div class="panel panel-default">
-            <div class="panel-heading"></div>
-            {!! Form::model($player, ['route' => 'storePlayer']) !!}
-
-            {{Form::hidden('id')}}
-
-            <div class="form-horizontal">
-
-                {{Form::formInput('Name *', 'player_name')}}
-                {{Form::formInput('Contact No.', 'contact')}}
-
-
-                <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-9">
-                        <button type="submit" class="btn btn-success">Save</button>
-                        <a href="{{ route('showGames', ['club_id'=> session('club_id')] ) }}" class="btn btn-default">
-                            Back to Game Hall
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-            </div> {{--end form-group--}}
-            {!! Form::close() !!}
-
-        </div>
+        <h1>Player's Transactions Info </h1>
 
         <div class="panel panel-warning">
             <div class="panel-heading">Payment</div>
             <div class="panel-body">
 
                 <div class="col-md-7">
-                    <div class="panel panel-info">
+                    <div class="panel panel-success">
                         <div class="panel-heading"><h3>Make Payment</h3></div>
 
                         <div class="panel-body">
 
-                            {!! Form::model($player, ['route' => 'storePlayer']) !!}
+                            {!! Form::open(['route' => 'storeTransaction']) !!}
                             {{Form::hidden('id')}}
+                            {{Form::hidden('player_id', $player->id)}}
 
                             <div class="form-group">
-                                {{ Form::label('amount', '', ['class'=> 'control-label']) }}
+                                {{ Form::label('amount', 'Amount', ['class'=> 'control-label']) }}
                                 {{ Form::text('amount', null, ['class' => "form-control"]) }}
                             </div>
 
@@ -82,6 +55,11 @@
                 </div>
 
             </div>
+
+
+            <a href="{{ route('showGames', ['club_id'=> session('club_id')] ) }}" class="btn btn-default btn-block">
+                <i class="fa fa-arrow-circle-left"></i> Back to Game Hall</a>
+
         </div>
 
 

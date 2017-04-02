@@ -29,6 +29,6 @@
     "angular-animate": "^1.6.0",
     "vue": "^2.1.8",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
-    "flatpickr": "flatpickr-calendar#^2.4.7"
+    "flatpickr": "flatpickr-calendar#^2.4.8"
   }
 }

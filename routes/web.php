@@ -19,12 +19,12 @@ Route::group(['middleware' => 'manager'], function () {
     Route::get('/', 'ClubController@index')->name('home');
 
 
-    Route::get('{club_id}/game-table/show/{id?}', 'GameTableController@show')->name('showGameTable');
+    Route::get('game-table/show/{id?}', 'GameTableController@show')->name('showGameTable');
     Route::post('game-table/store', 'GameTableController@store')->name('storeGameTable');
 
 
     Route::get('{club_id}/games/index', 'GameController@index')->name('showGames');
-    Route::get('{club_id}/game/show/{id?}', 'GameController@show')->name('showGame');
+    Route::get('{table_id}/game/show/{id?}', 'GameController@show')->name('showGame');
     Route::get('{club_id}/game/show/', 'GameController@create')->name('createGame');
     Route::post('game/store', 'GameController@store')->name('storeGame');
 
@@ -33,11 +33,14 @@ Route::group(['middleware' => 'manager'], function () {
     Route::get('{club_id}/game/{game_id}/bill/show/{id?}', 'BillController@show')->name('showBill');
     Route::post('bill/store', 'BillController@store')->name('storeBill');
 
+    Route::post('transaction/store', 'TransactionController@store')->name('storeTransaction');
 
 
     Route::get('player/index', 'PlayerController@index')->name('showPlayers');
     Route::get('player/{id?}', 'PlayerController@show')->name('showPlayer');
     Route::post('player/store', 'PlayerController@store')->name('storePlayer');
+    Route::get('player/{id?}/transactions/', 'PlayerController@showPlayerTransaction')->name('showPlayerTransaction');
+
 
 
     Route::group(['middleware' => 'admin'], function () {
@@ -56,10 +59,11 @@ Route::get('/test', function () {
 
     //return $g = Sentinel::getUser()->id;
 //    return $g = \App\Game::with('bill')->get();
-////    return $g = Sentinel::getRoleRepository()->get();
+//    return $g = Sentinel::getRoleRepository()->get();
 
-    return $g = \App\Bill::get();
-    return $g = \App\Player::with('sumBills')->get();
+    return \App\Club::with(['tables.games' => function ($query) {
+        $query->active();
+    }, 'players.transactions'])->find(1);
 
     return $g = \App\GameTable::with('sumBills')->get();
 
@@ -97,33 +101,6 @@ Route::get('/test', function () {
     });
 
     //return $c;
-
-//    return $b;
-
-
-//    return
-//    [
-//        'club' => $b->club_name,
-//
-////        'Total No. of bill (cleared)' => $b->where('full_paid', true)->count('full_paid'),
-////        'Total No. of balanced bill (balanced)' => $b->where('full_paid', false)->count('full_paid')
-//    ];
-
-//    $g = \App\Bill::with('game')->get();
-//    return $g->first()->game()-with('bill')->get();
-
-
-//    $a = \App\Club::get();
-//    return $a->first()->tables()->with(['games' => function ($query) {
-//        $query->whereCompleted(false);
-//    }])->get();
-
-//    dd($club = \App\Club::with('tables.games.bill')->get());
-
-//    return $a->games()->whereCompleted(true)->get();
-//    return \App\Game::with(['table' => function ($query) {
-//        $query->where('club_id', 3);
-//    }])->get();
 
 
     /*return \App\Game::with('table', 'player')
