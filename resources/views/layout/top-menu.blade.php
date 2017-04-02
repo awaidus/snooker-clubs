@@ -13,8 +13,8 @@
         <div id="navbar" class="navbar-collapse collapse">
 
             <ul class="nav navbar-nav">
-                <li><a href="{{route('showPlayers')}}">Clients/ Players</a></li>
-                <li><a href="{{route('showBills')}}">Bills Summery</a></li>
+                <li><a href="{{route('showPlayers')}}">Players</a></li>
+                <li><a href="{{route('showTransactions')}}">Transactions Summery</a></li>
                 <li><a href="{{route('showUsers')}}">Users List</a></li>
             </ul>
             <div class="navbar-form navbar-right">

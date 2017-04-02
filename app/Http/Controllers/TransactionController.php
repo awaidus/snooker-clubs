@@ -10,9 +10,22 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::get();
+        $transactions = Transaction::all()->groupBy(function ($item) {
+            if (!is_null($item->created_at))
+                return $item->created_at->format('d-M-y');
+        });
 
-        return view('game.index', compact('transactions'));
+//        $games = $transactions->where('amount' , '<', 0)->groupBy(function ($item) {
+//            if (!is_null($item->created_at))
+//                return $item->created_at->format('d-M-y');
+//        });
+//
+//        $payments = $transactions->where('amount' , '>', 0)->groupBy(function ($item) {
+//            if (!is_null($item->created_at))
+//                return $item->created_at->format('d-M-y');
+//        });
+
+        return view('transaction.index', compact('transactions'));
 
     }
 

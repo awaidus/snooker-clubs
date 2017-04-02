@@ -33,6 +33,7 @@ Route::group(['middleware' => 'manager'], function () {
     Route::get('{club_id}/game/{game_id}/bill/show/{id?}', 'BillController@show')->name('showBill');
     Route::post('bill/store', 'BillController@store')->name('storeBill');
 
+    Route::get('transactions/index', 'TransactionController@index')->name('showTransactions');
     Route::post('transaction/store', 'TransactionController@store')->name('storeTransaction');
 
 
