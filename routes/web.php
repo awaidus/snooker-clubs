@@ -24,7 +24,7 @@ Route::group(['middleware' => 'manager'], function () {
 
 
     Route::get('{club_id}/games/index', 'GameController@index')->name('showGames');
-    Route::get('{table_id}/game/show/{id?}', 'GameController@show')->name('showGame');
+    Route::get('game/show/{id?}', 'GameController@show')->name('showGame');
     Route::get('{club_id}/game/show/', 'GameController@create')->name('createGame');
     Route::post('game/store', 'GameController@store')->name('storeGame');
 

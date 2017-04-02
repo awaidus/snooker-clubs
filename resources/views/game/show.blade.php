@@ -54,9 +54,6 @@
 
 
 
-
-
-
     <div class="form-horizontal">
 
         <div class="row">
@@ -70,9 +67,8 @@
                         {!! Form::model($game, ['route' => 'storeGame']) !!}
 
                         {{Form::hidden('id')}}
-                        {{Form::hidden('table_id', $table->id)}}
 
-                        {{Form::formSelect('Table', 'game_table_id',$game_table)}}
+                        {{Form::formSelect('Table', 'game_table_id',$game_tables)}}
                         {{Form::formSelect('Game Type', 'game_type_id',$game_types)}}
 
                         <div class="form-group">

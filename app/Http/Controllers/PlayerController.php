@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Club;
 use App\Player;
 use Illuminate\Http\Request;
 use Session;
@@ -25,14 +26,17 @@ class PlayerController extends Controller
             }])->find($id)
             : new Player();
 
-        return view('player.show', compact('player'));
+        $clubs = Club::all()->pluck('club_name', 'id');
+
+        return view('player.show', compact('player', 'clubs'));
     }
 
     public function showPlayerTransaction($id)
     {
         $player = Player::with(['transactions' => function ($item) {
             return $item->orderBy('receive_date', 'desc');
-        }])->find($id);
+        }, 'transactions.game.game_type'])->find($id);
+
 
         return view('player.showPlayerTransaction', compact('player'));
     }
@@ -44,6 +48,7 @@ class PlayerController extends Controller
         ]);
 
         $data = $request->all();
+        $data['club_id'] = session('club_id');
 
 //        dd($data);
 

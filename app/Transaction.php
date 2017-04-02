@@ -12,7 +12,7 @@ class Transaction extends Model
 
     public function game()
     {
-        return $this->belongsTo(Bill::class);
+        return $this->belongsTo(Game::class);
     }
 
     public function player()
@@ -32,6 +32,21 @@ class Transaction extends Model
         if (is_string($value))
             $this->attributes['receive_date'] = Carbon::parse($value);
     }
+
+    public function getCreatedAtAttribute($value)
+    {
+        if (!is_null($value)) {
+            return Carbon::parse($value);
+        }
+    }
+
+    public function getUpdatedATAttribute($value)
+    {
+        if (!is_null($value)) {
+            return Carbon::parse($value);
+        }
+    }
+
 
     public function scopeSumBillTransaction($query)
     {

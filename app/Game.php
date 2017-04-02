@@ -12,14 +12,16 @@ class Game extends Model
     protected $fillable = ['game_table_id', 'game_type_id', 'player_id', 'completed', 'no_of_players', 'user_id',
         'bill', 'discount', 'started_at', 'ended_at'];
 
-    //protected $dates = ['started_at', 'ended_at', 'created_at', 'updated_at',];
-
-    protected $events = ['created' => Events\GameCreated::class,
-        'updated' => Events\GameUpdated::class];
-
-//    protected $casts = [
+    //    protected $casts = [
 //        'completed' => 'boolean',
 //    ];
+
+    protected $events = [
+        'created' => Events\GameCreated::class,
+        'updated' => Events\GameUpdated::class,
+    ];
+
+
 
     public function table()
     {
