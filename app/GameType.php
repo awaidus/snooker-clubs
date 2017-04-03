@@ -12,6 +12,7 @@ class GameType extends Model
 
     public function games()
     {
-        return $this->hasMany('App\Game');
+        return $this->hasMany(Game::class);
     }
+
 }
