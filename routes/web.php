@@ -7,8 +7,7 @@ Route::group(['middleware' => 'guest'], function () {
 
     Route::post('/login', 'AuthController@postLogin')->name('login');
 
-    Route::get('/register', 'UserController@showRegistration')->name('showRegistration');
-    Route::post('/register', 'UserController@storeUser')->name('storeUser');
+
 
 });
 
@@ -19,8 +18,7 @@ Route::group(['middleware' => 'manager'], function () {
     Route::get('/', 'ClubController@index')->name('home');
 
     Route::get('gameType/index', 'GameTypeController@index')->name('showGameTypes');
-    Route::get('gameType/show/{id?}', 'GameTypeController@show')->name('showGameType');
-    Route::post('gameType/store', 'GameTypeController@store')->name('storeGameType');
+
 
     Route::get('game-table/show/{id?}', 'GameTableController@show')->name('showGameTable');
     Route::post('game-table/store', 'GameTableController@store')->name('storeGameTable');
@@ -52,7 +50,15 @@ Route::group(['middleware' => 'manager'], function () {
         Route::get('club/show/{id?}', 'ClubController@show')->name('showClub');
         Route::post('club/store', 'ClubController@store')->name('storeClub');
 
+        Route::get('gameType/show/{id?}', 'GameTypeController@show')->name('showGameType');
+        Route::post('gameType/store', 'GameTypeController@store')->name('storeGameType');
+
         Route::get('/user/index', 'UserController@index')->name('showUsers');
+        Route::get('/register', 'UserController@showRegistration')->name('showRegistration');
+        Route::post('/register', 'UserController@storeUser')->name('storeUser');
+
+        Route::get('resetPassword', 'AuthController@resetPassword')->name('resetPassword');
+        Route::post('storeResetPassword', 'AuthController@storeResetPassword')->name('storeResetPassword');
 
 
     });

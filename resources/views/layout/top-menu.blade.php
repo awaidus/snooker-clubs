@@ -25,6 +25,9 @@
                     <button type="submit" class="btn btn-warning"><i class="fa fa-sign-out" aria-hidden="true"></i>
                         Logout, {{ Sentinel::getUser()->first_name }}
                     </button>
+                    <a href="{{route('resetPassword')}}" class="btn btn-default">
+                        <i class="fa fa-gear" aria-hidden="true"></i>
+                    </a>
                     @if(Sentinel::inRole('super') || Sentinel::inRole('admin'))
 
                         <a href="{{route('showRegistration')}}" class="btn btn-default">
