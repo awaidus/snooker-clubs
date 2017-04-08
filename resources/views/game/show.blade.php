@@ -25,7 +25,7 @@
 
                         {{Form::formInput('Player Name', 'player_name', null, ['required'])}}
 
-                        {{Form::formInput('Contact No.', 'contact', null, ['required'])}}
+                        {{Form::formInput('Contact No.', 'contact', null)}}
 
 
                         <div class="form-group">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Club;
+use App\Events\GameUpdated;
 use App\Game;
 use App\GameTable;
 use App\GameType;
@@ -22,28 +23,46 @@ class GameController extends Controller
 //
 //        }, 'players.transactions'])->find($club_id);
 
-        $club = Club::with(['tables.games', 'players.transactions'])->find($club_id);
+        $club = Club::with(['tables.games' => function ($query) {
+            $query->active();
+        }, 'tables.games.player' => function ($query) {
+            $query->withTrashed();
+        }, 'players' => function ($query) {
+            $query->withTrashed();
+        }, 'players.transactions'])->find($club_id);
 
         $bills = [];
         $totals['today'] = 0;
+        $totals['discountToday'] = 0;
         $totals['thisMonth'] = 0;
+        $totals['discountThisMonth'] = 0;
 
         foreach ($club->tables as $table) {
+
             $bills[$table->table_no]['today']['bill'] = $table->games->filter(function ($item, $key) {
                 return $item->started_at->isToday();
             })->sum('bill');
-
             $totals['today'] = $totals['today'] + $bills[$table->table_no]['today']['bill'];
+
 
             $bills[$table->table_no]['today']['discount'] = $table->games->filter(function ($item, $key) {
                 return $item->started_at->isToday();
             })->sum('discount');
+            $totals['discountToday'] = $totals['discountToday'] + $bills[$table->table_no]['today']['discount'];
 
-            $bills[$table->table_no]['thisMonth'] = $table->games->filter(function ($item, $key) {
+
+            $bills[$table->table_no]['thisMonth']['bill'] = $table->games->filter(function ($item, $key) {
                 return $item->started_at->month == \Carbon\Carbon::now()->month;
             })->sum('bill');
+            $totals['thisMonth'] = $totals['thisMonth'] + $bills[$table->table_no]['thisMonth']['bill'];
 
-            $totals['thisMonth'] = $totals['thisMonth'] + $bills[$table->table_no]['thisMonth'];
+
+            $bills[$table->table_no]['thisMonth']['discount'] = $table->games->filter(function ($item, $key) {
+                return $item->started_at->month == \Carbon\Carbon::now()->month;
+            })->sum('discount');
+            $totals['discountThisMonth'] = $totals['discountThisMonth'] + $bills[$table->table_no]['thisMonth']['discount'];
+
+
         };
 
 
@@ -86,7 +105,22 @@ class GameController extends Controller
 
 //        dd($data);
 
-        Game::updateOrCreate(['id' => $data['id']], $data);
+        if (!is_null($request->id)) {
+
+            $game = Game::find($request->id);
+
+            $game->update($data);
+
+            event(new GameUpdated($game));
+
+        } else {
+
+            $game = Game::create($data);
+
+        }
+
+
+        //Game::updateOrCreate(['id' => $data['id']], $data);
 
         return redirect()->route('showGames', ['club_id' => session('club_id')])
             ->with(['success' => 'Game saved successfully !']);
@@ -95,11 +129,9 @@ class GameController extends Controller
 
     public function destroy($id)
     {
-        $deletedRows = Game::where('id', $id)->delete();
+        Game::where('id', $id)->delete();
 
-        Session::flash('flash_message', 'Soft-Delete successfully !');
-
-        return redirect()->route('home');
+        return redirect()->back()->with(['success' => 'Game is deleted.']);
     }
 
 
@@ -107,8 +139,6 @@ class GameController extends Controller
     {
         Game::where('id', $id)->restore();
 
-        Session::flash('flash_message', 'Restore successfully !');
-
-        return redirect()->route('home');
+        return redirect()->back()->with(['success' => 'Game is restored.']);
     }
 }

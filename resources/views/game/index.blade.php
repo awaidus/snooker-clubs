@@ -26,7 +26,7 @@
                 <a href="{{route('showPlayers')}}" class="btn btn-default">
                     <i class="fa fa-list" aria-hidden="true"></i> Players</a>
                 <a href="{{route('showTransactions')}}" class="btn btn-default">
-                    <i class="fa fa-money" aria-hidden="true"></i> Payments Summery</a>
+                    <i class="fa fa-book" aria-hidden="true"></i> Payments Summery</a>
 
                 <a href="#" class="btn btn-warning">
                     <i class="fa fa-list" aria-hidden="true"></i> All Games
@@ -68,6 +68,7 @@
                                                 @if( is_null($game->ended_at) )
                                                     <tr>
                                                         <td>{{ $game->no_of_players }}</td>
+
                                                         <td>{{ $game->started_at }}</td>
                                                         <td>{{ $game->ended_at }}</td>
                                                         <td>{{ $game->bill - $game->discount }}</td>
@@ -101,7 +102,7 @@
                 <div class="panel panel-success">
                     <div class="panel-heading">Total Bills</div>
 
-                    <table class="table table-hover table-condensed">
+                    <table class="table table-hover table-condensed table-bordered">
                         <tr>
                             <th>Table</th>
                             <th>Today - Discount</th>
@@ -114,20 +115,34 @@
 
                                 <td>
                                     <div>
-                                        {{ $bill['today']['bill'] }}
+                                        {{ $bill['today']['bill'] }} -
                                         <span class="label label-default">{{ $bill['today']['discount'] }}</span>
                                     </div>
                                 </td>
 
-                                <td> {{ $bill['thisMonth'] }} </td>
+                                <td>
+                                    <div>
+                                        {{ $bill['thisMonth']['bill'] }} -
+                                        <span class="label label-default">{{ $bill['thisMonth']['discount'] }}</span>
+                                    </div>
+                                </td>
 
                             </tr>
                         @endforeach
 
                         <tr>
                             <td><h3>Total</h3></td>
-                            <td><h3><span class="label label-success">{{ $totals['today'] }}</span></h3></td>
-                            <td><h3><span class="label label-success">{{ $totals['thisMonth'] }}</span></h3></td>
+                            <td>
+                                <h3><span class="label label-success">{{ $totals['today'] }}</span> -
+                                    <span class="label label-default">{{ $totals['discountToday'] }}</span>
+                                </h3>
+
+                            </td>
+                            <td><h3>
+                                    <span class="label label-success">{{ $totals['thisMonth'] }}</span> -
+                                    <span class="label label-default">{{ $totals['discountThisMonth'] }}</span>
+
+                                </h3></td>
                         </tr>
 
 

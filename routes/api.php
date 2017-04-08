@@ -20,6 +20,15 @@ Route::get('players', function () {
 
 })->name('getPlayers');
 
+Route::get('allPlayers', function () {
+
+    return response()->json(\App\Player::with('transactions')->get());
+
+})->name('allPlayers');
+
+Route::get('destroyPlayer/{id}', 'PlayerController@destroy')->name('destroyPlayer');
+Route::get('restorePlayer/{id}', 'PlayerController@restore')->name('restorePlayer');
+
 
 Route::group(['middleware' => 'manager'], function () {
 

@@ -72,19 +72,13 @@
                 @if(Sentinel::check())
                     <li>
                         <a href="{{route('resetPassword')}}" class="">
-                            <i class="fa fa-gear" aria-hidden="true"></i>
+                            <i class="fa fa-gear" aria-hidden="true"></i> Settings
                         </a>
                     </li>
-                    @if(Sentinel::inRole('super') || Sentinel::inRole('admin'))
-                        <li>
-                            <a href="{{route('showRegistration')}}" class="">
-                                <i class="fa fa-user-circle" aria-hidden="true"></i> Add User
-                            </a>
-                        </li>
-                    @endif
+
                 @else
                     <li>
-                        <a href="{{route('login')}}" class="btn btn-info">
+                        <a href="{{route('login')}}">
                             <i class="fa fa-sign-in" aria-hidden="true"></i> Login
                         </a>
                     </li>

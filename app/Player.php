@@ -3,10 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Player extends Model
 {
     protected $fillable = ['player_name', 'contact', 'club_id'];
+
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
 
     public function games()
     {

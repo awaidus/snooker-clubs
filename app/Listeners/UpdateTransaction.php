@@ -20,12 +20,12 @@ class UpdateTransaction
     /**
      * Handle the event.
      *
-     * @param  GameCreated $event
+     * @param  GameUpdated $event
      * @return void
      */
     public function handle(GameUpdated $event)
     {
-        return $transaction = Transaction::where('game_id', $event->game->id)->first();
+        $transaction = Transaction::where('game_id', $event->game->id)->first();
 
         $transaction->game_id = $event->game->id;
         $transaction->player_id = $event->game->player_id;

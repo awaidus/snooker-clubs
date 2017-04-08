@@ -8,23 +8,6 @@
         <div>
             <h2>Dashboard</h2>
 
-            @if(Sentinel::inRole('super') || Sentinel::inRole('admin'))
-                <div class="row">
-                    <div class="col-sm-6">
-
-                        <a href="{{route('showClub')}}" class="btn btn-primary">
-                            <i class="fa fa-plus" aria-hidden="true"></i> New Club
-                        </a>
-
-                        <a href="{{route('showGameTypes')}}" class="btn btn-default">
-                            <i class="fa fa-list-ul" aria-hidden="true"></i> Game Types
-                        </a>
-
-                    </div>
-                </div>
-            @endif
-
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">

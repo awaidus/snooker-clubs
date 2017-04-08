@@ -3,26 +3,39 @@
 @section('content')
     <div>
         <h2>Transactions Summery</h2>
+        <div class="row">
+            <div class="col-md-9">
+                <a href="{{ route('showGames', ['club_id'=> session('club_id')]) }}"
+                   class="btn btn-default"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back to Game Hall
+                </a>
+            </div>
+        </div>
+        @foreach($clubs as $club_name => $club)
 
-        <table class="table table-bordered table-hover">
-            <tr class="default">
-                <th>Date</th>
-                <th>Due Amounts</th>
-                <th>Received Amounts</th>
-            </tr>
-            <tr>
-                <h3>Club No. </h3>
-            </tr>
+            <h3>Club No. {{ $club_name }} </h3>
 
-            @foreach($transactions as $date => $transaction)
-                <tr>
-                    <td>{{$date}}</td>
-                    <td>{{ -($transaction->where('amount' , '<', 0)->sum('amount') )}}</td>
-                    <td>{{ $transaction->where('amount' , '>', 0)->sum('amount') }}</td>
+            <table class="table table-bordered table-striped table-hover">
+                <tr class="default">
+                    <th class="col-md-2">Date</th>
+                    <th class="col-md-3">Due Amounts</th>
+                    <th class="col-md-3">Received Amounts</th>
                 </tr>
-            @endforeach
 
-        </table>
+                @foreach($club as $transactions)
+                    @foreach($transactions as $date => $transaction)
+                        <tr>
+                            <td>{{$date}}</td>
+                            <td>{{ -($transaction->where('amount' , '<', 0)->sum('amount') )}}</td>
+                            <td>{{ $transaction->where('amount' , '>', 0)->sum('amount') }}</td>
+                        </tr>
+                    @endforeach
+                @endforeach
+
+            </table>
+
+
+        @endforeach {{--$club--}}
+
 
     </div>
 @endsection

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="angularApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,17 +25,18 @@
 </head>
 <body>
 
-@include('layout.top-menu');
+@include('layout.top-menu')
 
 <div class="container" id="app">
 
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        @include('alert._success')
-        @include('alert._error')
-    </div>
+    @if(session('success') || session('error') || $errors->any())
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            @include('alert._success')
+            @include('alert._error')
+        </div>
+    @endif
 
     @yield('content')
-
 
 
 </div>
@@ -44,11 +45,18 @@
 <script src={{asset('bower_components/jquery/dist/jquery.min.js')}}></script>
 <script src={{asset('bower_components/moment/min/moment.min.js')}}></script>
 <script src={{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}></script>
+<script src={{asset('bower_components/angular/angular.min.js')}}></script>
+<script src={{asset('bower_components/angular-animate/angular-animate.min.js')}}></script>
+
+
 <script src={{asset('bower_components/flatpickr/dist/flatpickr.js')}}></script>
 <script src={{asset('bower_components/select2//dist/js/select2.js')}}></script>
 
 
 {{--<script src={{asset('js/app.js')}}></script>--}}
+
+<script src={{asset('angularApp/app.js')}}></script>
+<script src={{asset('angularApp/controllers/playerCtrl.js')}}></script>
 
 <script src={{asset('js/site.js')}}></script>
 

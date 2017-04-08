@@ -11,21 +11,46 @@ class TransactionController extends Controller
 {
     public function index()
     {
+//        return $club->map(function($club){
+//            return $club->transactions->groupBy(function ($item) {
+//                if (!is_null($item->created_at))
+//                    return $item->created_at->format('d-M-y');
+//            });
+//        });
+
         if (Sentinel::inRole('manager')) {
 
-            $club = Club::forManager()->first();
+            $clubs_collection = Club::forManager()->with('transactions')->get();
 
-            $transactions = $club->transactions->groupBy(function ($item) {
-                if (!is_null($item->created_at))
-                    return $item->created_at->format('d-M-y');
+            $clubs = $clubs_collection->groupBy('club_name')->map(function ($clubName) {
+                return $clubName->map(function ($club) {
+                    return $club->transactions->groupBy(function ($item) {
+                        if (!is_null($item->created_at))
+                            return $item->created_at->format('d-M-y');
+                    });
+                });
             });
+
+//            $club = Club::forManager()->first();
+//
+//            $transactions = $club->transactions->groupBy(function ($item) {
+//                if (!is_null($item->created_at))
+//                    return $item->created_at->format('d-M-y');
+//            });
 
         } elseif (Sentinel::inRole('admin') || Sentinel::inRole('super')) {
 
-            $transactions = Transaction::all()->groupBy(function ($item) {
-                if (!is_null($item->created_at))
-                    return $item->created_at->format('d-M-y');
+            $clubs_collection = Club::with('transactions')->get();
+
+            $clubs = $clubs_collection->groupBy('club_name')->map(function ($clubName) {
+                return $clubName->map(function ($club) {
+                    return $club->transactions->groupBy(function ($item) {
+                        if (!is_null($item->created_at))
+                            return $item->created_at->format('d-M-y');
+                    });
+                });
             });
+
 
         } else {
 
@@ -45,7 +70,7 @@ class TransactionController extends Controller
 //                return $item->created_at->format('d-M-y');
 //        });
 
-        return view('transaction.index', compact('transactions'));
+        return view('transaction.index', compact('clubs'));
 
     }
 

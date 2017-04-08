@@ -13,9 +13,10 @@
 
             <div class="form-horizontal">
 
-                {{Form::formInput('Name *', 'player_name')}}
+                {{Form::formInput('Name *', 'player_name', null, ['required'])}}
                 {{Form::formInput('Contact No.', 'contact')}}
-                {{Form::formSelect('Club', 'club_id',$clubs)}}
+
+                {{--{{Form::formSelect('Club', 'club_id',$clubs)}}--}}
 
 
                 <div class="form-group">

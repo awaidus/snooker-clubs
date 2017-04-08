@@ -41,7 +41,7 @@ Route::group(['middleware' => 'manager'], function () {
     Route::get('player/index', 'PlayerController@index')->name('showPlayers');
     Route::get('player/{id?}', 'PlayerController@show')->name('showPlayer');
     Route::post('player/store', 'PlayerController@store')->name('storePlayer');
-    Route::get('player/{id?}/transactions/', 'PlayerController@showPlayerTransaction')->name('showPlayerTransaction');
+    Route::get('player/transactions/{id?}', 'PlayerController@showPlayerTransaction')->name('showPlayerTransaction');
 
     Route::get('resetPassword', 'AuthController@resetPassword')->name('resetPassword');
     Route::post('storeResetPassword', 'AuthController@storeResetPassword')->name('storeResetPassword');
@@ -70,44 +70,44 @@ Route::get('/test', function () {
 //    return $g = \App\Game::with('bill')->get();
 //    return $g = Sentinel::getRoleRepository()->get();
 
-    return \App\Club::with(['tables.games' => function ($query) {
-        $query->active();
-    }, 'players.transactions'])->find(1);
-
-    return $g = \App\GameTable::with('sumBills')->get();
-
-    return $g->filter(function ($value, $key) {
-        if (!is_null($value->bill_date))
-            return $value->bill_date->isToday();
-    })->sum('paid');
-
-    return $g->where('bill_date', \Carbon\Carbon::today())->sum('paid');
-
-    $g = \App\GameTable::with('bills')->get();
-
-    $g->first()->bills->sum('bill');
-
-    return $bill = $g->each(function ($item, $key) {
-
-        echo 'Table  ' . $item->table_no . '<br>';
-        echo 'Sum Bill  ' . $item->bills->sum('bill') . '<br>';
-        echo '<hr>';
-    });
-    return;
-
-    $clubs = \App\Club::with('tables.bills')->get();
-
-    $bill = $clubs->each(function ($item, $key) {
-
-        echo 'Game ' . $item->club_name . '<br>';
-        echo 'No. of Bill  ' . $item->tables->count('bill') . '<br>';
-        echo 'Sum Bill  ' . $b = $item->tables->each(function ($table, $key) {
-                    return $table->sum('bills.bill');
-                })
-                . '<br>';
-        echo 'Pending Bill  ' . $item->tables . '<br>';
-        echo '<hr>';
-    });
+//    return \App\Club::with(['tables.games' => function ($query) {
+//        $query->active();
+//    }, 'players.transactions'])->find(1);
+//
+//    return $g = \App\GameTable::with('sumBills')->get();
+//
+//    return $g->filter(function ($value, $key) {
+//        if (!is_null($value->bill_date))
+//            return $value->bill_date->isToday();
+//    })->sum('paid');
+//
+//    return $g->where('bill_date', \Carbon\Carbon::today())->sum('paid');
+//
+//    $g = \App\GameTable::with('bills')->get();
+//
+//    $g->first()->bills->sum('bill');
+//
+//    return $bill = $g->each(function ($item, $key) {
+//
+//        echo 'Table  ' . $item->table_no . '<br>';
+//        echo 'Sum Bill  ' . $item->bills->sum('bill') . '<br>';
+//        echo '<hr>';
+//    });
+//    return;
+//
+//    $clubs = \App\Club::with('tables.bills')->get();
+//
+//    $bill = $clubs->each(function ($item, $key) {
+//
+//        echo 'Game ' . $item->club_name . '<br>';
+//        echo 'No. of Bill  ' . $item->tables->count('bill') . '<br>';
+//        echo 'Sum Bill  ' . $b = $item->tables->each(function ($table, $key) {
+//                    return $table->sum('bills.bill');
+//                })
+//                . '<br>';
+//        echo 'Pending Bill  ' . $item->tables . '<br>';
+//        echo '<hr>';
+//    });
 
     //return $c;
 

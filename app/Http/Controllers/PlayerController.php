@@ -12,7 +12,7 @@ class PlayerController extends Controller
     public function index()
     {
 
-        $players = Player::with('transactions')->get();
+        //$players = Player::where('club_id', session('club_id'))->with('transactions')->get();
 
         return view('player.index', compact('players'));
 
@@ -57,5 +57,23 @@ class PlayerController extends Controller
 
         return redirect()->back()->with(['success' => "Player <strong> $request->player_name </strong> saved successfully !"]);
 
+    }
+
+    public function destroy($id)
+    {
+        Player::find($id)->delete();
+
+//        return redirect()->back()->with(['success' => 'Player is deleted.']);
+        return response()->json(['success' => 'Player is deleted.']);
+    }
+
+
+    public function restore($id)
+    {
+        Player::find($id)->restore();
+
+        return response()->json(['success' => 'Player is restored.']);
+
+//        return redirect()->back()->with(['success' => 'Player is deleted.']);
     }
 }
