@@ -19,12 +19,13 @@
                     {!! Form::open(['route' => 'storePlayer', 'id'=>'playerForm'] ) !!}
 
                     {{Form::hidden('id', null)}}
+                    {{--{{Form::hidden('club_id', session('club_id'))}}--}}
 
                     <div class="form-horizontal">
 
-                        {{Form::formInput('Player Name', 'player_name')}}
+                        {{Form::formInput('Player Name', 'player_name', null, ['required'])}}
 
-                        {{Form::formInput('Contact No.', 'contact')}}
+                        {{Form::formInput('Contact No.', 'contact', null, ['required'])}}
 
 
                         <div class="form-group">
@@ -68,9 +69,6 @@
 
                         {{Form::hidden('id')}}
 
-                        {{Form::formSelect('Table', 'game_table_id',$game_tables)}}
-                        {{Form::formSelect('Game Type', 'game_type_id',$game_types)}}
-
                         <div class="form-group">
                             {{ Form::label('player_id', 'Player', ['class'=> 'col-sm-3 control-label']) }}
                             <div class="col-sm-9">
@@ -79,19 +77,24 @@
                                     <span class="input-group-btn">
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                                     data-target="#playerModal">Add
-                                            </button>
+                                        </button>
+                                        {{--<a href="{{ route('showPlayer') }}" class="btn btn-primary">--}}
+                                        {{--Add--}}
+                                        {{--</a>--}}
+
                                     </span>
                                 </div>
 
                             </div>
                         </div>
 
+                        {{Form::formSelect('Table', 'game_table_id',$game_tables)}}
+                        {{Form::formSelect('Game Type', 'game_type_id',$game_types)}}
                         {{Form::formSelect('No. of Player', 'no_of_players', [1 => 1, 2 => 2, 4=>4], null)}}
                         {{Form::formInput('Bill Amount *', 'bill')}}
                         {{Form::formInput('Discount', 'discount')}}
                         {{Form::formInput('Started At *', 'started_at', null, ['data-type' => 'datetime'])}}
                         {{Form::formInput('Ended At', 'ended_at', null, ['data-type' => 'datetime'])}}
-
 
 
                         <div class="form-group">
@@ -209,6 +212,12 @@
 
 @section('script')
     <script>
+
+        var playersDD = $("#player_id");
+
+        playersDD.select2();
+
+
         $('#playerForm').submit(function (e) {
 
             e.preventDefault();
@@ -217,16 +226,26 @@
             var url = form.attr('action');
             var data = form.serialize();
 
-            $.post(url, data, function (data) {
 
-                alert('Saved successfully. Close the modal');
+            $.post(url, data, function () {
+
+                $.getJSON('{{ url("api/players") }}', function (results) {
+
+                    playersDD.select2({
+                        data: $.map(results, function (val, i) {
+                            return {id: i, text: val};
+                        })
+                    });
+                    console.log(results);
+                });
+
+                $('#playerModal').modal('hide');
+
 
                 //$(".modal .modal-content").html(data);
             });
 
-            $('#myModal').modal('hide');
-
-            //$().alert();
+            $('#playerModal').modal('hide');
 
         });
 

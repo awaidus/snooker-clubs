@@ -3,20 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Club;
-use App\Player;
 use App\User;
 use Illuminate\Http\Request;
+use Sentinel;
 use Session;
 
 class ClubController extends Controller
 {
     public function index()
     {
-        $clubs = Club::with('tables.bills')->get();
+        if (Sentinel::inRole('manager')) {
 
-        $players = Player::with('bills')->get();
+//            $clubs = Club::forManager()->with(['games' => function ($query) {
+//                $query->active();
+//            }
+//                , 'transactions'])->get();
 
-        return view('club.index', compact('clubs', 'players'));
+            $club = Club::where('manager_id', Sentinel::getUser()->id)->first();
+
+            return redirect()->route('showGames', ['club_id' => $club->id]);
+
+
+        } elseif (Sentinel::inRole('super') || Sentinel::inRole('admin')) {
+
+            $clubs = Club::with(['games' => function ($query) {
+                $query->active();
+            }
+                , 'transactions'])->get();
+
+        } else {
+
+            return redirect()->route('login')->with(['error' => 'You must be Admin or Manager to access.']);
+        }
+
+        return view('club.index', compact('clubs'));
     }
 
     public function show($id = null)
@@ -38,12 +58,12 @@ class ClubController extends Controller
 
         $data = $request->all();
 
-        //dd($data);
 
         Club::updateOrCreate(['id' => $data['id']], $data);
 
 
         return redirect()->route('home')->with(['success' => 'Club saved successfully !']);
     }
+
 
 }

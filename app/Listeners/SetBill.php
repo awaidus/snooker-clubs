@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\GameCreated;
 use App\Transaction;
+use Sentinel;
 
 class SetBill
 {
@@ -35,6 +36,7 @@ class SetBill
         $transaction = new Transaction();
         $transaction->game_id = $event->game->id;
         $transaction->player_id = $event->game->player_id;
+        $transaction->user_id = Sentinel::getUser()->id;
         $transaction->amount = -($event->game->bill - $event->game->discount);
         $transaction->save();
     }

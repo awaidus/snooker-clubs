@@ -4,6 +4,7 @@ $('[data-type="datetime"]').flatpickr({
 
     enableTime: true,
 
+
     // clearIcon: '<i class="fa fa-remove clear-icon"></i>',
     // clearText: 'Clear',
     // triggerChangeEvent: true,

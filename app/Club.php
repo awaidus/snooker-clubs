@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Sentinel;
 
 class Club extends Model
 {
@@ -21,6 +22,21 @@ class Club extends Model
     public function players()
     {
         return $this->hasMany(Player::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasManyThrough(Transaction::class, Player::class);
+    }
+
+    public function manager()
+    {
+        return $this->hasOne(User::class, 'manager_id');
+    }
+
+    public function scopeForManager($query)
+    {
+        $query->where('manager_id', Sentinel::getUser()->id)->with(['transactions']);
     }
 
 }

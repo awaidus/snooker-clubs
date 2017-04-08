@@ -39,6 +39,11 @@ class User extends SentinelUser
         return ((Sentinel::check() && (Sentinel::inRole('manager'))));
     }
 
+    public function club()
+    {
+        return $this->belongsTo(Club::class, 'manager_id');
+    }
+
 
 
 }

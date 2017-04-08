@@ -50,8 +50,8 @@ class AuthController extends Controller
         $user = Sentinel::getUser();
 
         if (!$hasher->check($oldPassword, $user->password) || $password != $passwordConf) {
-            Session::flash('error', 'Input password is correct.');
-            return view('auth.resetPassword');
+            //Session::flash('error', 'Input password is correct.');
+            return view('auth.resetPassword')->with(['error' => 'Input Passwords are incorrect. Try again.']);
         }
 
         Sentinel::update($user, array('password' => $password));

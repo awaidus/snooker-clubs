@@ -23,6 +23,10 @@ class FormServiceProvider extends ServiceProvider
 
         Form::component('formSelect', 'components.form.select',
             ['labelText', 'name', 'options' => [], 'selectedValue' => null, 'attributes' => []]);
+
+        Form::component('formPassword', 'components.form.password',
+            ['labelText', 'name', 'value' => null, 'attributes' => []]);
+
     }
 
     /**

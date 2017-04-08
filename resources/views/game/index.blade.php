@@ -9,7 +9,7 @@
         </h1>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
 
                 @if(Sentinel::inRole('super') || Sentinel::inRole('admin'))
                     <a href="{{ route('showGameTable', ['club_id'=> $club->id, 'id' => -1] ) }}"
@@ -22,6 +22,11 @@
                    class="btn btn-info">
                     <i class="fa fa-plus"></i> New Game
                 </a>
+
+                <a href="{{route('showPlayers')}}" class="btn btn-default">
+                    <i class="fa fa-list" aria-hidden="true"></i> Players</a>
+                <a href="{{route('showTransactions')}}" class="btn btn-default">
+                    <i class="fa fa-money" aria-hidden="true"></i> Payments Summery</a>
 
                 <a href="#" class="btn btn-warning">
                     <i class="fa fa-list" aria-hidden="true"></i> All Games
@@ -41,7 +46,7 @@
 
                         @foreach($club->tables as $table)
 
-                            <div class="panel panel-{{ ( false ) ? 'danger': 'primary' }}">
+                            <div class="panel panel-{{ ( false ) ? 'danger': 'info' }}">
                                 <div class="panel-heading">
                                     {{ $table->table_no }}
                                     <a href="{{route('showGameTable', ['id'=> $table->id])}}"
@@ -178,7 +183,7 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('showPlayerTransaction', ['id'=> $player->id]) }}"
-                                           class="btn btn-default"><i class="fa fa-arrow-right"></i>
+                                           class="btn btn-default btn-sm"><i class="fa fa-arrow-right"></i>
                                         </a>
                                     </td>
                                 </tr>

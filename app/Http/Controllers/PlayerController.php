@@ -50,7 +50,7 @@ class PlayerController extends Controller
         $data = $request->all();
         $data['club_id'] = session('club_id');
 
-//        dd($data);
+        //dd($data);
 
 
         Player::updateOrCreate(['id' => $data['id']], $data);

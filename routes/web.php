@@ -43,12 +43,14 @@ Route::group(['middleware' => 'manager'], function () {
     Route::post('player/store', 'PlayerController@store')->name('storePlayer');
     Route::get('player/{id?}/transactions/', 'PlayerController@showPlayerTransaction')->name('showPlayerTransaction');
 
-
+    Route::get('resetPassword', 'AuthController@resetPassword')->name('resetPassword');
+    Route::post('storeResetPassword', 'AuthController@storeResetPassword')->name('storeResetPassword');
 
     Route::group(['middleware' => 'admin'], function () {
 
         Route::get('club/show/{id?}', 'ClubController@show')->name('showClub');
         Route::post('club/store', 'ClubController@store')->name('storeClub');
+
 
         Route::get('gameType/show/{id?}', 'GameTypeController@show')->name('showGameType');
         Route::post('gameType/store', 'GameTypeController@store')->name('storeGameType');
@@ -56,9 +58,6 @@ Route::group(['middleware' => 'manager'], function () {
         Route::get('/user/index', 'UserController@index')->name('showUsers');
         Route::get('/register', 'UserController@showRegistration')->name('showRegistration');
         Route::post('/register', 'UserController@storeUser')->name('storeUser');
-
-        Route::get('resetPassword', 'AuthController@resetPassword')->name('resetPassword');
-        Route::post('storeResetPassword', 'AuthController@storeResetPassword')->name('storeResetPassword');
 
 
     });

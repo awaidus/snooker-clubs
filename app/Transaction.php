@@ -20,6 +20,7 @@ class Transaction extends Model
         return $this->belongsTo(Player::class);
     }
 
+
     public function getReceiveDateAttribute($value)
     {
         if (!is_null($value)) {

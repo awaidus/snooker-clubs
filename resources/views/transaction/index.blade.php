@@ -8,10 +8,10 @@
             <tr class="default">
                 <th>Date</th>
                 <th>Due Amounts</th>
-                <th>Payment Received</th>
+                <th>Received Amounts</th>
             </tr>
             <tr>
-                <h3>Games</h3>
+                <h3>Club No. </h3>
             </tr>
 
             @foreach($transactions as $date => $transaction)

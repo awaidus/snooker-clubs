@@ -13,6 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
+
+Route::get('players', function () {
+
+    return response()->json(\App\Player::get()->pluck('player_name', 'id'));
+
+})->name('getPlayers');
+
+
+Route::group(['middleware' => 'manager'], function () {
+
+});
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

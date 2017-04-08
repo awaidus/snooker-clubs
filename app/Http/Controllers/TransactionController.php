@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Club;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Sentinel;
@@ -10,10 +11,29 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::all()->groupBy(function ($item) {
-            if (!is_null($item->created_at))
-                return $item->created_at->format('d-M-y');
-        });
+        if (Sentinel::inRole('manager')) {
+
+            $club = Club::forManager()->first();
+
+            $transactions = $club->transactions->groupBy(function ($item) {
+                if (!is_null($item->created_at))
+                    return $item->created_at->format('d-M-y');
+            });
+
+        } elseif (Sentinel::inRole('admin') || Sentinel::inRole('super')) {
+
+            $transactions = Transaction::all()->groupBy(function ($item) {
+                if (!is_null($item->created_at))
+                    return $item->created_at->format('d-M-y');
+            });
+
+        } else {
+
+            return redirect()->back()
+                ->with(['error' => 'You do not have permission to access.']);
+
+        }
+
 
 //        $games = $transactions->where('amount' , '<', 0)->groupBy(function ($item) {
 //            if (!is_null($item->created_at))
