@@ -95,7 +95,7 @@ class TransactionController extends Controller
 
         $transaction = Transaction::updateOrCreate(['id' => $data['id']], $data);
 
-        return redirect()->route('showPlayerTransaction', ['id' => $transaction->player_id])
+        return redirect()->route('showGames', ['club_id' => session('club_id')])
             ->with(['success' => 'Transaction saved successfully !']);
 
     }

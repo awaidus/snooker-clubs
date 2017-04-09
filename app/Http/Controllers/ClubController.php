@@ -21,15 +21,14 @@ class ClubController extends Controller
 
             $club = Club::where('manager_id', Sentinel::getUser()->id)->first();
 
+            session('club_id', $club->id);
+
             return redirect()->route('showGames', ['club_id' => $club->id]);
 
 
         } elseif (Sentinel::inRole('super') || Sentinel::inRole('admin')) {
 
-            $clubs = Club::with(['games' => function ($query) {
-                $query->active();
-            }
-                , 'transactions'])->get();
+            $clubs = Club::with(['games', 'transactions'])->get();
 
         } else {
 

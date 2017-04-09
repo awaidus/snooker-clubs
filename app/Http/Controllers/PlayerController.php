@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Club;
 use App\Player;
+use App\Transaction;
 use Illuminate\Http\Request;
 use Session;
 
@@ -31,14 +32,15 @@ class PlayerController extends Controller
         return view('player.show', compact('player', 'clubs'));
     }
 
-    public function showPlayerTransaction($id)
+    public function showPlayerTransaction($id, $transaction_id = null)
     {
         $player = Player::with(['transactions' => function ($item) {
             return $item->orderBy('receive_date', 'desc');
         }, 'transactions.game.game_type'])->find($id);
 
+        $transaction = (!is_null($transaction_id)) ? Transaction::find($transaction_id) : new Transaction();
 
-        return view('player.showPlayerTransaction', compact('player'));
+        return view('player.showPlayerTransaction', compact('player', 'transaction'));
     }
 
     public function store(Request $request)

@@ -20,11 +20,22 @@ Route::get('players', function () {
 
 })->name('getPlayers');
 
+
 Route::get('allPlayers', function () {
 
     return response()->json(\App\Player::with('transactions')->get());
 
 })->name('allPlayers');
+
+Route::get('allGames', function () {
+
+    if (!is_null(session('club_id')))
+        return response()->json(\App\Club::where('id', session('club_id'))->with('games.player', 'games.table')->first());
+
+    return response()->json('No data found');
+
+})->name('getGames');
+
 
 Route::get('destroyPlayer/{id}', 'PlayerController@destroy')->name('destroyPlayer');
 Route::get('restorePlayer/{id}', 'PlayerController@restore')->name('restorePlayer');

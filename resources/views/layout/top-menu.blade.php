@@ -1,3 +1,43 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="{{route('home')}}" class="navbar-brand">
+                <i class="fa fa-home fa-lg" aria-hidden="true"></i> Home</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+
+                @if(Sentinel::check())
+                    <li>
+                        <a href="{{route('resetPassword')}}" class="">
+                            <i class="fa fa-gear" aria-hidden="true"></i> Settings
+                        </a>
+                    </li>
+
+                @else
+                    <li>
+                        <a href="{{route('login')}}">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Login
+                        </a>
+                    </li>
+
+                @endif
+            </ul>
+            {{--<form class="navbar-form navbar-right">--}}
+            {{--<input type="text" class="form-control" placeholder="Search...">--}}
+            {{--</form>--}}
+        </div>
+    </div>
+</nav>
+
+
 {{--<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -53,41 +93,3 @@
 </nav>--}}
 
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="{{route('home')}}" class="navbar-brand">
-                <i class="fa fa-home fa-lg" aria-hidden="true"></i> Home</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-
-                @if(Sentinel::check())
-                    <li>
-                        <a href="{{route('resetPassword')}}" class="">
-                            <i class="fa fa-gear" aria-hidden="true"></i> Settings
-                        </a>
-                    </li>
-
-                @else
-                    <li>
-                        <a href="{{route('login')}}">
-                            <i class="fa fa-sign-in" aria-hidden="true"></i> Login
-                        </a>
-                    </li>
-
-                @endif
-            </ul>
-            {{--<form class="navbar-form navbar-right">--}}
-            {{--<input type="text" class="form-control" placeholder="Search...">--}}
-            {{--</form>--}}
-        </div>
-    </div>
-</nav>

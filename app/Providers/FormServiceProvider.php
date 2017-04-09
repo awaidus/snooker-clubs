@@ -27,6 +27,9 @@ class FormServiceProvider extends ServiceProvider
         Form::component('formPassword', 'components.form.password',
             ['labelText', 'name', 'value' => null, 'attributes' => []]);
 
+        Form::component('formSubmit', 'components.form.submit',
+            ['value', 'save', 'attributes' => []]);
+
     }
 
     /**

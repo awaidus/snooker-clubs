@@ -25,6 +25,9 @@ Route::group(['middleware' => 'manager'], function () {
 
 
     Route::get('{club_id}/games/index', 'GameController@index')->name('showGames');
+
+    Route::get('{club_id}/games/list', 'GameController@games')->name('listGames');
+
     Route::get('game/show/{id?}', 'GameController@show')->name('showGame');
     Route::get('{club_id}/game/show/', 'GameController@create')->name('createGame');
     Route::post('game/store', 'GameController@store')->name('storeGame');
@@ -41,7 +44,7 @@ Route::group(['middleware' => 'manager'], function () {
     Route::get('player/index', 'PlayerController@index')->name('showPlayers');
     Route::get('player/{id?}', 'PlayerController@show')->name('showPlayer');
     Route::post('player/store', 'PlayerController@store')->name('storePlayer');
-    Route::get('player/transactions/{id?}', 'PlayerController@showPlayerTransaction')->name('showPlayerTransaction');
+    Route::get('player/transactions/{id}/{transaction_id?}', 'PlayerController@showPlayerTransaction')->name('showPlayerTransaction');
 
     Route::get('resetPassword', 'AuthController@resetPassword')->name('resetPassword');
     Route::post('storeResetPassword', 'AuthController@storeResetPassword')->name('storeResetPassword');

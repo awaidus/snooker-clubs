@@ -57,6 +57,7 @@
 
 <script src={{asset('angularApp/app.js')}}></script>
 <script src={{asset('angularApp/controllers/playerCtrl.js')}}></script>
+<script src={{asset('angularApp/controllers/gameCtrl.js')}}></script>
 
 <script src={{asset('js/site.js')}}></script>
 

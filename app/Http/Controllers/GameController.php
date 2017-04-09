@@ -23,9 +23,7 @@ class GameController extends Controller
 //
 //        }, 'players.transactions'])->find($club_id);
 
-        $club = Club::with(['tables.games' => function ($query) {
-            $query->active();
-        }, 'tables.games.player' => function ($query) {
+        $club = Club::with(['tables.games', 'tables.games.player' => function ($query) {
             $query->withTrashed();
         }, 'players' => function ($query) {
             $query->withTrashed();
@@ -72,6 +70,22 @@ class GameController extends Controller
 
     }
 
+    public function games()
+    {
+
+
+//        $club = Club::with(['tables.games' => function ($query) {
+//            $query->active();
+//
+//        }, 'players.transactions'])->find($club_id);
+
+        $club = Club::find(session('club_id'))->with('games.player', 'games.table')->first();
+
+        return view('game.list', compact('club'));
+
+    }
+
+
     public function show($id = null)
     {
         $game = (!is_null($id) || $id != -1) ? Game::with('table', 'player')->find($id) : new Game();
@@ -90,6 +104,9 @@ class GameController extends Controller
 
     public function store(Request $request)
     {
+
+//        dd($request->all());
+
         $this->validate($request, [
             'game_table_id' => 'required',
             'game_type_id' => 'required',
@@ -103,7 +120,7 @@ class GameController extends Controller
         //$data['completed'] = $request->has('completed');
         $data['user_id'] = Sentinel::getUser()->id;
 
-//        dd($data);
+        //dd($data);
 
         if (!is_null($request->id)) {
 

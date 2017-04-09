@@ -17,22 +17,17 @@
 
                         <div class="panel-body">
 
-                            {!! Form::open(['route' => 'storeTransaction']) !!}
+                            {!! Form::model($transaction, ['route' => 'storeTransaction']) !!}
                             {{Form::hidden('id')}}
                             {{Form::hidden('player_id', $player->id)}}
 
-                            <div class="form-group">
-                                {{ Form::label('amount', 'Amount', ['class'=> 'control-label']) }}
-                                {{ Form::text('amount', null, ['class' => "form-control"]) }}
+                            <div class="form-horizontal">
+                                {{Form::formInput('Amount', 'amount')}}
+                                {{Form::formInput('Received On *', 'receive_date', null, ['data-type' => 'date'])}}
+
+                                {{Form::formSubmit()}}
+
                             </div>
-
-                            <div class="form-group">
-                                {{ Form::label('receive_date', 'Date', ['class'=> 'control-label']) }}
-                                {{ Form::text('receive_date', null, ['class'=> 'form-control', 'data-type' => 'date']) }}
-                            </div>
-
-                            <button type="submit" class="btn btn-success"> Save</button>
-
 
                             {!! Form::close() !!}
 
@@ -72,8 +67,9 @@
                         <div class="panel-heading">Games Summary</div>
                         <table class="table table-striped table-hover">
                             <tr>
-                                <th>Amount</th>
+                                <th>Bill</th>
                                 <th>Date</th>
+
                                 <th></th>
                             </tr>
                             @foreach($player->transactions as $transaction)
@@ -84,7 +80,12 @@
                                             <span class="label label-default">{{ $transaction->game->game_type->game_type }}</span>
                                             {{ $transaction->game->started_at }}
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            <a href="{{route('showGame', ['id' => $transaction->game->id])}}"
+                                               class="btn btn-default btn-xs"><i class="fa fa-pencil"></i>
+                                            </a>
+                                        </td>
+
                                     </tr>
                                 @endif
                             @endforeach
@@ -105,7 +106,11 @@
                                     <tr>
                                         <td>{{ ($transaction->amount) }}</td>
                                         <td>{{ ($transaction->receive_date) ? $transaction->receive_date->format('d-m-Y'): '' }}</td>
-                                        <td></td>
+                                        <td>
+                                            <a href="{{ route('showPlayerTransaction', ['id'=> $player->id, 'transaction_id'=> $transaction->id]) }}"
+                                               class="btn btn-default btn-xs"><i class="fa fa-arrow-right"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endif
                             @endforeach

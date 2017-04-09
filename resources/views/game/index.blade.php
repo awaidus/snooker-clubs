@@ -28,7 +28,7 @@
                 <a href="{{route('showTransactions')}}" class="btn btn-default">
                     <i class="fa fa-book" aria-hidden="true"></i> Payments Summery</a>
 
-                <a href="#" class="btn btn-warning">
+                    <a href="{{route('listGames', ['club_id', session('club_id')])}}" class="btn btn-info">
                     <i class="fa fa-list" aria-hidden="true"></i> All Games
                 </a>
             </div>
@@ -58,7 +58,6 @@
                                         <tr>
                                             <th>No. of Player</th>
                                             <th>Started at</th>
-                                            <th>Ended at</th>
                                             <th>Bill</th>
                                             <th>Player</th>
                                             <th></th>
@@ -68,15 +67,14 @@
                                                 @if( is_null($game->ended_at) )
                                                     <tr>
                                                         <td>{{ $game->no_of_players }}</td>
-
                                                         <td>{{ $game->started_at }}</td>
-                                                        <td>{{ $game->ended_at }}</td>
                                                         <td>{{ $game->bill - $game->discount }}</td>
                                                         <td>{{ $game->player->player_name }}</td>
                                                         <td>
                                                             <a href="{{ route('showGame', ['table_id'=>$table->id, 'id'=>$game->id]) }}"
-                                                               class="btn btn-default btn-sm"><i
-                                                                        class="fa fa-pencil"></i></a>
+                                                               class="btn btn-default btn-sm">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 @endif

@@ -2,7 +2,6 @@
 
 @section('content')
 
-
     <h1>Game Information</h1>
 
     <!-- Modal -->
@@ -19,7 +18,7 @@
                     {!! Form::open(['route' => 'storePlayer', 'id'=>'playerForm'] ) !!}
 
                     {{Form::hidden('id', null)}}
-                    {{--{{Form::hidden('club_id', session('club_id'))}}--}}
+
 
                     <div class="form-horizontal">
 
@@ -45,10 +44,7 @@
                 {!! Form::close() !!}
 
             </div>
-            {{--<div class="modal-footer">--}}
-            {{--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--}}
-            {{--<button type="button" class="btn btn-primary">Save changes</button>--}}
-            {{--</div>--}}
+
         </div>
     </div>
 
@@ -73,7 +69,7 @@
                             {{ Form::label('player_id', 'Player', ['class'=> 'col-sm-3 control-label']) }}
                             <div class="col-sm-9">
                                 <div class="input-group">
-                                    {{ Form::select('player_id', $players, null, ['class' => "form-control"]) }}
+                                    {{ Form::select('player_id', $players, null, ['class' => "form-control", 'multiple' => 'multiple']) }}
                                     <span class="input-group-btn">
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                                     data-target="#playerModal">Add
@@ -88,9 +84,33 @@
                             </div>
                         </div>
 
+
+                        {{--<div class="form-group">--}}
+                        {{--<label for="player_id" class="col-sm-3 control-label">Player 2</label>--}}
+                        {{--<div class="col-sm-9">--}}
+                        {{--<div class="input-group">--}}
+                        {{--<select class="form-control" id="player_id" name="player_id">--}}
+                        {{--<option value="1">Zulfiqar</option>--}}
+                        {{--<option value="2">Hameed Junaid</option>--}}
+                        {{--<option value="5">Sadiq Hussain</option>--}}
+                        {{--<option value="7">Usman Hyyat</option>--}}
+                        {{--</select>--}}
+                        {{--<span class="input-group-btn">--}}
+                        {{--<button type="button" class="btn btn-primary" data-toggle="modal"--}}
+                        {{--data-target="#playerModal">Add--}}
+                        {{--</button>--}}
+
+                        {{--</span>--}}
+                        {{--</div>--}}
+
+                        {{--</div>--}}
+                        {{--</div>--}}
+
+
                         {{Form::formSelect('Table', 'game_table_id',$game_tables)}}
+
                         {{Form::formSelect('Game Type', 'game_type_id',$game_types)}}
-                        {{Form::formSelect('No. of Player', 'no_of_players', [1 => 1, 2 => 2, 4=>4], null)}}
+                        {{Form::formSelect('No. of Player', 'no_of_players', [1 => 1, 2 => 2, 3 => 3, 4=>4], null)}}
                         {{Form::formInput('Bill Amount *', 'bill')}}
                         {{Form::formInput('Discount', 'discount')}}
                         {{Form::formInput('Started At *', 'started_at', null, ['data-type' => 'datetime'])}}
