@@ -39,6 +39,7 @@ Route::group(['middleware' => 'manager'], function () {
 
     Route::get('transactions/index', 'TransactionController@index')->name('showTransactions');
     Route::post('transaction/store', 'TransactionController@store')->name('storeTransaction');
+    Route::post('transaction/user/store', 'TransactionController@storeUserShare')->name('storeUserShare');
 
 
     Route::get('player/index', 'PlayerController@index')->name('showPlayers');

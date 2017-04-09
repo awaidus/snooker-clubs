@@ -99,7 +99,11 @@ class GameController extends Controller
 
     public function show($id = null)
     {
-        $game = (!is_null($id) || $id != -1) ? Game::with('table', 'players')->find($id) : new Game();
+        $game = (!is_null($id) || $id != -1) ? Game::with(['players.transactions' => function ($query) use ($id) {
+
+            $query->where('game_id', $id);
+
+        }])->find($id) : new Game();
 
 //        $table = GameTable::with(['games' => function ($query) {
 //            $query->active();

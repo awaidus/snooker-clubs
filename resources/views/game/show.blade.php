@@ -134,89 +134,36 @@
 
             </div>
 
+            @if( ! (is_null($game) || is_null($game->players)) && $game->players->count('player_name') >1 )
+                <div class="col-md-6">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">Bill Shares as per Player</div>
+                        <div class="panel-body">
 
-            <div class="col-md-6">
-                {{--@if((! empty($game->bill)))--}}
+                            @foreach($game->players as $player)
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4>{{ $player->player_name }}</h4>
+                                            {!! Form::model($player->transactions->first(), ['route' => 'storeUserShare']) !!}
+                                            {{Form::hidden('id')}}
+                                            {{Form::hidden('game_id', $game->id)}}
+                                            <div class="input-group">
+                                                {{Form::text('amount', -$player->transactions->first()->amount, ['class'=>'form-control'])}}
+                                                <span class="input-group-btn">
+                                                <button class="btn btn-default" type="submit">Save</button>
+                                            </span>
+                                            </div>
+                                            {!! Form::close() !!}
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
 
-                {{--<div class="panel panel-{{ ($game->bill->full_paid) ? 'success' : 'danger' }}">--}}
-                {{--<div class="panel-heading">Bill</div>--}}
-                {{--<div class="panel-body">--}}
-
-                {{--{!! Form::model($game->bill, ['route' => 'storeBill']) !!}--}}
-
-                {{--{{Form::hidden('id', $game->bill->id)}}--}}
-                {{--{{Form::hidden('game_id', $game->id)}}--}}
-
-                {{--{{Form::formInput('Bill Amount', 'bill')}}--}}
-                {{--{{Form::formInput('Discount', 'discount')}}--}}
-
-
-                {{--<div class="form-group">--}}
-                {{--<div class="col-sm-offset-3 col-sm-9">--}}
-                {{--<button type="submit" class="btn btn-success">Save</button>--}}
-                {{--</div>--}}
-
-                {{--</div>--}}
-
-
-                {{--{!! Form::close() !!}--}}
-
-
-                {{--<h3>Payment</h3>--}}
-
-                {{--<table class="table table-bordered table-hover table-condensed">--}}
-
-                {{--<tr>--}}
-                {{--<th>Amount</th>--}}
-                {{--<th>Date</th>--}}
-                {{--<th></th>--}}
-
-                {{--</tr>--}}
-
-                {{--@foreach($game->bill->transactions as $transaction)--}}
-                {{--{!! Form::model($transaction, ['route' => 'storeTransaction']) !!}--}}
-                {{--{{Form::hidden('id', $transaction->id)}}--}}
-                {{--{{Form::hidden('game_id', $game->id)}}--}}
-                {{--<tr>--}}
-                {{--<td>{{ Form::text('amount', null, ['class' => "form-control", 'placeholder' => 'Amount']) }}</td>--}}
-                {{--<td>{{ Form::text('receive_date', null, ['class' => "form-control", 'data-type' => 'date'] ) }}</td>--}}
-                {{--<td>--}}
-                {{--<button type="submit" class="btn btn-success btn-small">Save</button>--}}
-                {{--</td>--}}
-                {{--</tr>--}}
-                {{--{!! Form::close() !!}--}}
-                {{--@endforeach--}}
-
-                {{--{!! Form::open(['route' => 'storeTransaction']) !!}--}}
-                {{--{{Form::hidden('id', null)}}--}}
-                {{--{{Form::hidden('bill_id', $game->bill->id)}}--}}
-                {{--{{Form::hidden('game_id', $game->id)}}--}}
-
-                {{--<tr>--}}
-                {{--<td>{{ Form::text('amount', null, ['class' => "form-control", 'placeholder' => 'Amount']) }}</td>--}}
-                {{--<td>{{ Form::text('receive_date', null, ['class' => "form-control", 'data-type' => 'date'] ) }}</td>--}}
-                {{--<td>--}}
-                {{--<button type="submit" class="btn btn-primary btn-small">Add</button>--}}
-                {{--</td>--}}
-                {{--</tr>--}}
-                {{--{!! Form::close() !!}--}}
-
-
-                {{--</table>--}}
-
-                {{--</div> --}}{{--panel-body--}}
-
-
-                {{--</div>--}}
-
-                {{--@else--}}
-                {{--<div class="panel panel-warning">--}}
-                {{--<div class="panel-heading">Bill</div>--}}
-                {{--<div class="panel-body">Save the Game Table first.</div>--}}
-                {{--</div>--}}
-                {{--@endif--}}
-
-            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
         </div>
 
@@ -273,3 +220,100 @@
     </script>
 
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{--<div class="col-md-6">--}}
+{{--@if((! empty($game->bill)))--}}
+
+{{--<div class="panel panel-{{ ($game->bill->full_paid) ? 'success' : 'danger' }}">--}}
+{{--<div class="panel-heading">Bill</div>--}}
+{{--<div class="panel-body">--}}
+
+{{--{!! Form::model($game->bill, ['route' => 'storeBill']) !!}--}}
+
+{{--{{Form::hidden('id', $game->bill->id)}}--}}
+{{--{{Form::hidden('game_id', $game->id)}}--}}
+
+{{--{{Form::formInput('Bill Amount', 'bill')}}--}}
+{{--{{Form::formInput('Discount', 'discount')}}--}}
+
+
+{{--<div class="form-group">--}}
+{{--<div class="col-sm-offset-3 col-sm-9">--}}
+{{--<button type="submit" class="btn btn-success">Save</button>--}}
+{{--</div>--}}
+
+{{--</div>--}}
+
+
+{{--{!! Form::close() !!}--}}
+
+
+{{--<h3>Payment</h3>--}}
+
+{{--<table class="table table-bordered table-hover table-condensed">--}}
+
+{{--<tr>--}}
+{{--<th>Amount</th>--}}
+{{--<th>Date</th>--}}
+{{--<th></th>--}}
+
+{{--</tr>--}}
+
+{{--@foreach($game->bill->transactions as $transaction)--}}
+{{--{!! Form::model($transaction, ['route' => 'storeTransaction']) !!}--}}
+{{--{{Form::hidden('id', $transaction->id)}}--}}
+{{--{{Form::hidden('game_id', $game->id)}}--}}
+{{--<tr>--}}
+{{--<td>{{ Form::text('amount', null, ['class' => "form-control", 'placeholder' => 'Amount']) }}</td>--}}
+{{--<td>{{ Form::text('receive_date', null, ['class' => "form-control", 'data-type' => 'date'] ) }}</td>--}}
+{{--<td>--}}
+{{--<button type="submit" class="btn btn-success btn-small">Save</button>--}}
+{{--</td>--}}
+{{--</tr>--}}
+{{--{!! Form::close() !!}--}}
+{{--@endforeach--}}
+
+{{--{!! Form::open(['route' => 'storeTransaction']) !!}--}}
+{{--{{Form::hidden('id', null)}}--}}
+{{--{{Form::hidden('bill_id', $game->bill->id)}}--}}
+{{--{{Form::hidden('game_id', $game->id)}}--}}
+
+{{--<tr>--}}
+{{--<td>{{ Form::text('amount', null, ['class' => "form-control", 'placeholder' => 'Amount']) }}</td>--}}
+{{--<td>{{ Form::text('receive_date', null, ['class' => "form-control", 'data-type' => 'date'] ) }}</td>--}}
+{{--<td>--}}
+{{--<button type="submit" class="btn btn-primary btn-small">Add</button>--}}
+{{--</td>--}}
+{{--</tr>--}}
+{{--{!! Form::close() !!}--}}
+
+
+{{--</table>--}}
+
+{{--</div> panel-body--}}
+
+
+{{--</div>--}}
+
+{{--@else--}}
+{{--<div class="panel panel-warning">--}}
+{{--<div class="panel-heading">Bill</div>--}}
+{{--<div class="panel-body">Save the Game Table first.</div>--}}
+{{--</div>--}}
+{{--@endif--}}
+
+{{--</div>--}}
+

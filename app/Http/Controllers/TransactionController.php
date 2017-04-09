@@ -99,4 +99,25 @@ class TransactionController extends Controller
             ->with(['success' => 'Transaction saved successfully !']);
 
     }
+
+    public function storeUserShare(Request $request)
+    {
+        $this->validate($request, [
+            'amount' => 'required',
+        ]);
+
+        $data = $request->all();
+        $data['amount'] = -$request->amount;
+        $data['user_id'] = Sentinel::getUser()->id;
+
+//        dd($data);
+
+//        Transaction::where('id', $data['id'])->update($data);
+
+        Transaction::updateOrCreate(['id' => $data['id']], $data);
+
+        return redirect()->route('showGame', ['id' => $data['game_id']])
+            ->with(['success' => 'Player\'s Share in game is saved successfully !']);
+
+    }
 }

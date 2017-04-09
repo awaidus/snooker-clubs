@@ -46,7 +46,7 @@
 
                         @foreach($club->tables as $table)
 
-                            <div class="panel panel-{{ ( false ) ? 'danger': 'info' }}">
+                            <div class="panel panel-{{ ( $table->games->where('ended_at', null)->count('ended_at') == 0 ) ? 'default': 'primary' }}">
                                 <div class="panel-heading">
                                     {{ $table->table_no }}
                                     <a href="{{route('showGameTable', ['id'=> $table->id])}}"
