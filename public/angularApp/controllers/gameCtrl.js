@@ -4,8 +4,8 @@ angular.module("angularApp").factory("GameService", function ($http) {
 
     var service = {};
 
-    service.getAll = function () {
-        return $http.get('/api/allGames');
+    service.getAll = function (clubId) {
+        return $http.get('/api/allGames/' + clubId);
     };
 
 
@@ -16,13 +16,14 @@ angular.module("angularApp").controller("GameListCtrl",
     ["GameService", function (GameService) {
 
         var vm = this;
-        vm.players = [];
+        vm.games = [];
 
-        GameService.getAll().then(
+        GameService.getAll(global.clubId).then(
+
             function (result) {
-                console.error(result.data);
 
-                vm.games = result.data;
+                vm.club = result.data;
+                vm.games = vm.club.games;
             },
             function (result) {
                 console.error(result);

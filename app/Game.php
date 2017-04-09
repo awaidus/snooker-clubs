@@ -9,18 +9,18 @@ class Game extends Model
 {
     public $timestamps = true;
 
-    protected $fillable = ['game_table_id', 'game_type_id', 'player_id', 'completed', 'no_of_players', 'user_id',
+    protected $fillable = ['game_table_id', 'game_type_id', 'player_id', 'player_ids', 'completed', 'no_of_players', 'user_id',
         'bill', 'discount', 'started_at', 'ended_at'];
 
-    //    protected $casts = [
-//        'completed' => 'boolean',
-//    ];
-
-    protected $events = [
-        'created' => Events\GameCreated::class,
-        'updated' => Events\GameUpdated::class,
+    protected $casts = [
+        'completed' => 'boolean',
+        'player_ids' => 'array',
     ];
 
+//    protected $events = [
+//        'created' => Events\GameCreated::class,
+//        'updated' => Events\GameUpdated::class,
+//    ];
 
 
     public function table()
@@ -49,6 +49,17 @@ class Game extends Model
         return $this->belongsTo(Player::class);
     }
 
+    public function players()
+    {
+        return $this->belongsToMany(Player::class, 'game_player');
+    }
+
+
+
+
+
+
+
     public function scopeActive($query)
     {
         $query->where('ended_at', '=', null);
@@ -58,7 +69,6 @@ class Game extends Model
     {
         $query->where('ended_at', '!=', null);
     }
-
 
 
     public function getStartedAtAttribute($date)
@@ -94,12 +104,12 @@ class Game extends Model
 
     public function getCompletedAttribute($completed)
     {
-        return (bool) $completed;
+        return (bool)$completed;
     }
 
     public function setCompletedAttribute($completed)
     {
-        $this->attributes['completed'] = (bool) $completed;
+        $this->attributes['completed'] = (bool)$completed;
     }
 
 }

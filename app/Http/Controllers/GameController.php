@@ -3,20 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Club;
-use App\Events\GameUpdated;
 use App\Game;
 use App\GameTable;
 use App\GameType;
 use App\Player;
+use App\Transaction;
 use Illuminate\Http\Request;
+use JavaScript;
 use Sentinel;
 use Session;
+
 
 class GameController extends Controller
 {
     public function index($club_id)
     {
         Session::put('club_id', $club_id);
+
+        JavaScript::put([
+            'global' =>
+                ['clubId' => session('club_id')],
+        ]);
 
 //        $club = Club::with(['tables.games' => function ($query) {
 //            $query->active();
@@ -78,8 +85,12 @@ class GameController extends Controller
 //            $query->active();
 //
 //        }, 'players.transactions'])->find($club_id);
+        JavaScript::put([
+            'global' =>
+                ['clubId' => session('club_id')],
+        ]);
 
-        $club = Club::find(session('club_id'))->with('games.player', 'games.table')->first();
+        $club = Club::find(session('club_id'))->with('games.players', 'games.table')->first();
 
         return view('game.list', compact('club'));
 
@@ -88,7 +99,7 @@ class GameController extends Controller
 
     public function show($id = null)
     {
-        $game = (!is_null($id) || $id != -1) ? Game::with('table', 'player')->find($id) : new Game();
+        $game = (!is_null($id) || $id != -1) ? Game::with('table', 'players')->find($id) : new Game();
 
 //        $table = GameTable::with(['games' => function ($query) {
 //            $query->active();
@@ -110,7 +121,7 @@ class GameController extends Controller
         $this->validate($request, [
             'game_table_id' => 'required',
             'game_type_id' => 'required',
-            'player_id' => 'required',
+            'player_ids' => 'required',
             'bill' => 'required|integer|min:10',
             'started_at' => 'required',
         ]);
@@ -118,26 +129,51 @@ class GameController extends Controller
         $data = $request->all();
 
         //$data['completed'] = $request->has('completed');
+        $data['player_id'] = -1;
         $data['user_id'] = Sentinel::getUser()->id;
 
         //dd($data);
+
 
         if (!is_null($request->id)) {
 
             $game = Game::find($request->id);
 
+//            foreach ($game->players as $player) {
+//
+//                $where = ['player_id' => $player->id, 'game_id' => $game->id];
+//
+//                //Transaction::create($data);return
+//            }
+
             $game->update($data);
 
-            event(new GameUpdated($game));
+
+            //event(new GameUpdated($game));
+
 
         } else {
 
             $game = Game::create($data);
+        }
 
+        $game->players()->sync($request->player_ids);
+
+        Transaction::where('game_id', $game->id)->delete();
+
+        foreach ($game->players as $player) {
+
+            $data['game_id'] = $game->id;
+            $data['player_id'] = $player->id;
+            $data['user_id'] = Sentinel::getUser()->id;
+            $data['amount'] = -($game->bill - $game->discount) / $game->players->count('id');
+
+            Transaction::create($data);
         }
 
 
         //Game::updateOrCreate(['id' => $data['id']], $data);
+
 
         return redirect()->route('showGames', ['club_id' => session('club_id')])
             ->with(['success' => 'Game saved successfully !']);

@@ -69,7 +69,11 @@
                                                         <td>{{ $game->no_of_players }}</td>
                                                         <td>{{ $game->started_at }}</td>
                                                         <td>{{ $game->bill - $game->discount }}</td>
-                                                        <td>{{ $game->player->player_name }}</td>
+                                                        <td>
+                                                            @foreach($game->players as $player)
+                                                                <li>{{ $player->player_name }}</li>
+                                                            @endforeach
+                                                        </td>
                                                         <td>
                                                             <a href="{{ route('showGame', ['table_id'=>$table->id, 'id'=>$game->id]) }}"
                                                                class="btn btn-default btn-sm">

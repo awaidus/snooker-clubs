@@ -18,6 +18,11 @@ class Player extends Model
         return $this->hasMany(Game::class);
     }
 
+    public function related_games()
+    {
+        return $this->belongsToMany(Game::class, 'game_player');
+    }
+
     public function bills()
     {
         return $this->hasManyThrough(Bill::class, Game::class);

@@ -2,7 +2,9 @@
 
 @section('content')
     <div ng-controller="PlayerListCtrl as vm">
+
         <h2>Players List</h2>
+
         <div class="row">
             <div class="col-md-9">
                 <a href="{{ route('showGames', ['club_id'=> session('club_id')]) }}"

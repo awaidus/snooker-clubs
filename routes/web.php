@@ -69,6 +69,10 @@ Route::group(['middleware' => 'manager'], function () {
 
 Route::get('/test', function () {
 
+    return $g = \App\Game::with(['players' => function ($query) {
+        return $query->get('id');
+    }])->find(63);
+
     //return $g = Sentinel::getUser()->id;
 //    return $g = \App\Game::with('bill')->get();
 //    return $g = Sentinel::getRoleRepository()->get();

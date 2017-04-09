@@ -27,10 +27,10 @@ Route::get('allPlayers', function () {
 
 })->name('allPlayers');
 
-Route::get('allGames', function () {
+Route::get('allGames/{club_id}', function ($club_id) {
 
-    if (!is_null(session('club_id')))
-        return response()->json(\App\Club::where('id', session('club_id'))->with('games.player', 'games.table')->first());
+    if (!is_null($club_id))
+        return response()->json(\App\Club::where('id', $club_id)->with('games.players', 'games.game_type')->first());
 
     return response()->json('No data found');
 

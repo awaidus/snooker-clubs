@@ -69,10 +69,11 @@
                             {{ Form::label('player_id', 'Player', ['class'=> 'col-sm-3 control-label']) }}
                             <div class="col-sm-9">
                                 <div class="input-group">
-                                    {{ Form::select('player_id', $players, null, ['class' => "form-control", 'multiple' => 'multiple']) }}
+                                    {{ Form::select('player_id', $players,
+                                        (!is_null($game) ) ? $game->player_ids : [], [ 'name' => 'player_ids[]', 'class' => "form-control", 'multiple']) }}
                                     <span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                    data-target="#playerModal">Add
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#playerModal">Add
                                         </button>
                                         {{--<a href="{{ route('showPlayer') }}" class="btn btn-primary">--}}
                                         {{--Add--}}
