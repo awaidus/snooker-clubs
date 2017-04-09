@@ -90,7 +90,7 @@ class GameController extends Controller
                 ['clubId' => session('club_id')],
         ]);
 
-        $club = Club::find(session('club_id'))->with('games.players', 'games.table')->first();
+        //$club = Club::find(session('club_id'))->with('games.players', 'games.table')->first();
 
         return view('game.list', compact('club'));
 
