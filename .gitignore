@@ -1,10 +1,14 @@
 /node_modules
 /public/storage
 /public/hot
+/public/fonts
 /public/bower_components
+/resources/assets/bower_components
 /storage/*.key
 /vendor
 /.idea
 Homestead.json
 Homestead.yaml
 .env
+
+

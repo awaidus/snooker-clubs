@@ -28,12 +28,16 @@ class ClubController extends Controller
 
         } elseif (Sentinel::inRole('super') || Sentinel::inRole('admin')) {
 
-            $clubs = Club::with(['games', 'transactions'])->get();
+            $clubs = Club::with(['games' => function ($query) {
+                $query->withTotalPayments();
+            }])->get();
 
         } else {
 
             return redirect()->route('login')->with(['error' => 'You must be Admin or Manager to access.']);
         }
+
+        //return $clubs;
 
         return view('club.index', compact('clubs'));
     }

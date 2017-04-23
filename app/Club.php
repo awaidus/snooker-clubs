@@ -26,7 +26,7 @@ class Club extends Model
 
     public function transactions()
     {
-        return $this->hasManyThrough(Transaction::class, Player::class);
+        return $this->hasManyThrough(Transaction::class, Game::class);
     }
 
     public function manager()

@@ -182,6 +182,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Providers\FormServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
 
     ],
@@ -240,6 +241,7 @@ return [
         'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
         'JavaScript' => Laracasts\Utilities\JavaScript\JavaScriptFacade::class,
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
 
     ],
 

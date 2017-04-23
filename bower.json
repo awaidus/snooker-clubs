@@ -13,6 +13,7 @@
     "node_modules",
     "bower_components",
     "public/assets/bower",
+    "resources/assets/bower_components",
     "test",
     "tests"
   ],
@@ -28,6 +29,8 @@
     "vue": "^2.1.8",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "flatpickr": "flatpickr-calendar#^2.4.8",
-    "select2": "^4.0.3"
+    "select2": "^4.0.3",
+    "datatables": "datatable#^1.10.13",
+    "toastr": "^2.1.3"
   }
 }

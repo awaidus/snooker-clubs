@@ -59,7 +59,8 @@ class Game extends Model
     {
         return $query->selectRaw('games.*, sum(amount) as total_payments')
             ->leftJoin('transactions', 'transactions.game_id', '=', 'games.id')
-            ->groupBy('games.id');
+            ->groupBy('games.id')
+            ->groupBy('games.game_table_id');
     }
 
 
