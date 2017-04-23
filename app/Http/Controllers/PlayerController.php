@@ -5,18 +5,37 @@ namespace App\Http\Controllers;
 use App\Club;
 use App\Player;
 use App\Transaction;
+use Datatables;
 use Illuminate\Http\Request;
+use JavaScript;
 use Session;
 
 class PlayerController extends Controller
 {
     public function index()
     {
+        JavaScript::put([
+            'global' =>
+                ['clubId' => session('club_id')],
+        ]);
 
         //$players = Player::where('club_id', session('club_id'))->with('transactions')->get();
 
         return view('player.index', compact('players'));
 
+    }
+
+    public function getAll($club_id)
+    {
+        $players = Player::payments()->withTrashed()->where('club_id', $club_id)->with('transactions')->get();
+
+        return Datatables::of($players)
+//            ->addColumn('action', function ($players) {
+////                return '&lta href="#edit-'.$players->id.'" class="btn btn-xs btn-primary"&gt&lti class="glyphicon glyphicon-edit"&gt&lt/i&gt Edit&lt/a&gt';
+//                return 'edit-' . $players->id;
+//            })
+//            ->editColumn('id', 'ID: @{{$id}}')
+            ->make(true);
     }
 
     public function show($id = null)

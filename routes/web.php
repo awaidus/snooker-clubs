@@ -8,7 +8,6 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/login', 'AuthController@postLogin')->name('login');
 
 
-
 });
 
 Route::group(['middleware' => 'manager'], function () {
@@ -25,12 +24,13 @@ Route::group(['middleware' => 'manager'], function () {
 
 
     Route::get('{club_id}/games/index', 'GameController@index')->name('showGames');
-
     Route::get('{club_id}/games/list', 'GameController@games')->name('listGames');
-
     Route::get('game/show/{id?}', 'GameController@show')->name('showGame');
     Route::get('{club_id}/game/show/', 'GameController@create')->name('createGame');
     Route::post('game/store', 'GameController@store')->name('storeGame');
+    Route::get('game/destroy/{id}', 'GameController@destroy')->name('destroyGame');
+    Route::get('game/restore/{id}', 'GameController@restore')->name('restoreGame');
+
 
 
     Route::get('bills/index', 'BillController@index')->name('showBills');
@@ -70,9 +70,9 @@ Route::group(['middleware' => 'manager'], function () {
 
 Route::get('/test', function () {
 
-    return $g = \App\Game::with(['players' => function ($query) {
-        return $query->get('id');
-    }])->find(63);
+
+    return $g = \App\Game::withTotalPayments()->get();
+
 
     //return $g = Sentinel::getUser()->id;
 //    return $g = \App\Game::with('bill')->get();

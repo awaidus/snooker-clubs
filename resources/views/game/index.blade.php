@@ -19,8 +19,7 @@
                 @endif
 
                 <a href="{{ route('showGame', ['id'=>null]) }}"
-                   class="btn btn-info">
-                    <i class="fa fa-plus"></i> New Game
+                   class="btn btn-info"> <i class="fa fa-plus"></i> New Game
                 </a>
 
                 <a href="{{route('showPlayers')}}" class="btn btn-default">
@@ -28,7 +27,7 @@
                 <a href="{{route('showTransactions')}}" class="btn btn-default">
                     <i class="fa fa-book" aria-hidden="true"></i> Payments Summery</a>
 
-                    <a href="{{route('listGames', ['club_id', session('club_id')])}}" class="btn btn-info">
+                <a href="{{route('listGames', ['club_id', session('club_id')])}}" class="btn btn-info">
                     <i class="fa fa-list" aria-hidden="true"></i> All Games
                 </a>
             </div>
@@ -101,123 +100,12 @@
 
             <div class="col-md-4">
 
-                <div class="panel panel-success">
-                    <div class="panel-heading">Total Bills</div>
 
-                    <table class="table table-hover table-condensed table-bordered">
-                        <tr>
-                            <th>Table</th>
-                            <th>Today - Discount</th>
-                            <th>This Month</th>
-                        </tr>
+                <games-balance club-id="1">
+                    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                </games-balance>
 
-                        @foreach($bills as $table => $bill)
-                            <tr>
-                                <td>{{$table}}</td>
-
-                                <td>
-                                    <div>
-                                        {{ $bill['today']['bill'] }} -
-                                        <span class="label label-default">{{ $bill['today']['discount'] }}</span>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div>
-                                        {{ $bill['thisMonth']['bill'] }} -
-                                        <span class="label label-default">{{ $bill['thisMonth']['discount'] }}</span>
-                                    </div>
-                                </td>
-
-                            </tr>
-                        @endforeach
-
-                        <tr>
-                            <td><h3>Total</h3></td>
-                            <td>
-                                <h3><span class="label label-success">{{ $totals['today'] }}</span> -
-                                    <span class="label label-default">{{ $totals['discountToday'] }}</span>
-                                </h3>
-
-                            </td>
-                            <td><h3>
-                                    <span class="label label-success">{{ $totals['thisMonth'] }}</span> -
-                                    <span class="label label-default">{{ $totals['discountThisMonth'] }}</span>
-
-                                </h3></td>
-                        </tr>
-
-
-                    </table>
-
-
-                </div>
-
-                <div class="panel panel-danger">
-                    <div class="panel-heading">Total Balance<strong> </strong></div>
-
-
-                    <table class="table table-condensed table-hover">
-                        <tr>
-                            <th>Client</th>
-                            <th>Games</th>
-                            <th></th>
-                        </tr>
-                        {{--@foreach($club->games as $game)--}}
-
-                        {{--@if (! is_null($game->bill) && ! $game->bill->full_paid )--}}
-                        {{--<tr>--}}
-                        {{--<td>--}}
-                        {{--<div><strong>{{$game->table->table_no}}</strong></div>--}}
-                        {{--<div>{{($game->started_at) ? $game->started_at->format('d-m-y') : ''}}</div>--}}
-                        {{--</td>--}}
-                        {{--<td></td>--}}
-                        {{--<td>{{$game->bill->bill - $game->bill->discount}}</td>--}}
-                        {{--@php($total_pending_bills = $total_pending_bills + $game->bill->bill - $game->bill->discount)--}}
-                        {{--<td>--}}
-                        {{--<a href="{{ route('showGame', ['club_id'=> $club->id, 'id' => $game->id] ) }}"--}}
-                        {{--class="btn btn-danger btn-xs">--}}
-                        {{--<i class="fa fa-arrow-right" aria-hidden="true"></i>--}}
-                        {{--</a>--}}
-                        {{--</td>--}}
-                        {{--</tr>--}}
-                        {{--@endif--}}
-                        {{--@endforeach--}}
-                        @php($total_balance = 0)
-                        @foreach($players as $player)
-                            @if( $player->transactions->sum('amount') < 0 )
-                                @php($total_balance = $total_balance + $player->transactions->sum('amount'))
-
-                                <tr>
-                                    <td>{{ $player->player_name }}
-                                        <span class="label label-danger">{{ $player->transactions->sum('amount') }}</span>
-                                    </td>
-                                    <td>
-                                        {{--@foreach($player->games as $game)--}}
-                                        {{--<div>{{$game->game_type->game_type}} - --}}
-                                        {{--{{$game->started_at}}</div>--}}
-                                        {{--@endforeach--}}
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('showPlayerTransaction', ['id'=> $player->id]) }}"
-                                           class="btn btn-default btn-sm"><i class="fa fa-arrow-right"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-
-                            @endif
-
-                        @endforeach
-
-                        <tr>
-                            <td><h3>Total</h3></td>
-                            <td><h3><span class="label label-danger">{{ $total_balance }}</span></h3></td>
-                        </tr>
-
-                    </table>
-
-
-                </div> {{--End Panel--}}
 
             </div>
 
@@ -227,6 +115,7 @@
 
     </div>
 @endsection
+
 
 
 {{--<div class="col-md-6">--}}
@@ -267,4 +156,121 @@
 {{--</div>--}}
 
 {{--</div> --}}{{--End Panel--}}
+{{--</div>--}}
+
+
+{{--@php($total_balance = 0)--}}
+{{--@foreach($players as $player)--}}
+{{--@if( $player->transactions->sum('amount') < 0 )--}}
+{{--@php($total_balance = $total_balance + $player->transactions->sum('amount'))--}}
+
+{{--<tr>--}}
+{{--<td>{{ $player->player_name }}--}}
+{{--<span class="label label-danger">{{ $player->transactions->sum('amount') }}</span>--}}
+{{--</td>--}}
+{{--<td>--}}
+{{--@foreach($player->games as $game)--}}
+{{--<div>{{$game->game_type->game_type}} - --}}
+{{--{{$game->started_at}}</div>--}}
+{{--@endforeach--}}
+{{--</td>--}}
+{{--<td>--}}
+{{--<a href="{{ route('showPlayerTransaction', ['id'=> $player->id]) }}"--}}
+{{--class="btn btn-default btn-sm"><i class="fa fa-arrow-right"></i>--}}
+{{--</a>--}}
+{{--</td>--}}
+{{--</tr>--}}
+
+{{--@endif--}}
+
+{{--@endforeach--}}
+
+
+{{--<div class="panel panel-danger">--}}
+{{--<div class="panel-heading">Total Balance<strong> </strong></div>--}}
+
+{{--<div class="panel-body">--}}
+
+{{--@foreach($club->games as $game)--}}
+
+{{--@if ( $game->transactions->sum('amount') <  ($game->bill - $game->discount) )--}}
+
+{{--<div>--}}
+{{--<strong>(Table:{{$game->table->table_no}})</strong>--}}
+{{--At {{$game->started_at}}--}}
+{{--</div>--}}
+{{--<div>--}}
+{{--Bill:<span--}}
+{{--class="label label-default">{{ $game->bill - $game->discount }} </span>--}}
+{{--Payment:<span--}}
+{{--class="label label-danger">{{ ($game->transactions) ? $game->transactions->sum('amount') : '' }}</span>--}}
+{{--</div>--}}
+
+{{--@endif--}}
+{{--@endforeach--}}
+{{--</div>--}}
+
+{{----}}
+
+
+{{--<div class="panel-footer">--}}
+
+{{--<h3>Total: <span class="label label-danger">{{ 12000 }}</span></h3>--}}
+
+{{--</div>--}}
+
+
+{{--</div> --}}{{--End Panel--}}
+
+
+{{--<div class="panel panel-success">--}}
+{{--<div class="panel-heading">Total Bills</div>--}}
+
+{{--<table class="table table-hover table-condensed table-bordered">--}}
+{{--<tr>--}}
+{{--<th>Table</th>--}}
+{{--<th>Today - Discount</th>--}}
+{{--<th>This Month</th>--}}
+{{--</tr>--}}
+
+{{--@foreach($bills as $table => $bill)--}}
+{{--<tr>--}}
+{{--<td>{{$table}}</td>--}}
+
+{{--<td>--}}
+{{--<div>--}}
+{{--{{ $bill['today']['bill'] }} ---}}
+{{--<span class="label label-default">{{ $bill['today']['discount'] }}</span>--}}
+{{--</div>--}}
+{{--</td>--}}
+
+{{--<td>--}}
+{{--<div>--}}
+{{--{{ $bill['thisMonth']['bill'] }} ---}}
+{{--<span class="label label-default">{{ $bill['thisMonth']['discount'] }}</span>--}}
+{{--</div>--}}
+{{--</td>--}}
+
+{{--</tr>--}}
+{{--@endforeach--}}
+
+{{--<tr>--}}
+{{--<td><h3>Total</h3></td>--}}
+{{--<td>--}}
+{{--<h3><span class="label label-success">{{ $totals['today'] }}</span> ---}}
+{{--<span class="label label-default">{{ $totals['discountToday'] }}</span>--}}
+{{--</h3>--}}
+
+{{--</td>--}}
+{{--<td><h3>--}}
+{{--<span class="label label-success">{{ $totals['thisMonth'] }}</span> ---}}
+{{--<span class="label label-default">{{ $totals['discountThisMonth'] }}</span>--}}
+
+{{--</h3></td>--}}
+{{--</tr>--}}
+
+
+{{--</table>--}}
+
+
 {{--</div>--}}

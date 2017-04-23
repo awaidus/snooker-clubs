@@ -29,10 +29,10 @@
 
                                 <td>
                                     <div>Bills: <span class="label label-warning">
-                                        {{-$club->transactions->where('amount', '<', 0)->sum('amount') }}</span></div>
+                                        {{ $club->games->sum('bill') - $club->games->sum('discount') }}</span></div>
 
                                     <div>Payments: <span class="label label-success">
-                                        {{ $club->transactions->where('amount', '>=', 0)->sum('amount') }}</span></div>
+                                        {{ $club->games->sum('total_payments') }}</span></div>
                                 </td>
 
                                 <td>

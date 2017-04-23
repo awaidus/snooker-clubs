@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -12,6 +13,15 @@ class Player extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+
+    public static function payments()
+    {
+        return static::selectRaw('players.*, sum(transactions.amount) as payments')
+            ->leftJoin('transactions', 'players.id', '=', 'transactions.player_id')
+            ->groupBy('players.id');
+//                ->groupBy('player_name')
+//                ->groupBy('contact');
+    }
 
     public function games()
     {
@@ -36,7 +46,7 @@ class Player extends Model
     public function sumBills()
     {
         return $this->hasManyThrough(Bill::class, Game::class)
-            ->selectRaw('sum(paid) as total_paid, SUM(bill) - - sum(discount) - SUM(paid) AS total_balance, player_id')
+            ->selectRaw('sum(paid) as total_paid, SUM(bill) - sum(discount) - SUM(paid) AS total_balance, player_id')
             ->groupBy('player_id');
     }
 

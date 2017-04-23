@@ -10,7 +10,7 @@ class Game extends Model
     public $timestamps = true;
 
     protected $fillable = ['game_table_id', 'game_type_id', 'player_id', 'player_ids', 'completed', 'no_of_players', 'user_id',
-        'bill', 'discount', 'started_at', 'ended_at'];
+        'working_day', 'bill', 'discount', 'started_at', 'ended_at'];
 
     protected $casts = [
         'completed' => 'boolean',
@@ -36,7 +36,7 @@ class Game extends Model
 
     public function transactions()
     {
-        return $this->hasManyThrough(Transaction::class, Bill::class);
+        return $this->hasMany(Transaction::class);
     }
 
     public function game_type()
@@ -55,9 +55,31 @@ class Game extends Model
     }
 
 
+    public function scopeWithTotalPayments($query)
+    {
+        return $query->selectRaw('games.*, sum(amount) as total_payments')
+            ->leftJoin('transactions', 'transactions.game_id', '=', 'games.id')
+            ->groupBy('games.id');
+    }
 
 
 
+
+//    public function sumPayments()
+//    {
+//        return $this->hasMany(Transaction::class)
+//            ->selectRaw('sum(amount) as total, game_id')
+//            ->groupBy('game_id');
+//    }
+//
+//    public function getTotalPaymentsAttribute()
+//    {
+//        if (!array_key_exists('sumPayments', $this->relations)) $this->load('sumPayments');
+//
+//        return $relation = $this->getRelation('sumPayments');
+//
+////        return ($relation) ? $relation->total_bills : 0;
+//    }
 
 
     public function scopeActive($query)
@@ -87,6 +109,20 @@ class Game extends Model
             // return Carbon::parse($date);
 
         }
+    }
+
+
+    public function getWorkingDayAttribute($value)
+    {
+        if (!is_null($value)) {
+            return Carbon::parse($value);
+        }
+    }
+
+    public function setWorkingDayAttribute($value)
+    {
+        if (is_string($value))
+            $this->attributes['working_day'] = Carbon::parse($value);
     }
 
 

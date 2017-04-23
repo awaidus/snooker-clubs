@@ -5,11 +5,32 @@
         <h2>Transactions Summery</h2>
         <div class="row">
             <div class="col-md-9">
+
+                {!! Form::open(['route' => ['showTransactions'], 'method' => 'get', 'class' => 'form-inline']) !!}
+
+                <div class="form-group">
+                    {!! Form::text('dateFrom', Request::get('dateFrom'), ['class'=>'form-control', 'data-type'=>'date', 'placeholder'=>'Date From..']) !!}
+                </div>
+
+                <div class="form-group">
+                    {!! Form::text('dateTo', Request::get('dateTo'), ['class'=>'form-control', 'data-type'=>'date', 'placeholder'=>'Date To..']) !!}
+                </div>
+
+                <button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i> Search
+                </button>
+
                 <a href="{{ route('showGames', ['club_id'=> session('club_id')]) }}"
                    class="btn btn-default"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back to Game Hall
                 </a>
+
+                {!! Form::close() !!}
+
             </div>
         </div>
+
+        @php($total_bill = 0)
+        @php($total_payments = 0)
+
         @foreach($clubs as $club_name => $club)
 
             <h3>Club No. {{ $club_name }} </h3>
@@ -21,15 +42,25 @@
                     <th class="col-md-3">Received Amounts</th>
                 </tr>
 
-                @foreach($club as $transactions)
-                    @foreach($transactions as $date => $transaction)
+                @foreach($club as $games)
+                    @foreach($games as $date => $game)
+                        @php($total_bill = $total_bill + ($game->sum('bill') - $game->sum('discount')) )
+                        @php($total_payments = $total_payments + $game->sum('total_payments')  )
                         <tr>
                             <td>{{$date}}</td>
-                            <td>{{ -($transaction->where('amount' , '<', 0)->sum('amount') )}}</td>
-                            <td>{{ $transaction->where('amount' , '>', 0)->sum('amount') }}</td>
+                            <td>{{ $game->sum('bill') - $game->sum('discount') }}</td>
+                            <td>{{ $game->sum('total_payments')  }}</td>
                         </tr>
                     @endforeach
                 @endforeach
+                <tr class="success">
+                    <td><strong>Total</strong></td>
+                    <td><strong>{{ $total_bill }}</strong></td>
+                    <td><strong>{{ $total_payments }}</strong></td>
+                </tr>
+
+                @php($total_bill = 0)
+                @php($total_payments = 0)
 
             </table>
 

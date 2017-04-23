@@ -7,7 +7,6 @@ use App\Game;
 use App\GameTable;
 use App\GameType;
 use App\Player;
-use App\Transaction;
 use Illuminate\Http\Request;
 use JavaScript;
 use Sentinel;
@@ -25,76 +24,63 @@ class GameController extends Controller
                 ['clubId' => session('club_id')],
         ]);
 
-//        $club = Club::with(['tables.games' => function ($query) {
-//            $query->active();
-//
-//        }, 'players.transactions'])->find($club_id);
-
-        $club = Club::with(['tables.games', 'tables.games.player' => function ($query) {
-            $query->withTrashed();
-        }, 'players' => function ($query) {
-            $query->withTrashed();
-        }, 'players.transactions'])->find($club_id);
-
-        $bills = [];
-        $totals['today'] = 0;
-        $totals['discountToday'] = 0;
-        $totals['thisMonth'] = 0;
-        $totals['discountThisMonth'] = 0;
-
-        foreach ($club->tables as $table) {
-
-            $bills[$table->table_no]['today']['bill'] = $table->games->filter(function ($item, $key) {
-                return $item->started_at->isToday();
-            })->sum('bill');
-            $totals['today'] = $totals['today'] + $bills[$table->table_no]['today']['bill'];
-
-
-            $bills[$table->table_no]['today']['discount'] = $table->games->filter(function ($item, $key) {
-                return $item->started_at->isToday();
-            })->sum('discount');
-            $totals['discountToday'] = $totals['discountToday'] + $bills[$table->table_no]['today']['discount'];
-
-
-            $bills[$table->table_no]['thisMonth']['bill'] = $table->games->filter(function ($item, $key) {
-                return $item->started_at->month == \Carbon\Carbon::now()->month;
-            })->sum('bill');
-            $totals['thisMonth'] = $totals['thisMonth'] + $bills[$table->table_no]['thisMonth']['bill'];
-
-
-            $bills[$table->table_no]['thisMonth']['discount'] = $table->games->filter(function ($item, $key) {
-                return $item->started_at->month == \Carbon\Carbon::now()->month;
-            })->sum('discount');
-            $totals['discountThisMonth'] = $totals['discountThisMonth'] + $bills[$table->table_no]['thisMonth']['discount'];
-
-
-        };
-
-
-        $players = Player::with('transactions')->where('club_id', session('club_id'))->get();
-
-        return view('game.index', compact('club', 'players', 'bills', 'totals'));
-
-    }
-
-    public function games()
-    {
-
 
 //        $club = Club::with(['tables.games' => function ($query) {
 //            $query->active();
 //
 //        }, 'players.transactions'])->find($club_id);
-        JavaScript::put([
-            'global' =>
-                ['clubId' => session('club_id')],
-        ]);
 
-        //$club = Club::find(session('club_id'))->with('games.players', 'games.table')->first();
+        $club = Club::with(['tables.games' => function ($query) {
 
-        return view('game.list', compact('club'));
+            $query->withTotalPayments();
+
+        },
+            'tables.games.players' => function ($query) {
+
+                $query->withTrashed();
+
+            }])->find($club_id);
+
+//        $bills = [];
+//        $totals['today'] = 0;
+//        $totals['discountToday'] = 0;
+//        $totals['thisMonth'] = 0;
+//        $totals['discountThisMonth'] = 0;
+//
+//        foreach ($club->tables as $table) {
+//
+//            $bills[$table->table_no]['today']['bill'] = $table->games->filter(function ($item, $key) {
+//                return $item->started_at->isToday();
+//            })->sum('bill');
+//            $totals['today'] = $totals['today'] + $bills[$table->table_no]['today']['bill'];
+//
+//
+//            $bills[$table->table_no]['today']['discount'] = $table->games->filter(function ($item, $key) {
+//                return $item->started_at->isToday();
+//            })->sum('discount');
+//            $totals['discountToday'] = $totals['discountToday'] + $bills[$table->table_no]['today']['discount'];
+//
+//
+//            $bills[$table->table_no]['thisMonth']['bill'] = $table->games->filter(function ($item, $key) {
+//                return $item->started_at->month == \Carbon\Carbon::now()->month;
+//            })->sum('bill');
+//            $totals['thisMonth'] = $totals['thisMonth'] + $bills[$table->table_no]['thisMonth']['bill'];
+//
+//
+//            $bills[$table->table_no]['thisMonth']['discount'] = $table->games->filter(function ($item, $key) {
+//                return $item->started_at->month == \Carbon\Carbon::now()->month;
+//            })->sum('discount');
+//            $totals['discountThisMonth'] = $totals['discountThisMonth'] + $bills[$table->table_no]['thisMonth']['discount'];
+//
+//
+//        };
+//          $players = Player::with('transactions')->where('club_id', session('club_id'))->get();
+
+        return view('game.index', compact('club'));
 
     }
+
+
 
 
     public function show($id = null)
@@ -123,9 +109,9 @@ class GameController extends Controller
 //        dd($request->all());
 
         $this->validate($request, [
+            'working_day' => 'required',
             'game_table_id' => 'required',
             'game_type_id' => 'required',
-            'player_ids' => 'required',
             'bill' => 'required|integer|min:10',
             'started_at' => 'required',
         ]);
@@ -161,19 +147,18 @@ class GameController extends Controller
             $game = Game::create($data);
         }
 
-        $game->players()->sync($request->player_ids);
+        $game->players()->sync((array)$request->player_ids);
 
-        Transaction::where('game_id', $game->id)->delete();
-
-        foreach ($game->players as $player) {
-
-            $data['game_id'] = $game->id;
-            $data['player_id'] = $player->id;
-            $data['user_id'] = Sentinel::getUser()->id;
-            $data['amount'] = -($game->bill - $game->discount) / $game->players->count('id');
-
-            Transaction::create($data);
-        }
+        //Transaction::where('game_id', $game->id)->delete();
+//        foreach ($game->players as $player) {
+//
+//            $data['game_id'] = $game->id;
+//            $data['player_id'] = $player->id;
+//            $data['user_id'] = Sentinel::getUser()->id;
+//            $data['amount'] = -($game->bill - $game->discount) / $game->players->count('id');
+//
+//            Transaction::create($data);
+//        }
 
 
         //Game::updateOrCreate(['id' => $data['id']], $data);
@@ -188,7 +173,7 @@ class GameController extends Controller
     {
         Game::where('id', $id)->delete();
 
-        return redirect()->back()->with(['success' => 'Game is deleted.']);
+        return response()->json('Game is deleted.');
     }
 
 
@@ -196,6 +181,56 @@ class GameController extends Controller
     {
         Game::where('id', $id)->restore();
 
-        return redirect()->back()->with(['success' => 'Game is restored.']);
+        return response()->json('Game is restored.');
     }
+
+
+    public function games()
+    {
+        return view('game.list');
+    }
+
+
+    public function getGamesList($club_id)
+    {
+        $club = Club::with(['games' => function ($query) {
+
+            $query->withTotalPayments();
+
+        }, 'games.game_type', 'games.table',
+
+            'games.players' => function ($query) {
+
+                $query->withTrashed();
+
+            }])->find($club_id);
+
+        return response()->json(['club' => $club]);
+
+    }
+
+    public function getGames($club_id)
+    {
+        //$club_id = session('club_id') ;
+
+//        $club_id = (!is_null(request('club_id'))
+//            ? request('club_id')
+//            : session('club_id') || request()->route('club_id'));
+
+
+        $club = Club::with(['tables.games' => function ($query) {
+
+            $query->withTotalPayments();
+
+        },
+            'tables.games.players' => function ($query) {
+
+                $query->withTrashed();
+
+            }])->find($club_id);
+
+        return response()->json(['club' => $club]);
+
+    }
+
 }

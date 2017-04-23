@@ -4,20 +4,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="token" id="token" value="{{ csrf_field() }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
 </head>
 
-
-<link rel="stylesheet" href={{asset('css/app.css')}}>
 {{--    <link rel="stylesheet" href={{asset('css/bootstrap-theme.min.css')}}>--}}
-<link rel="stylesheet" href={{asset('bower_components/bootstrap/dist/css/bootstrap.min.css')}}>
-<link rel="stylesheet" href={{asset('bower_components/font-awesome/css/font-awesome.min.css')}}>
-<link rel="stylesheet" href={{asset('bower_components/flatpickr/dist/flatpickr.css')}}>
-<link rel="stylesheet" href={{asset('bower_components/select2/dist/css/select2.min.css')}}>
 
+<link rel="stylesheet" href={{asset('css/vendor.css')}}>
+<link rel="stylesheet" href={{asset('css/app.css')}}>
 
-<link rel="stylesheet" href={{asset('css/dashboard.css')}}>
-<link rel="stylesheet" href={{asset('css/style.css')}}>
 
 
 <title>Snooker-Clubs DMS</title>
@@ -43,25 +38,13 @@
 
 @include('footer');
 
-<script src={{asset('bower_components/jquery/dist/jquery.min.js')}}></script>
-<script src={{asset('bower_components/moment/min/moment.min.js')}}></script>
-<script src={{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}></script>
-<script src={{asset('bower_components/angular/angular.min.js')}}></script>
-<script src={{asset('bower_components/angular-animate/angular-animate.min.js')}}></script>
-
-
-<script src={{asset('bower_components/flatpickr/dist/flatpickr.js')}}></script>
-<script src={{asset('bower_components/select2//dist/js/select2.js')}}></script>
-
-
-{{--<script src={{asset('js/app.js')}}></script>--}}
+<script src={{asset('js/manifest.js')}}></script>
+<script src={{asset('js/vendor.js')}}></script>
+<script src={{asset('js/app.js')}}></script>
 
 <script src={{asset('angularApp/app.js')}}></script>
 <script src={{asset('angularApp/controllers/playerCtrl.js')}}></script>
 <script src={{asset('angularApp/controllers/gameCtrl.js')}}></script>
-
-<script src={{asset('js/site.js')}}></script>
-
 
 @yield('script')
 

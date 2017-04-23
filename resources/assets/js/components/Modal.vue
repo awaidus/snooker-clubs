@@ -1,0 +1,42 @@
+<template>
+    <div class="modal fade" tabindex="-1" role="dialog" id="paymentModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">
+                        <slot name="header"></slot>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <slot name="body"></slot>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <slot name="footer"></slot>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+</template>
+
+<script>
+    //import HeaderComponent from './components/header.vue'
+    //import OtherComponent from './components/other.vue'
+    export default{
+        props: ['data'],
+        data(){
+            return{
+
+            }
+        },
+        components:{
+            //'other-component':OtherComponent,
+            //HeaderComponent,
+        }
+    }
+
+
+</script>
