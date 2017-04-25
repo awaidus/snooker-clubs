@@ -195,15 +195,21 @@ class GameController extends Controller
     {
         $club = Club::with(['games' => function ($query) {
 
-            $query->withTotalPayments();
+            $query->withTotalPayments()->orderBy('working_day', 'DESC');
 
-        }, 'games.game_type', 'games.table',
+        }, 'games.type',
+
+            'games.table' => function ($query) {
+
+                $query->orderBy('table_no', 'ASC');
+            },
 
             'games.players' => function ($query) {
 
                 $query->withTrashed();
 
             }])->find($club_id);
+
 
         return response()->json(['club' => $club]);
 
@@ -223,6 +229,8 @@ class GameController extends Controller
             $query->withTotalPayments();
 
         },
+            'tables.games.type',
+
             'tables.games.players' => function ($query) {
 
                 $query->withTrashed();

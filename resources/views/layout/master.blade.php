@@ -8,7 +8,6 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}">
 </head>
 
-{{--    <link rel="stylesheet" href={{asset('css/bootstrap-theme.min.css')}}>--}}
 
 <link rel="stylesheet" href={{asset('css/vendor.css')}}>
 <link rel="stylesheet" href={{asset('css/app.css')}}>
@@ -18,6 +17,7 @@
 <title>Snooker-Clubs DMS</title>
 
 </head>
+
 <body>
 
 @include('layout.top-menu')

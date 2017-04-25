@@ -37,7 +37,8 @@
 
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
+
                 <div class="panel panel-primary">
                     <div class="panel-heading">Game Tables</div>
                     <div class="panel-body">
@@ -45,7 +46,9 @@
 
                         @foreach($club->tables as $table)
 
-                            <div class="panel panel-{{ ( $table->games->where('ended_at', null)->count('ended_at') == 0 ) ? 'default': 'primary' }}">
+                            <div class="panel panel-{{
+                            ( $table->games->where('ended_at', null)->count('ended_at') == 0 ) ? 'default': 'primary'}}">
+
                                 <div class="panel-heading">
                                     {{ $table->table_no }}
                                     <a href="{{route('showGameTable', ['id'=> $table->id])}}"
@@ -55,7 +58,7 @@
                                 <div class="panel-body">
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
-                                            <th>No. of Player</th>
+                                            <th>Game</th>
                                             <th>Started at</th>
                                             <th>Bill</th>
                                             <th>Player</th>
@@ -65,8 +68,8 @@
                                             @foreach($table->games as $game)
                                                 @if( is_null($game->ended_at) )
                                                     <tr>
-                                                        <td>{{ $game->no_of_players }}</td>
-                                                        <td>{{ $game->started_at }}</td>
+                                                        <td>{{ $game->type->game_type }}</td>
+                                                        <td>{{ ($game->started_at)? $game->started_at->format('d-m-Y @ h:m a') : ''}}</td>
                                                         <td>{{ $game->bill - $game->discount }}</td>
                                                         <td>
                                                             @foreach($game->players as $player)
@@ -95,11 +98,9 @@
 
                 </div>
 
-
             </div>
 
-            <div class="col-md-4">
-
+            <div class="col-md-6">
 
                 <games-balance club-id="1">
                     <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>

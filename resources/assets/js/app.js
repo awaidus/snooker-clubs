@@ -13,8 +13,66 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('games-balance', require('./components/game/GamesBalance.vue'));
+Vue.component('modal', require('./components/Modal.vue'));
+Vue.component('games-list', require('./components/game/GameList.vue'));
 Vue.component('example', require('./components/Example.vue'));
 
+
 const app = new Vue({
-    el: '#app'
+    el: '#app',
 });
+
+
+// $('[data-type="date"]').flatpickr();
+//
+// $('[data-type="datetime"]').flatpickr({
+//
+//     enableTime: true,
+//
+//
+//     // clearIcon: '<i class="fa fa-remove clear-icon"></i>',
+//     // clearText: 'Clear',
+//     // triggerChangeEvent: true,
+//     // close: true,
+//     // theme: "light",
+//
+//     //defaultDate: new Date(),
+//
+//     // onOpen: function (selectedDates, dateStr, instance) {
+//     //
+//     //     console.log(this);
+//     //
+//     //     this.set('jumpToDate', new Date());
+//     //
+//     //     //this.setDefaults({defaultDate: new Date()});
+//     //
+//     //    // if (this.input.val() == '') this.config.defaultDate( new Date() );
+//     //
+//     // }
+//
+// });
+
+
+$('[data-type="date"]').datetimepicker({
+    format: 'DD-MM-YYYY',
+    showTodayButton: true,
+    showClear: true,
+    showClose: true
+});
+
+$('[data-type="datetime"]').datetimepicker({
+
+    format: 'DD-MM-YYYY LT',
+    showTodayButton: true,
+    showClear: true,
+    showClose: true
+});
+
+
+var sAlert = $("#success-alert");
+sAlert.alert();
+sAlert.fadeTo(2000, 500).slideUp(500, function () {
+    sAlert.slideUp(500);
+});
+

@@ -3,7 +3,7 @@
         <div class="panel panel-danger">
             <div class="panel-heading">Total Balance<strong> </strong></div>
 
-            <table class="table table-hover table-condensed table-bordered">
+            <table class="table table-condensed table-bordered">
                 <tbody>
                 <tr>
                     <th>Table</th>
@@ -11,29 +11,49 @@
                 </tr>
 
                 <tr v-for="table in club.tables">
-                    <td><h3><span class="label label-default">{{table.table_no}}</span></h3></td>
+                    <td><h4><span class="label label-default">{{table.table_no}}</span></h4></td>
                     <td>
-                        <ul class="list-group">
-                            <li class="list-group-item" v-for="game in table.games"
-                                v-show="game.total_payments < (game.bill - game.discount)">
-                                {{ game.started_at.date | date }}
-                                <div>
+                        <table class="table table-condensed" style="font-size: 12px;margin-bottom: 1px;">
+                            <tbody>
+                            <tr>
+                                <th>Type</th>
+                                <th>Time</th>
+                                <th>Bill</th>
+                                <th>Players</th>
+                                <th></th>
+
+                            </tr>
+                            <tr v-for="game in table.games" v-show="game.total_payments < (game.bill - game.discount)"
+                                :class="{danger: !game.ended_at}">
+
+                                <td>{{ game.type.game_type }}</td>
+                                <td>
+                                    <div v-if="game.started_at">Started:{{ game.started_at.date | dateTime }}</div>
+                                    <div v-if="game.ended_at">Ended:{{ game.ended_at.date | dateTime }}</div>
+                                </td>
+
+                                <td>
+
                                     Bill: <span class="label label-default">{{ game.bill - game.discount }}</span>
-                                    Payment: <span class="label label-danger">{{ game.total_payments }}</span>
+                                    Paid: <span class="label label-danger">{{ game.total_payments }}</span>
 
-                                    <button type="button" class="btn btn-success btn-xs btn-block"
-                                            @click="setGameId(game.id)"
+                                </td>
+
+                                <td>
+                                    <div v-for="player in game.players">{{ player.player_name }}</div>
+                                </td>
+
+                                <td>
+                                    <button type="button" class="btn btn-success btn-xs"
+                                            @click="setGame(game)"
                                             data-toggle="modal" data-target="#paymentModal">
-
-                                        Make Payment <i class="fa fa-arrow-right" aria-hidden="true"></i>
-
+                                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                     </button>
+                                </td>
 
-                                </div>
-
-                            </li>
-                        </ul>
-
+                            </tr>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
 
@@ -58,6 +78,37 @@
 
 
                         <div class="modal-body">
+
+
+                            <table class="table table-condensed table-bordered"
+                                   style="margin-bottom: 5px; font-size:12px;">
+                                <tbody>
+                                <tr>
+                                    <th>Game</th>
+                                    <th>Started</th>
+                                    <th>Ended</th>
+                                    <th>Bill</th>
+                                    <th>Players</th>
+                                </tr>
+                                <tr>
+                                    <td><span v-if="game.type">{{ game.type.game_type }}</span></td>
+                                    <td>
+                                        <div v-if="game.started_at">{{ game.started_at.date | dateTime }}</div>
+                                    </td>
+                                    <td>
+                                        <div v-if="game.ended_at">{{ game.ended_at.date | dateTime }}</div>
+                                    </td>
+                                    <td>
+                                        Bill: <span class="label label-default">{{ game.bill - game.discount }}</span>
+                                        Paid: <span class="label label-danger">{{ game.total_payments }}</span>
+                                    </td>
+                                    <td>
+                                        <div v-for="player in game.players">{{ player.player_name }}</div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
 
                             <form class="form-horizontal" method="POST" action="/transaction/store">
 
@@ -124,7 +175,10 @@
                 game_id: '',
                 amount: '',
                 receive_date: ''
-            }
+            },
+
+            game: {}
+
         }),
 
         created() {
@@ -147,12 +201,13 @@
                             //console.log(response.data);
                         })
                         .catch(e => {
-                            this.errors.push(e)
+                            this.errors.push(e);
                         })
             },
 
-            setGameId(gameId){
-                this.payment.game_id = gameId
+            setGame(game){
+                this.game = game;
+                this.payment.game_id = game.id;
             },
 
             onSubmit(){
@@ -197,8 +252,8 @@
 
         filters: {
 
-            date(date){
-                return moment(date).format('D-MM-YYYY @ h:mm a');
+            dateTime(value){
+                return moment(value).format('D-MM-YY@h:mm a');
             }
         }
 

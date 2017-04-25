@@ -39,7 +39,7 @@ class Game extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    public function game_type()
+    public function type()
     {
         return $this->belongsTo(GameType::class, 'game_type_id');
     }

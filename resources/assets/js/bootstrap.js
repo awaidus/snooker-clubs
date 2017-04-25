@@ -27,6 +27,10 @@ window.Vue = require('vue');
 
 window.axios = require('axios');
 
+window.moment = require('moment');
+
+window.toastr = require('toastr');
+
 window.axios.defaults.headers.common = {
     //'X-CSRF-TOKEN': window.Laravel.csrfToken,
     'X-Requested-With': 'XMLHttpRequest'

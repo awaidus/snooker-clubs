@@ -16,7 +16,7 @@
 
                 @if(Sentinel::check())
                     <li>
-                        <a href="{{route('resetPassword')}}" class="">
+                        <a href="{{route('resetPassword')}}">
                             <i class="fa fa-gear" aria-hidden="true"></i> Settings
                         </a>
                     </li>

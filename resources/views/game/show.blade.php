@@ -85,11 +85,12 @@
 
                         {{Form::formSelect('Table', 'game_table_id', $game_tables)}}
                         {{Form::formSelect('Game Type', 'game_type_id',$game_types)}}
-                        {{Form::formSelect('No. of Player', 'no_of_players', [1 => 1, 2 => 2, 3 => 3, 4=>4], null)}}
-                        {{Form::formInput('Bill Amount *', 'bill')}}
-                        {{Form::formInput('Discount', 'discount')}}
                         {{Form::formInput('Started At *', 'started_at', (($game && $game->started_at)) ? $game->started_at->format('d-m-Y g:i A'): null, ['data-type' => 'datetime'])}}
                         {{Form::formInput('Ended At', 'ended_at', null, ['data-type' => 'datetime'])}}
+                        {{Form::formInput('Bill Amount *', 'bill')}}
+                        {{Form::formInput('Discount', 'discount')}}
+                        {{Form::formSelect('No. of Player', 'no_of_players', [1 => 1, 2 => 2, 3 => 3, 4=>4], null)}}
+
 
 
                         <div class="form-group">
@@ -108,36 +109,36 @@
 
             </div>
 
-            @if( ! (is_null($game) || is_null($game->players)) && $game->players->count('player_name') >1 )
-                <div class="col-md-6">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">Bill Shares as per Player</div>
-                        <div class="panel-body">
+            {{--@if( ! (is_null($game) || is_null($game->players)) && $game->players->count('player_name') >1 )--}}
+            {{--<div class="col-md-6">--}}
+            {{--<div class="panel panel-danger">--}}
+            {{--<div class="panel-heading">Bill Shares as per Player</div>--}}
+            {{--<div class="panel-body">--}}
 
-                            @foreach($game->players as $player)
-                                <div class="col-md-6">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4>{{ $player->player_name }}</h4>
-                                            {!! Form::model($player->transactions->first(), ['route' => 'storeUserShare']) !!}
-                                            {{Form::hidden('id')}}
-                                            {{Form::hidden('game_id', $game->id)}}
-                                            <div class="input-group">
-                                                {{Form::text('amount', -$player->transactions->first()->amount, ['class'=>'form-control'])}}
-                                                <span class="input-group-btn">
-                                                <button class="btn btn-default" type="submit">Save</button>
-                                            </span>
-                                            </div>
-                                            {!! Form::close() !!}
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
+            {{--@foreach($game->players as $player)--}}
+            {{--<div class="col-md-6">--}}
+            {{--<div class="panel panel-default">--}}
+            {{--<div class="panel-heading">--}}
+            {{--<h4>{{ $player->player_name }}</h4>--}}
+            {{--{!! Form::model($player->transactions->first(), ['route' => 'storeUserShare']) !!}--}}
+            {{--{{Form::hidden('id')}}--}}
+            {{--{{Form::hidden('game_id', $game->id)}}--}}
+            {{--<div class="input-group">--}}
+            {{--{{Form::text('amount', -$player->transactions->first()->amount, ['class'=>'form-control'])}}--}}
+            {{--<span class="input-group-btn">--}}
+            {{--<button class="btn btn-default" type="submit">Save</button>--}}
+            {{--</span>--}}
+            {{--</div>--}}
+            {{--{!! Form::close() !!}--}}
+            {{--</div>--}}
+            {{--</div>--}}
+            {{--</div>--}}
+            {{--@endforeach--}}
 
-                        </div>
-                    </div>
-                </div>
-            @endif
+            {{--</div>--}}
+            {{--</div>--}}
+            {{--</div>--}}
+            {{--@endif--}}
 
         </div>
 

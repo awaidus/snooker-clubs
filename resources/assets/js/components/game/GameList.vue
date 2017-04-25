@@ -21,7 +21,7 @@
 
                 <td>{{game.working_day.date | date }}</td>
                 <td>{{game.table.table_no }}</td>
-                <td>{{game.game_type.game_type }}</td>
+                <td>{{game.type.game_type }}</td>
                 <td>
                     <ul class="fa-ul" v-for="player in game.players">
                         <li><i class="fa-li fa fa-user-o"></i>{{player.player_name}}</li>
