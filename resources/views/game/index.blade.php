@@ -37,78 +37,78 @@
 
 
         <div class="row">
-            <div class="col-md-6">
+            {{--<div class="col-md-6">--}}
 
-                <div class="panel panel-primary">
-                    <div class="panel-heading">Game Tables</div>
-                    <div class="panel-body">
+            {{--<div class="panel panel-primary">--}}
+            {{--<div class="panel-heading">Games</div>--}}
 
+            {{--<table class="table table-bordered table-condensed">--}}
+            {{--<tr>--}}
+            {{--<th>Table</th>--}}
+            {{--<th>Games</th>--}}
 
-                        @foreach($club->tables as $table)
+            {{--</tr>--}}
+            {{--@foreach($club->tables as $table)--}}
 
-                            <div class="panel panel-{{
-                            ( $table->games->where('ended_at', null)->count('ended_at') == 0 ) ? 'default': 'primary'}}">
+            {{--@php($games_count = $table->games->count('ended_at') > 0)--}}
 
-                                <div class="panel-heading">
-                                    {{ $table->table_no }}
-                                    <a href="{{route('showGameTable', ['id'=> $table->id])}}"
-                                       class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+            {{--<tr>--}}
+            {{--<td>--}}
+            {{--<h3>--}}
+            {{--<span class="label label-{{($games_count) ? 'success': 'default'}}">{{ $table->table_no }}</span>--}}
+            {{--</h3>--}}
+            {{--</td>--}}
 
-                                </div>
-                                <div class="panel-body">
-                                    <table class="table table-bordered table-hover table-condensed">
-                                        <tr>
-                                            <th>Game</th>
-                                            <th>Started at</th>
-                                            <th>Bill</th>
-                                            <th>Player</th>
-                                            <th></th>
-                                        </tr>
-                                        @if (!is_null($table->games))
-                                            @foreach($table->games as $game)
-                                                @if( is_null($game->ended_at) )
-                                                    <tr>
-                                                        <td>{{ $game->type->game_type }}</td>
-                                                        <td>{{ ($game->started_at)? $game->started_at->format('d-m-Y @ h:m a') : ''}}</td>
-                                                        <td>{{ $game->bill - $game->discount }}</td>
-                                                        <td>
-                                                            @foreach($game->players as $player)
-                                                                <li>{{ $player->player_name }}</li>
-                                                            @endforeach
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{ route('showGame', ['table_id'=>$table->id, 'id'=>$game->id]) }}"
-                                                               class="btn btn-default btn-sm">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
-                                        @endif
+            {{--<td>--}}
+            {{--@if ($games_count)--}}
 
-                                    </table>
-                                </div>
-                            </div>
+            {{--<table class="table table-condensed table-hover" style="margin-bottom: 1px;">--}}
+            {{--<tr>--}}
+            {{--<th>Game</th>--}}
+            {{--<th>Started at</th>--}}
+            {{--<th>Bill</th>--}}
+            {{--<th>Player</th>--}}
+            {{--<th></th>--}}
+            {{--</tr>--}}
+            {{--@foreach($table->games as $game)--}}
+            {{--@if( is_null($game->ended_at) )--}}
+            {{--<tr>--}}
+            {{--<td>{{ $game->type->game_type }}</td>--}}
+            {{--<td>{{ ($game->started_at)? $game->started_at->format('d-m-Y @ h:m a') : ''}}</td>--}}
+            {{--<td>{{ $game->bill - $game->discount }}</td>--}}
+            {{--<td>--}}
+            {{--@foreach($game->players as $player)--}}
+            {{--<li>{{ $player->player_name }}</li>--}}
+            {{--@endforeach--}}
+            {{--</td>--}}
+            {{--<td>--}}
+            {{--<a href="{{ route('showGame', ['table_id'=>$table->id, 'id'=>$game->id]) }}"--}}
+            {{--class="btn btn-default btn-sm">--}}
+            {{--<i class="fa fa-pencil"></i>--}}
+            {{--</a>--}}
+            {{--</td>--}}
+            {{--</tr>--}}
+            {{--@endif--}}
+            {{--@endforeach--}}
+            {{--</table>--}}
+            {{--@endif--}}
 
-                        @endforeach
+            {{--</td>--}}
+            {{--<td></td>--}}
+            {{--</tr>--}}
+            {{--@endforeach--}}
+            {{--</table>--}}
 
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-                <games-balance club-id="1">
-                    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-                    <span class="sr-only">Loading...</span>
-                </games-balance>
+            {{--</div>--}}
 
 
-            </div>
+            {{--</div>--}}
+
+
+            <game-hall club-id="{{ session('club_id') }}">
+                <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only">Loading...</span>
+            </game-hall>
 
 
         </div>
@@ -273,5 +273,64 @@
 
 {{--</table>--}}
 
+
+{{--</div>--}}
+
+
+{{--<div class="panel panel-primary">--}}
+{{--<div class="panel-heading">Game Tables</div>--}}
+{{--<div class="panel-body">--}}
+
+{{--@foreach($club->tables as $table)--}}
+
+{{--<div class="panel panel-{{--}}
+{{--( $table->games->where('ended_at', null)->count('ended_at') == 0 ) ? 'default': 'primary'}}">--}}
+
+{{--<div class="panel-heading">--}}
+{{--{{ $table->table_no }}--}}
+{{--<a href="{{route('showGameTable', ['id'=> $table->id])}}"--}}
+{{--class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>--}}
+
+{{--</div>--}}
+{{--<div class="panel-body">--}}
+{{--<table class="table table-bordered table-hover table-condensed">--}}
+{{--<tr>--}}
+{{--<th>Game</th>--}}
+{{--<th>Started at</th>--}}
+{{--<th>Bill</th>--}}
+{{--<th>Player</th>--}}
+{{--<th></th>--}}
+{{--</tr>--}}
+{{--@if (!is_null($table->games))--}}
+{{--@foreach($table->games as $game)--}}
+{{--@if( is_null($game->ended_at) )--}}
+{{--<tr>--}}
+{{--<td>{{ $game->type->game_type }}</td>--}}
+{{--<td>{{ ($game->started_at)? $game->started_at->format('d-m-Y @ h:m a') : ''}}</td>--}}
+{{--<td>{{ $game->bill - $game->discount }}</td>--}}
+{{--<td>--}}
+{{--@foreach($game->players as $player)--}}
+{{--<li>{{ $player->player_name }}</li>--}}
+{{--@endforeach--}}
+{{--</td>--}}
+{{--<td>--}}
+{{--<a href="{{ route('showGame', ['table_id'=>$table->id, 'id'=>$game->id]) }}"--}}
+{{--class="btn btn-default btn-sm">--}}
+{{--<i class="fa fa-pencil"></i>--}}
+{{--</a>--}}
+{{--</td>--}}
+{{--</tr>--}}
+{{--@endif--}}
+{{--@endforeach--}}
+{{--@endif--}}
+
+{{--</table>--}}
+{{--</div>--}}
+{{--</div>--}}
+
+{{--@endforeach--}}
+
+
+{{--</div>--}}
 
 {{--</div>--}}

@@ -63,6 +63,13 @@ class Game extends Model
             ->groupBy('games.game_table_id');
     }
 
+    public function scopeWithDetails($query)
+    {
+        return $query->selectRaw('games.id, games.working_day, games.started_at, games.ended_at, games.bill - IFNULL(games.discount,0) as total_bill, game_type, table_no, games.game_table_id')
+            ->leftJoin('game_types', 'game_types.id', '=', 'games.game_type_id')
+            ->leftJoin('game_tables', 'game_tables.id', '=', 'games.game_table_id');
+    }
+
 
 
 

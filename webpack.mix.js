@@ -22,7 +22,7 @@ mix.js(['resources/assets/js/app.js'], 'public/js')
         'resources/assets/bower_components/datatables/media/js/jquery.dataTables.js',
         'resources/assets/bower_components/datatables/media/js/dataTables.bootstrap.min.js',
         'resources/assets/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-        //'resources/assets/bower_components/toastr/toastr.min.js',
+
 
     ], 'public/js/vendor.js')
 
@@ -32,7 +32,6 @@ mix.js(['resources/assets/js/app.js'], 'public/js')
         'resources/assets/bower_components/select2/dist/css/select2.min.css',
         'resources/assets/bower_components/datatables/media/css/dataTables.bootstrap.css',
         'resources/assets/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-        //'resources/assets/bower_components/toastr/toastr.min.css',
         'resources/assets/css/dashboard.css.css',
 
     ], 'public/css/vendor.css')

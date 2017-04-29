@@ -1,7 +1,6 @@
 @extends('layout.master')
 
 @section('content')
-    {{--<div ng-controller="PlayerListCtrl as vm">--}}
     <div>
 
         <h2>Players List</h2>
@@ -33,11 +32,11 @@
         <table class="table table-bordered table-hover" id="playerTable">
             <thead>
             <tr class="default">
-                <th>Id</th>
                 <th>Player Name</th>
                 <th>Contact No.</th>
                 <th>Payments</th>
                 <th>Deleted At</th>
+                <th></th>
             </tr>
             </thead>
             {{--@foreach($players as $player)--}}
@@ -76,47 +75,27 @@
             {{--ajax: '{!! route('datatables.data', ['club_id' => ]) !!}',--}}
             ajax: '/api/players/' + global.clubId,
             columns: [
-                {data: 'id', name: 'id'},
+//                {data: 'id', name: 'id'},
                 {data: 'player_name', name: 'player_name'},
                 {data: 'contact', name: 'contact'},
                 {data: 'payments', name: 'payments'},
                 {data: 'deleted_at', name: 'deleted_at'},
+                {
+                    name: 'actions',
+                    data: null,
+                    sortable: false,
+                    searchable: false,
+                    render: function (data) {
+                        var actions = '';
+                        actions += '<a href="{{route('showPlayer', ['id' => ':id'])}}" class="btn btn-default">Edit</a>';
+                        {{--actions += '<a href="{{ route('destroyPlayer/', ':id') }}">Delete</a>';--}}
+                            return actions.replace(/:id/g, data.id);
+                    }
+                }
 //                {data: 'action', name: 'action'},
             ],
             order: [[1, 'asc']]
         });
-
-
-        //        // Add event listener for opening and closing details
-        //        $('#playerTable tbody').on('click', 'td.details-control', function () {
-        //            var tr = $(this).closest('tr');
-        //            var row = table.row(tr);
-        //            var tableId = 'player_' + row.data().id;
-        //
-        //            if (row.child.isShown()) {
-        //                // This row is already open - close it
-        //                row.child.hide();
-        //                tr.removeClass('shown');
-        //            } else {
-        //                // Open this row
-        //                row.child(template(row.data())).show();
-        //                initTable(tableId, row.data());
-        //                tr.addClass('shown');
-        //                tr.next().find('td').addClass('no-padding bg-gray');
-        //            }
-        //        });
-        //
-        //        function initTable(tableId, data) {
-        //            $('#' + tableId).DataTable({
-        //                processing: true,
-        //                serverSide: true,
-        //                ajax: data.transactions,
-        //                columns: [
-        //                    { data: 'id', name: 'id' },
-        //                    { data: 'title', name: 'title' }
-        //                ]
-        //            })
-        //        }
 
 
     </script>

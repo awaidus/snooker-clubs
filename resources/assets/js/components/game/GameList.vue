@@ -2,48 +2,64 @@
 
     <div>
 
+        <div class="panel panel-primary">
+            <div class="panel-heading">Games</div>
 
-        <table class="table table-hover table-condensed table-bordered">
-            <tbody>
-            <tr>
-                <th>Date</th>
-                <th>Table</th>
-                <th>Game Type</th>
-                <th>Players</th>
-                <th>Game Started on</th>
-                <th>Game Ended on</th>
-                <th>Bill</th>
-                <th>Payment</th>
-                <th></th>
-            </tr>
+            <table class="table table-bordered table-condensed">
+                <tbody>
+                <tr>
+                    <th>Table</th>
+                    <th>Games</th>
 
-            <tr v-for="game in club.games">
+                </tr>
 
-                <td>{{game.working_day.date | date }}</td>
-                <td>{{game.table.table_no }}</td>
-                <td>{{game.type.game_type }}</td>
-                <td>
-                    <ul class="fa-ul" v-for="player in game.players">
-                        <li><i class="fa-li fa fa-user-o"></i>{{player.player_name}}</li>
-                    </ul>
+                <tr v-for="table in club.tables">
+                    <td>
+                        <h3>
+                            <span :class="{'label label-success': countActiveGames(table.games) > 0}">{{ table.table_no }}</span>
+                        </h3>
+                    </td>
 
-                </td>
+                    <td>
+                        <table class="table table-condensed table-hover" style="margin-bottom: 1px;"
+                               v-if="countActiveGames(table.games) > 0">
+                            <tbody>
+                            <tr class='info'>
+                                <th>Game</th>
+                                <th>Started at</th>
+                                <th>Bill</th>
+                                <th>Player</th>
+                                <th></th>
+                            </tr>
+                            <tr v-for="game in table.games" v-if="! game.ended_at">
+                                <td>{{ game.type.game_type }}</td>
+                                <td>
+                                    <div v-if="game.started_at">Started:{{ game.started_at.date | dateTime }}</div>
+                                </td>
 
-                <td>{{game.started_at.date | dateTime }}</td>
+                                <td>{{ game.bill - game.discount }}</td>
+                                <td>
+                                    <div v-for="player in game.players">{{ player.player_name }}</div>
+                                </td>
+                                <td>
+                                    <a :href="getGameURL(game.id)" class="btn btn-default btn-sm">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
 
-                <td><span v-if="game.ended_at">{{ game.ended_at.date | dateTime}}</span></td>
 
-                <td>{{game.bill - game.discount}}</td>
+                    </td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
 
-                <td>{{game.total_payments}}</td>
-                <td>
-                    <a :href="showGameURL(game.id)" class="btn btn-default"><i class="fa fa-edit"></i></a>
-                    <button class="btn btn-danger" @click="deleteGame(game.id)"><i class="fa fa-trash"></i></button>
-                </td>
-            </tr>
+        </div>
 
-            </tbody>
-        </table>
+
     </div>
 
 </template>
@@ -53,95 +69,36 @@
 
     export default{
 
-
-        props: ['clubId'],
+        props: ['club'],
 
         data(){
-
-            return {
-                club: []
-            }
-
-
-        },
-
-        created() {
-
-            this.fetchGameData();
-
+            return {}
         },
 
         methods: {
 
-            fetchGameData() {
-                axios.get('/api/gamesList/' + this.clubId)
-                        .then(response => {
-                            this.club = response.data.club;
-                            //console.log(response.data);
-                        })
-                        .catch(e => {
-
-                            this.errors.push(e)
-                        })
-            },
-
-            deleteGame(id){
-                let _this = this;
-
-                axios.get('/game/destroy/' + id)
-
-                        .then(response => {
-
-                            _this.fetchGameData();
-                            toastr.success('Game is deleted.')
-
-                        });
-            },
-
-            showGameURL(id){
+            getGameURL(id){
 
                 return '/game/show/' + id;
-            }
+            },
 
-
+            countActiveGames(games){
+                //return _.sumBy(games, i => (!i.ended_at));
+                return _.filter(games, function (game) {
+                    if (!game.ended_at) return game
+                }).length;
+            },
         },
+
+        computed: {},
 
         filters: {
 
-            dateTime (value){
-
-                if (value) {
-                    return moment(value).format('D-MM-YYYY @ h:mm a');
-                }
-
-            },
-
-            date (value){
-
-                if (value) {
-                    return moment(value).format('D-MM-YYYY');
-                }
-
-            },
-
-            searchForIn: function (data, value, keys) {
-                keys = keys.split(/, ?/);
-
-                var matches = [];
-
-                data.forEach(function (obj) {
-                    keys.forEach(function (path) {
-                        var propVal = this.path(obj, path);
-                        if (propVal && propVal == value) {
-                            matches.push(obj);
-                        }
-                    }.bind(this));
-                }.bind(this));
-
-                return matches;
+            dateTime(value){
+                return moment(value).format('D-MM-YY@h:mm a');
             }
-
         }
+
 
     }
 

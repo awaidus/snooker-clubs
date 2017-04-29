@@ -45,6 +45,7 @@ Route::group(['middleware' => 'manager'], function () {
     Route::get('player/index', 'PlayerController@index')->name('showPlayers');
     Route::get('player/{id?}', 'PlayerController@show')->name('showPlayer');
     Route::post('player/store', 'PlayerController@store')->name('storePlayer');
+    Route::post('player/destroy/{id}', 'PlayerController@destroy')->name('destroyPlayer');
     Route::get('player/transactions/{id}/{transaction_id?}', 'PlayerController@showPlayerTransaction')->name('showPlayerTransaction');
 
     Route::get('resetPassword', 'AuthController@resetPassword')->name('resetPassword');
@@ -71,7 +72,16 @@ Route::group(['middleware' => 'manager'], function () {
 Route::get('/test', function () {
 
 
-    return $g = \App\Game::withTotalPayments()->get();
+    return \App\Club::with(['games' => function ($query) {
+
+        $query->withDetails()
+            ->withTotalPayments();
+    }
+    ])->find(1);
+
+    return $g = \App\Game::withDetails()
+        ->withTotalPayments()
+        ->get();
 
 
     //return $g = Sentinel::getUser()->id;

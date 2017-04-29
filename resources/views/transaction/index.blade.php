@@ -30,43 +30,33 @@
 
         @php($total_bill = 0)
         @php($total_payments = 0)
+        <table class="table table-bordered table-striped table-hover">
+            <tr class="default">
+                <th class="col-md-2">Date</th>
+                <th class="col-md-3">Due Amounts</th>
+                <th class="col-md-3">Received Amounts</th>
+            </tr>
 
-        @foreach($clubs as $club_name => $club)
 
-            <h3>Club No. {{ $club_name }} </h3>
+            @foreach($games as $working_day => $game)
 
-            <table class="table table-bordered table-striped table-hover">
-                <tr class="default">
-                    <th class="col-md-2">Date</th>
-                    <th class="col-md-3">Due Amounts</th>
-                    <th class="col-md-3">Received Amounts</th>
+                @php($total_bill = $total_bill + ($game->sum('bill') - $game->sum('discount')) )
+                @php($total_payments = $total_payments + $game->sum('total_payments')  )
+                <tr>
+                    <td>{{ $working_day }}</td>
+                    <td>{{ $game->sum('bill') - $game->sum('discount') }}</td>
+                    <td>{{ $game->sum('total_payments')  }}</td>
                 </tr>
 
-                @foreach($club as $games)
-                    @foreach($games as $date => $game)
-                        @php($total_bill = $total_bill + ($game->sum('bill') - $game->sum('discount')) )
-                        @php($total_payments = $total_payments + $game->sum('total_payments')  )
-                        <tr>
-                            <td>{{$date}}</td>
-                            <td>{{ $game->sum('bill') - $game->sum('discount') }}</td>
-                            <td>{{ $game->sum('total_payments')  }}</td>
-                        </tr>
-                    @endforeach
-                @endforeach
-                <tr class="success">
-                    <td><strong>Total</strong></td>
-                    <td><strong>{{ $total_bill }}</strong></td>
-                    <td><strong>{{ $total_payments }}</strong></td>
-                </tr>
+            @endforeach {{--$games--}}
 
-                @php($total_bill = 0)
-                @php($total_payments = 0)
+            <tr class="success">
+                <td><strong>Total</strong></td>
+                <td><strong>{{ $total_bill }}</strong></td>
+                <td><strong>{{ $total_payments }}</strong></td>
+            </tr>
 
-            </table>
-
-
-        @endforeach {{--$club--}}
-
+        </table>
 
     </div>
 @endsection

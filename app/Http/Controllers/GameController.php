@@ -7,6 +7,8 @@ use App\Game;
 use App\GameTable;
 use App\GameType;
 use App\Player;
+use Carbon\Carbon;
+use Datatables;
 use Illuminate\Http\Request;
 use JavaScript;
 use Sentinel;
@@ -30,16 +32,7 @@ class GameController extends Controller
 //
 //        }, 'players.transactions'])->find($club_id);
 
-        $club = Club::with(['tables.games' => function ($query) {
-
-            $query->withTotalPayments();
-
-        },
-            'tables.games.players' => function ($query) {
-
-                $query->withTrashed();
-
-            }])->find($club_id);
+        $club = Club::find($club_id);
 
 //        $bills = [];
 //        $totals['today'] = 0;
@@ -79,8 +72,6 @@ class GameController extends Controller
         return view('game.index', compact('club'));
 
     }
-
-
 
 
     public function show($id = null)
@@ -193,9 +184,9 @@ class GameController extends Controller
 
     public function getGamesList($club_id)
     {
-        $club = Club::with(['games' => function ($query) {
+        /*$club = Club::with(['games' => function ($query) {
 
-            $query->withTotalPayments()->orderBy('working_day', 'DESC');
+            $query->withTotalPayments();
 
         }, 'games.type',
 
@@ -208,20 +199,48 @@ class GameController extends Controller
 
                 $query->withTrashed();
 
-            }])->find($club_id);
+            }])->find($club_id);*/
 
 
-        return response()->json(['club' => $club]);
+        $games = Game::withDetails()
+            ->withTotalPayments()
+            ->where('game_tables.club_id', $club_id)
+            ->orderBy('games.working_day', 'desc')
+            ->get();
 
+        //return response()->json($games);
+
+
+        return Datatables::of($games)
+            ->addIndexColumn()
+            ->editColumn('working_day', function ($game) {
+                return $game->working_day ? with(new Carbon($game->working_day))->format('d-m-Y') : '';
+            })
+            ->editColumn('started_at', function ($game) {
+                return $game->started_at ? with(new Carbon($game->started_at))->format('d-m-Y @g:i A') : '';
+            })
+            ->editColumn('ended_at', function ($game) {
+                return $game->ended_at ? with(new Carbon($game->ended_at))->format('d-m-Y @g:i A') : '';
+            })
+            ->filterColumn('working_day', function ($query, $keyword) {
+                $query->whereRaw("DATE_FORMAT(updated_at,'%d/%m/%Y') like ?", ["%$keyword%"]);
+            })
+            ->filterColumn('started_at', function ($query, $keyword) {
+                $query->whereRaw("DATE_FORMAT(updated_at,'%d/%m/%Y') like ?", ["%$keyword%"]);
+            })
+            ->filterColumn('ended_at', function ($query, $keyword) {
+                $query->whereRaw("DATE_FORMAT(updated_at,'%d/%m/%Y') like ?", ["%$keyword%"]);
+            })
+            ->make(true);
     }
 
     public function getGames($club_id)
     {
-        //$club_id = session('club_id') ;
+        /*$club_id = session('club_id') ;
 
-//        $club_id = (!is_null(request('club_id'))
-//            ? request('club_id')
-//            : session('club_id') || request()->route('club_id'));
+        $club_id = (!is_null(request('club_id'))
+            ? request('club_id')
+            : session('club_id') || request()->route('club_id'));*/
 
 
         $club = Club::with(['tables.games' => function ($query) {

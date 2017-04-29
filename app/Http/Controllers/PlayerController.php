@@ -30,9 +30,9 @@ class PlayerController extends Controller
         $players = Player::payments()->withTrashed()->where('club_id', $club_id)->with('transactions')->get();
 
         return Datatables::of($players)
-//            ->addColumn('action', function ($players) {
-////                return '&lta href="#edit-'.$players->id.'" class="btn btn-xs btn-primary"&gt&lti class="glyphicon glyphicon-edit"&gt&lt/i&gt Edit&lt/a&gt';
-//                return 'edit-' . $players->id;
+//            ->addColumn('action', function ($player) {
+//                return '<a href="#edit-'.$player->id.'" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>';
+//                return 'edit-' . $player->id;
 //            })
 //            ->editColumn('id', 'ID: @{{$id}}')
             ->make(true);

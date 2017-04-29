@@ -1,5 +1,7 @@
 <template>
     <div>
+
+
         <div class="panel panel-danger">
             <div class="panel-heading">Total Balance<strong> </strong></div>
 
@@ -13,9 +15,10 @@
                 <tr v-for="table in club.tables">
                     <td><h4><span class="label label-default">{{table.table_no}}</span></h4></td>
                     <td>
-                        <table class="table table-condensed" style="font-size: 12px;margin-bottom: 1px;">
+                        <table class="table table-condensed"
+                               style="font-size: 12px;margin-bottom: 1px;background-color;#ffffff">
                             <tbody>
-                            <tr>
+                            <tr class="info">
                                 <th>Type</th>
                                 <th>Time</th>
                                 <th>Bill</th>
@@ -163,11 +166,11 @@
             //paymentModal: Modal
         },
 
-        props: ['clubId'],
+        props: ['club'],
 
 
         data: () => ({
-            club: [],
+            //club: [],
             total_balance: '',
             errors: [],
             payment: {
@@ -183,27 +186,9 @@
 
         created() {
 
-            this.fetchClubData();
-
         },
 
         methods: {
-
-            fetchClubData() {
-                axios.get('/api/games/' + this.clubId, {
-                    // params: {
-                    //     club_id: 1
-                    // }
-                })
-                        .then(response => {
-                            this.club = response.data.club;
-                            //this.total_balance = response.data.total_balance;
-                            //console.log(response.data);
-                        })
-                        .catch(e => {
-                            this.errors.push(e);
-                        })
-            },
 
             setGame(game){
                 this.game = game;

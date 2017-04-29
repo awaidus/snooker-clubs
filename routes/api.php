@@ -21,15 +21,14 @@ Route::get('players', function () {
     return response()->json(\App\Player::get()->pluck('player_name', 'id'));
 
 })->name('getPlayers');
+
 Route::get('destroyPlayer/{id}', 'PlayerController@destroy')->name('destroyPlayer');
 Route::get('restorePlayer/{id}', 'PlayerController@restore')->name('restorePlayer');
 
 
 Route::get('games/{club_id}', 'GameController@getGames')->name('getGames');
 
-Route::get('gamesList/{club_id}', 'GameController@getGamesList')->name('getGamesList');
-
-
+Route::get('gamesList/{club_id}', 'GameController@getGamesList')->name('api.getGamesList');
 
 Route::group(['middleware' => 'manager'], function () {
 

@@ -32,5 +32,8 @@
     "select2": "^4.0.3",
     "datatables": "datatable#^1.10.13",
     "toastr": "^2.1.3"
+  },
+  "resolutions": {
+    "jquery": "1.9.1 - 3"
   }
 }

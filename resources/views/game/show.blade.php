@@ -4,6 +4,15 @@
 
     <h1>Game Information</h1>
 
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ route('showGames', ['club_id'=> session('club_id')] ) }}" class="btn btn-default">
+                <i class="fa fa-arrow-circle-left"></i> Back to Hall</a>
+        </div>
+    </div>
+
+    <br>
+
     <!-- Modal -->
     <div class="modal fade" id="playerModal" tabindex="-1" role="dialog" aria-labelledby="newPlayerModal">
         <div class="modal-dialog" role="document">
@@ -92,7 +101,6 @@
                         {{Form::formSelect('No. of Player', 'no_of_players', [1 => 1, 2 => 2, 3 => 3, 4=>4], null)}}
 
 
-
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-9">
                                 <button type="submit" class="btn btn-success">Save</button>
@@ -144,9 +152,8 @@
 
 
     </div>
-    <a href="{{ route('showGames', ['club_id'=> session('club_id')] ) }}" class="btn btn-default btn-block">
-        <i class="fa fa-arrow-circle-left"></i> Back to Hall</a>
-    </div>
+
+
 
 
 
