@@ -4,7 +4,7 @@
 
         <div class="col-md-6">
 
-            <games-list :club="club">
+            <games-list :club="clubWithActiveGames">
                 <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
                 <span class="sr-only">Loading...</span>
             </games-list>
@@ -13,7 +13,7 @@
 
         <div class="col-md-6">
 
-            <games-balance :club="club">
+            <games-balance :club="clubWithPendingPayments" @onPaymentSubmit="paymentSubmit()">
                 <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
                 <span class="sr-only">Loading...</span>
             </games-balance>
@@ -44,12 +44,13 @@
 
         data(){
             return {
-                club: [],
+                clubWithActiveGames: [],
+                clubWithPendingPayments: [],
                 errors: [],
             }
         },
 
-        created() {
+        mounted() {
 
             this.fetchGameData();
 
@@ -63,14 +64,22 @@
 
                 var self = this;
 
-                axios.get('/api/games/' + this.clubId)
+                axios.get('/games/' + this.clubId)
                         .then(response => {
-                            self.club = response.data.club;
+                            self.clubWithPendingPayments = response.data.clubWithPendingPayments;
+                            self.clubWithActiveGames = response.data.clubWithActiveGames;
                         })
                         .catch(e => {
 
                             this.errors.push(e)
                         })
+            },
+
+
+            paymentSubmit(){
+
+                this.fetchGameData();
+
             },
 
 

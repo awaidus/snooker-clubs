@@ -243,9 +243,9 @@ class GameController extends Controller
             : session('club_id') || request()->route('club_id'));*/
 
 
-        $club = Club::with(['tables.games' => function ($query) {
+        $active_games = Club::with(['tables.games' => function ($query) {
 
-            $query->withTotalPayments();
+            $query->withTotalPayments()->active();
 
         },
             'tables.games.type',
@@ -256,7 +256,34 @@ class GameController extends Controller
 
             }])->find($club_id);
 
-        return response()->json(['club' => $club]);
+
+        $payments_games = Club::with(['tables.games' => function ($query) {
+
+            $query->withTotalPayments()->having('total_bill', '>', 'total_payments');
+
+        },
+            'tables.games.type',
+
+            'tables.games.players' => function ($query) {
+
+                $query->withTrashed();
+
+            }])->find($club_id);
+
+
+//        $payments_games = Game::withDetails()
+//            ->withTotalPayments()
+//            ->where('game_tables.club_id', $club_id)
+//            ->having('total_bill', '>', 'total_payments')
+//            ->get();
+//
+//        $active_games = Game::withDetails()
+//            ->withTotalPayments()
+//            ->active()
+//            ->where('game_tables.club_id', $club_id)
+//            ->get();
+
+        return response()->json(['clubWithActiveGames' => $active_games, 'clubWithPendingPayments' => $payments_games,]);
 
     }
 

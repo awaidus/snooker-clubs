@@ -1,7 +1,6 @@
 <template>
     <div>
 
-
         <div class="panel panel-danger">
             <div class="panel-heading">Total Balance<strong> </strong></div>
 
@@ -113,7 +112,7 @@
                             </table>
 
 
-                            <form class="form-horizontal" method="POST" action="/transaction/store">
+                            <form class="form-horizontal" method="POST">
 
                                 <input type="hidden" id="id">
                                 <input type="hidden" id="game_id" v-model="payment.game_id">
@@ -142,7 +141,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class='btn btn-success' @click="onSubmit">Save</button>
+                            <button type="submit" class='btn btn-success' @click="onPaymentSubmit">Save</button>
 
                         </div>
                     </div><!-- /.modal-content -->
@@ -158,13 +157,9 @@
 
 <script type="text/babel">
 
-    // import Modal from '../components/Modal.vue'
-
 
     export default{
-        components: {
-            //paymentModal: Modal
-        },
+
 
         props: ['club'],
 
@@ -177,7 +172,7 @@
                 id: '',
                 game_id: '',
                 amount: '',
-                receive_date: ''
+                receive_date: '',
             },
 
             game: {}
@@ -195,13 +190,16 @@
                 this.payment.game_id = game.id;
             },
 
-            onSubmit(){
+            onPaymentSubmit(){
+
                 let _this = this;
+
                 axios.post('/transaction/store', this.payment)
 
                         .then(function (response) {
 
-                            _this.fetchClubData();
+                            _this.$emit('onPaymentSubmit', _this.payment);
+
                             _this.clearForm();
 
                             $('#paymentModal').modal('hide');
@@ -217,30 +215,13 @@
                 this.payment = {
                     game_id: '',
                     amount: '',
-                    receive_date: ''
+                    receive_date: '',
+                    test: ''
                 }
-            }
+            },
 
 
         },
-
-        computed: {
-            pending: function (game) {
-                return game.total_payments < (game.bill - game.discount);
-            }
-            // totalPayments: function(items){
-            //     return items.reduce(function(prev, item){
-            //         return sum + item.amount;
-            //     },0);
-            // }
-        },
-
-        filters: {
-
-            dateTime(value){
-                return moment(value).format('D-MM-YY@h:mm a');
-            }
-        }
 
 
     }

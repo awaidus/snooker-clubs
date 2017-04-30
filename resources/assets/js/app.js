@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -19,40 +18,24 @@ Vue.component('games-balance', require('./components/game/GamesBalance.vue'));
 Vue.component('modal', require('./components/Modal.vue'));
 Vue.component('games-list', require('./components/game/GameList.vue'));
 
+// Vue.filter('dateTime', function (value) {
+//
+//     return moment(value).format('D-MM-YY@h:mm a');
+//
+// });
+
+Vue.filter('dateTime', function (value) {
+    return moment(value).format('D-MM-YY@h:mm a');
+});
+
+Vue.filter('date', function (value) {
+    return moment(value).format('D-MM-YY');
+});
 
 const app = new Vue({
     el: '#app',
 });
 
-
-// $('[data-type="date"]').flatpickr();
-//
-// $('[data-type="datetime"]').flatpickr({
-//
-//     enableTime: true,
-//
-//
-//     // clearIcon: '<i class="fa fa-remove clear-icon"></i>',
-//     // clearText: 'Clear',
-//     // triggerChangeEvent: true,
-//     // close: true,
-//     // theme: "light",
-//
-//     //defaultDate: new Date(),
-//
-//     // onOpen: function (selectedDates, dateStr, instance) {
-//     //
-//     //     console.log(this);
-//     //
-//     //     this.set('jumpToDate', new Date());
-//     //
-//     //     //this.setDefaults({defaultDate: new Date()});
-//     //
-//     //    // if (this.input.val() == '') this.config.defaultDate( new Date() );
-//     //
-//     // }
-//
-// });
 
 
 $('[data-type="date"]').datetimepicker({

@@ -52,7 +52,7 @@
 
 
                     </td>
-                    <td></td>
+
                 </tr>
                 </tbody>
             </table>
@@ -89,16 +89,6 @@
                 }).length;
             },
         },
-
-        computed: {},
-
-        filters: {
-
-            dateTime(value){
-                return moment(value).format('D-MM-YY@h:mm a');
-            }
-        }
-
 
     }
 

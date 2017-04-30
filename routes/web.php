@@ -30,7 +30,7 @@ Route::group(['middleware' => 'manager'], function () {
     Route::post('game/store', 'GameController@store')->name('storeGame');
     Route::get('game/destroy/{id}', 'GameController@destroy')->name('destroyGame');
     Route::get('game/restore/{id}', 'GameController@restore')->name('restoreGame');
-
+    Route::get('games/{club_id}', 'GameController@getGames')->name('getGames');
 
 
     Route::get('bills/index', 'BillController@index')->name('showBills');
@@ -71,16 +71,18 @@ Route::group(['middleware' => 'manager'], function () {
 
 Route::get('/test', function () {
 
-
-    return \App\Club::with(['games' => function ($query) {
-
-        $query->withDetails()
-            ->withTotalPayments();
-    }
-    ])->find(1);
-
-    return $g = \App\Game::withDetails()
+    return \App\Game::withDetails()
         ->withTotalPayments()
+        ->active()
+        ->where('game_tables.club_id', 1)
+        ->having('total_bill', '>', 'total_payments')
+        ->get();
+
+
+    return \App\Game::withDetails()
+        ->withTotalPayments()
+        ->active()
+        ->where('game_tables.club_id', 1)
         ->get();
 
 

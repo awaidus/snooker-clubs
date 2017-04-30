@@ -57,7 +57,7 @@ class Game extends Model
 
     public function scopeWithTotalPayments($query)
     {
-        return $query->selectRaw('games.*, sum(amount) as total_payments')
+        return $query->selectRaw('games.*, games.bill - IFNULL(games.discount,0) as total_bill, sum(amount) as total_payments')
             ->leftJoin('transactions', 'transactions.game_id', '=', 'games.id')
             ->groupBy('games.id')
             ->groupBy('games.game_table_id');
