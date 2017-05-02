@@ -74,7 +74,7 @@
 
                         {{Form::hidden('id')}}
 
-                        {{Form::formInput('Working Day *', 'working_day', null, ['data-type' => 'date'])}}
+                        {{Form::formInput('Working Day *', 'working_day', (($game && $game->working_day)) ? $game->working_day->format('d-m-Y'): null, ['data-type' => 'date'])}}
 
                         <div class="form-group">
                             {{ Form::label('player_id', 'Player', ['class'=> 'col-sm-3 control-label']) }}
@@ -95,7 +95,7 @@
                         {{Form::formSelect('Table', 'game_table_id', $game_tables)}}
                         {{Form::formSelect('Game Type', 'game_type_id',$game_types)}}
                         {{Form::formInput('Started At *', 'started_at', (($game && $game->started_at)) ? $game->started_at->format('d-m-Y g:i A'): null, ['data-type' => 'datetime'])}}
-                        {{Form::formInput('Ended At', 'ended_at', null, ['data-type' => 'datetime'])}}
+                        {{Form::formInput('Ended At', 'ended_at', (($game && $game->ended_at)) ? $game->ended_at->format('d-m-Y g:i A'): null, ['data-type' => 'datetime'])}}
                         {{Form::formInput('Bill Amount *', 'bill')}}
                         {{Form::formInput('Discount', 'discount')}}
                         {{Form::formSelect('No. of Player', 'no_of_players', [1 => 1, 2 => 2, 3 => 3, 4=>4], null)}}

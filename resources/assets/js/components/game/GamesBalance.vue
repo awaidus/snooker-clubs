@@ -155,14 +155,13 @@
     </div>
 </template>
 
-<script type="text/babel">
+<script type="text/javascript">
 
 
     export default{
 
 
         props: ['club'],
-
 
         data: () => ({
             //club: [],

@@ -4,9 +4,13 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
+    use SoftDeletes;
+
+
     protected $fillable = ['bill_id', 'user_id', 'player_id', 'game_id', 'amount', 'receive_date'];
 
 

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>All Games
+    <h1>Deleted Games
         <small> for {{session('club.club_name')}}</small>
     </h1>
 
@@ -17,17 +17,18 @@
 
     <br>
 
-    <table class="table table-bordered table-hover table-condensed" id="gameTable">
+    <table class="table table-bordered table-hover table-condensed" id="playerTable">
         <thead>
         <tr>
             <th>#</th>
             <th>Date</th>
             <th>Table</th>
-            <th>Game Type</th>
+            <th>Type</th>
             <th>Started At</th>
             <th>Ended At</th>
             <th>Bill</th>
             <th>Payment</th>
+            <th>Deleted At</th>
             <th></th>
         </tr>
         </thead>
@@ -37,11 +38,12 @@
             <th>#</th>
             <th>Date</th>
             <th>Table</th>
-            <th>Game Type</th>
+            <th>Type</th>
             <th>Started At</th>
             <th>Ended At</th>
             <th>Bill</th>
             <th>Payment</th>
+            <th>Deleted At</th>
             <th></th>
         </tr>
         </tfoot>
@@ -56,19 +58,19 @@
     <script>
 
         //1. Setup - add a text input to each footer cell
-        $('#gameTable tfoot th')
-            .not(":eq(0),:eq(8)")
+        $('#playerTable tfoot th')
+            .not(":eq(0),:eq(9)")
             .each(function () {
-                var title = $('#gameTable thead th').eq($(this).index()).text();
+                var title = $('#playerTable thead th').eq($(this).index()).text();
                 //var title = $(this).text();
 //                $(this).html('<input type="text" class="" placeholder="Search ' + title + '" />');
                 $(this).html('<input type="text" class="" />');
             });
 
-        var table = $('#gameTable').DataTable({
+        var table = $('#playerTable').DataTable({
             processing: true,
             //serverSide: true,
-            ajax: '{!! route('api.getGamesList', ['club_id' => session('club_id')]) !!}',
+            ajax: '{!! route('api.getDestroyedGames', ['club_id' => session('club_id')]) !!}',
             columns: [
                 {
                     data: 'DT_Row_Index', name: 'DT_Row_Index',
@@ -77,12 +79,13 @@
                     "targets": 0,
                 },
                 {data: 'working_day', name: 'working_day', "width": "10%"},
-                {data: 'table_no', name: 'table_no', "width": "10%"},
-                {data: 'game_type', name: 'game_type', "width": "10%"},
+                {data: 'table_no', name: 'table_no', "width": "7%"},
+                {data: 'game_type', name: 'game_type', "width": "7%"},
                 {data: 'started_at', name: 'started_at'},
                 {data: 'ended_at', name: 'ended_at'},
-                {data: 'total_bill', name: 'total_bill', "width": "10%"},
-                {data: 'total_payments', name: 'total_payments', "width": "10%"},
+                {data: 'total_bill', name: 'total_bill', "width": "7%"},
+                {data: 'total_payments', name: 'total_payments', "width": "7%"},
+                {data: 'deleted_at', name: 'deleted', "width": "15%"},
                 {
                     name: 'actions',
                     data: null,
@@ -91,7 +94,7 @@
                     render: function (data) {
                         var actions = '';
                         actions += '<a href="{{route('showGame', ['id' => ':id'])}}" class="btn btn-default btn-sm"><i class="fa fa-edit"></i></a>';
-                        actions += '<a href="{{ route('destroyGame', ':id') }}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>';
+                        actions += '<a href="{{ route('restoreGame', ':id') }}" class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i></a>';
                         return actions.replace(/:id/g, data.id);
                     }
                 }

@@ -17,12 +17,17 @@ Vue.component('game-hall', require('./components/game/GameHall.vue'));
 Vue.component('games-balance', require('./components/game/GamesBalance.vue'));
 Vue.component('modal', require('./components/Modal.vue'));
 Vue.component('games-list', require('./components/game/GameList.vue'));
+Vue.component('game-details-modal', require('./components/game/GameDetailsModal.vue'));
 
 // Vue.filter('dateTime', function (value) {
 //
 //     return moment(value).format('D-MM-YY@h:mm a');
 //
 // });
+
+Vue.filter('moment', function (value, format) {
+    return moment.utc(value).local().format(format);
+});
 
 Vue.filter('dateTime', function (value) {
     return moment(value).format('D-MM-YY@h:mm a');

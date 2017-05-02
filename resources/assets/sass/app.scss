@@ -232,3 +232,15 @@ input[type="date"], input[type="time"], input[type="datetime-local"], input[type
   display: inline-block;
   border-radius: 50%;
 }
+
+/*For Datatbale Search Inpur*/
+
+tfoot {
+  display: table-header-group;
+}
+
+tfoot input {
+  width: 100%;
+  padding: 0px;
+  box-sizing: border-box;
+}

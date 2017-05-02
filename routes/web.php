@@ -28,9 +28,20 @@ Route::group(['middleware' => 'manager'], function () {
     Route::get('game/show/{id?}', 'GameController@show')->name('showGame');
     Route::get('{club_id}/game/show/', 'GameController@create')->name('createGame');
     Route::post('game/store', 'GameController@store')->name('storeGame');
-    Route::get('game/destroy/{id}', 'GameController@destroy')->name('destroyGame');
-    Route::get('game/restore/{id}', 'GameController@restore')->name('restoreGame');
     Route::get('games/{club_id}', 'GameController@getGames')->name('getGames');
+
+    Route::get('games/index/destroyed/', function () {
+        return view('game.destroyed_index');
+    })->name('showDestroyedGames');
+
+    Route::get('games/destroyed/{club_id}', 'GameController@getGamesListWithTrash')->name('api.getDestroyedGames');
+
+
+    Route::get('game/destroy/{id}', 'GameController@destroy')->name('destroyGame');
+
+    Route::get('game/destroy/{id}', 'GameController@destroy')->name('destroyGame');
+
+    Route::get('game/restore/{id}', 'GameController@restore')->name('restoreGame');
 
 
     Route::get('bills/index', 'BillController@index')->name('showBills');
@@ -71,19 +82,33 @@ Route::group(['middleware' => 'manager'], function () {
 
 Route::get('/test', function () {
 
-    return \App\Game::withDetails()
-        ->withTotalPayments()
-        ->active()
-        ->where('game_tables.club_id', 1)
-        ->having('total_bill', '>', 'total_payments')
+
+    $first = \App\Transaction::selectRaw('working_day, receive_date, sum(amount) as total_payment, sum(bill-ifNull(discount, 0)) as total_bill ')
+        ->leftJoin('games', 'games.working_day', '=', 'transactions.receive_date')
+        ->groupBy('working_day')
+        ->groupBy('receive_date')
         ->get();
 
-
-    return \App\Game::withDetails()
-        ->withTotalPayments()
-        ->active()
-        ->where('game_tables.club_id', 1)
+    return $second = \App\Transaction::selectRaw('working_day, receive_date, sum(amount) as total_payment, sum(bill-ifNull(discount, 0)) as total_bill ')
+        ->rightJoin('games', 'games.working_day', '=', 'transactions.receive_date')
+        ->groupBy('working_day')
+        ->groupBy('receive_date')
+        ->union($first)
         ->get();
+
+    return \App\Club::with(['tables.games' => function ($query) {
+
+        $query->withTotalPayments()
+            ->having('total_bill', '>', 'total_payments')
+            ->orWhere('ended_at', null);
+    },
+        'tables.games.type',
+
+        'tables.games.players' => function ($query) {
+
+            $query->withTrashed();
+
+        }])->find(1);
 
 
     //return $g = Sentinel::getUser()->id;

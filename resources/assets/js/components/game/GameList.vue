@@ -21,12 +21,12 @@
                     </td>
 
                     <td>
-                        <table class="table table-condensed table-hover" style="margin-bottom: 1px;"
+                        <table class="table table-condensed table-hover" style="margin-bottom: 1px; font-size:13px;"
                                v-if="countActiveGames(table.games) > 0">
                             <tbody>
                             <tr class='info'>
                                 <th>Game</th>
-                                <th>Started at</th>
+                                <th>Time</th>
                                 <th>Bill</th>
                                 <th>Player</th>
                                 <th></th>
@@ -45,6 +45,9 @@
                                     <a :href="getGameURL(game.id)" class="btn btn-default btn-sm">
                                         <i class="fa fa-pencil"></i>
                                     </a>
+                                    <!--<button class="btn btn-primary btn-sm" @click="openGameDetailsModal(game)">-->
+                                    <!--<i class="fa fa-pencil"></i>-->
+                                    <!--</button>-->
                                 </td>
                             </tr>
                             </tbody>
@@ -59,6 +62,7 @@
 
         </div>
 
+        <!--<game-details-modal :game="game"></game-details-modal>-->
 
     </div>
 
@@ -66,16 +70,36 @@
 
 <script type="text/babel">
 
+    //TODO: implement the game modal
+
+    //import GameDetailsModal from '../game/GameDetailsModal.vue'
+
 
     export default{
 
+
         props: ['club'],
 
+        components: {},
+
         data(){
-            return {}
+            return {
+                game: {}
+            }
         },
 
         methods: {
+
+            openGameDetailsModal(game){
+
+                let _this = this;
+
+                _this.game = game;
+
+                //$('#gameDetailsModal').modal('show');
+
+                _this.$emit('onGameModalClick', _this.game);
+            },
 
             getGameURL(id){
 

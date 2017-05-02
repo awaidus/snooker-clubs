@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="angularApp">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,9 +42,9 @@
 <script src={{asset('js/vendor.js')}}></script>
 <script src={{asset('js/app.js')}}></script>
 
-<script src={{asset('angularApp/app.js')}}></script>
-<script src={{asset('angularApp/controllers/playerCtrl.js')}}></script>
-<script src={{asset('angularApp/controllers/gameCtrl.js')}}></script>
+{{--<script src={{asset('angularApp/app.js')}}></script>--}}
+{{--<script src={{asset('angularApp/controllers/playerCtrl.js')}}></script>--}}
+{{--<script src={{asset('angularApp/controllers/gameCtrl.js')}}></script>--}}
 
 @yield('script')
 

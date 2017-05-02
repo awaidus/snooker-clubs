@@ -34,6 +34,8 @@ class GameController extends Controller
 
         $club = Club::find($club_id);
 
+        Session::put('club', $club);
+
 //        $bills = [];
 //        $totals['today'] = 0;
 //        $totals['discountToday'] = 0;
@@ -164,7 +166,7 @@ class GameController extends Controller
     {
         Game::where('id', $id)->delete();
 
-        return response()->json('Game is deleted.');
+        return redirect()->back();
     }
 
 
@@ -172,7 +174,7 @@ class GameController extends Controller
     {
         Game::where('id', $id)->restore();
 
-        return response()->json('Game is restored.');
+        return redirect()->back();
     }
 
 
@@ -182,6 +184,11 @@ class GameController extends Controller
     }
 
 
+    /**
+     * For DataTable
+     * @param $club_id
+     * @return mixed
+     */
     public function getGamesList($club_id)
     {
         /*$club = Club::with(['games' => function ($query) {
@@ -234,6 +241,51 @@ class GameController extends Controller
             ->make(true);
     }
 
+    public function getGamesListWithTrash($club_id)
+    {
+
+        $games = Game::withDetails()
+            ->withTotalPayments()
+            ->onlyTrashed()
+            ->where('game_tables.club_id', $club_id)
+            ->orderBy('games.working_day', 'desc')
+            ->get();
+
+
+        return Datatables::of($games)
+            ->addIndexColumn()
+            ->editColumn('working_day', function ($game) {
+                return $game->working_day ? with(new Carbon($game->working_day))->format('d-m-Y') : '';
+            })
+            ->editColumn('started_at', function ($game) {
+                return $game->started_at ? with(new Carbon($game->started_at))->format('d-m-Y @g:i A') : '';
+            })
+            ->editColumn('ended_at', function ($game) {
+                return $game->ended_at ? with(new Carbon($game->ended_at))->format('d-m-Y @g:i A') : '';
+            })
+            ->editColumn('deleted_at', function ($game) {
+                return $game->deleted_at ? with(new Carbon($game->deleted_at))->format('d-m-Y @g:i A') : '';
+            })
+            ->filterColumn('working_day', function ($query, $keyword) {
+                $query->whereRaw("DATE_FORMAT(updated_at,'%d/%m/%Y') like ?", ["%$keyword%"]);
+            })
+            ->filterColumn('started_at', function ($query, $keyword) {
+                $query->whereRaw("DATE_FORMAT(updated_at,'%d/%m/%Y') like ?", ["%$keyword%"]);
+            })
+            ->filterColumn('ended_at', function ($query, $keyword) {
+                $query->whereRaw("DATE_FORMAT(updated_at,'%d/%m/%Y') like ?", ["%$keyword%"]);
+            })
+            ->filterColumn('deleted_at', function ($query, $keyword) {
+                $query->whereRaw("DATE_FORMAT(deleted_at,'%d/%m/%Y') like ?", ["%$keyword%"]);
+            })
+            ->make(true);
+    }
+
+    /**
+     * For VueJs
+     * @param $club_id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getGames($club_id)
     {
         /*$club_id = session('club_id') ;
@@ -243,47 +295,36 @@ class GameController extends Controller
             : session('club_id') || request()->route('club_id'));*/
 
 
-        $active_games = Club::with(['tables.games' => function ($query) {
-
-            $query->withTotalPayments()->active();
-
-        },
-            'tables.games.type',
-
-            'tables.games.players' => function ($query) {
-
-                $query->withTrashed();
-
-            }])->find($club_id);
-
-
-        $payments_games = Club::with(['tables.games' => function ($query) {
-
-            $query->withTotalPayments()->having('total_bill', '>', 'total_payments');
-
-        },
-            'tables.games.type',
-
-            'tables.games.players' => function ($query) {
-
-                $query->withTrashed();
-
-            }])->find($club_id);
-
-
-//        $payments_games = Game::withDetails()
-//            ->withTotalPayments()
-//            ->where('game_tables.club_id', $club_id)
-//            ->having('total_bill', '>', 'total_payments')
-//            ->get();
+//        $active_games = Club::with(['tables.games' => function ($query) {
 //
-//        $active_games = Game::withDetails()
-//            ->withTotalPayments()
-//            ->active()
-//            ->where('game_tables.club_id', $club_id)
-//            ->get();
+//            $query->withTotalPayments()->active();
+//
+//        },
+//            'tables.games.type',
+//
+//            'tables.games.players' => function ($query) {
+//
+//                $query->withTrashed();
+//
+//            }])->find($club_id);
 
-        return response()->json(['clubWithActiveGames' => $active_games, 'clubWithPendingPayments' => $payments_games,]);
+
+        $club = Club::with(['tables.games' => function ($query) {
+
+            $query->withTotalPayments()
+                ->having('total_bill', '>', 'total_payments')
+                ->orWhere('ended_at', null);
+        },
+            'tables.games.type',
+
+            'tables.games.players' => function ($query) {
+
+                $query->withTrashed();
+
+            }])->find($club_id);
+
+
+        return response()->json(['club' => $club,]);
 
     }
 

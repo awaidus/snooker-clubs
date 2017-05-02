@@ -4,9 +4,12 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Game extends Model
 {
+    use SoftDeletes;
+
     public $timestamps = true;
 
     protected $fillable = ['game_table_id', 'game_type_id', 'player_id', 'player_ids', 'completed', 'no_of_players', 'user_id',
@@ -123,6 +126,7 @@ class Game extends Model
     public function getWorkingDayAttribute($value)
     {
         if (!is_null($value)) {
+            //return Carbon::createFromFormat('Y-m-d', $value)->format('d-m-Y');
             return Carbon::parse($value);
         }
     }
